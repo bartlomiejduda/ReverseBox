@@ -1,14 +1,15 @@
+CRC_START_32 = 0xFFFFFFFF
 CRC_POLY_32 = 0xEDB88320
 
 
-class ChecksumHandler:
+class CRC32Handler:
 
     def __init__(self):
         self.crc32_tab_calculated: bool = False
         self.crc32_tab = []
 
     def calculate_crc32(self, input_data: bytes) -> int:
-        crc: int = 0xFFFFFFFF
+        crc: int = CRC_START_32
 
         if not self.crc32_tab_calculated:
             self.init_crc32_tab()
