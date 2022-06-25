@@ -5,4 +5,5 @@ venv/
 .idea/
 dist/
 build/
+*.egg-info/
 log.txt

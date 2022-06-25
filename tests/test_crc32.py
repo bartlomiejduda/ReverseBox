@@ -1,7 +1,7 @@
 import zlib
 import pytest
 from faker import Faker
-from checksum.checksum_crc32 import CRC32Handler
+from src.checksum.checksum_crc32 import CRC32Handler
 
 crc32_handler = CRC32Handler()
 fake = Faker()

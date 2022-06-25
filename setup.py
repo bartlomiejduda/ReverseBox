@@ -6,7 +6,7 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.1"
+VERSION_NUM = "0.0.3"
 
 
 def get_long_description() -> str:
@@ -16,22 +16,34 @@ def get_long_description() -> str:
 
 
 setuptools.setup(
-    name="ReverseBox",
+    name="ReverseBoxTEST",
     version=VERSION_NUM,
     author="Bartlomiej Duda",
     author_email="ikskoks@gmail.com",
-    license="GPL-3.0",
     description="A set of functions useful in reverse engineering.",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     url="https://github.com/bartlomiejduda/ReverseBox",
     classifiers=[
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Development Status :: 4 - Beta",
+        "Topic :: Software Development",
+        "Topic :: System :: Archiving :: Compression",
+        "Topic :: Security :: Cryptography",
         "Environment :: Console",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: GPL-3.0 License",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
+        "Natural Language :: English"
     ],
+    test_suite="tests",
+    keywords='ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python',
     python_requires='>=3.6',
     install_requires=[],
 )

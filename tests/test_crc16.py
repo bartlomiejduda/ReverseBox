@@ -1,5 +1,5 @@
 import pytest
-from checksum.checksum_crc16 import CRC16Handler
+from src.checksum.checksum_crc16 import CRC16Handler
 from tests.common import CRCTestEntry
 
 crc16_handler = CRC16Handler()
