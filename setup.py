@@ -6,7 +6,7 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.3"
+VERSION_NUM = "0.0.7"
 
 
 def get_long_description() -> str:
@@ -16,7 +16,7 @@ def get_long_description() -> str:
 
 
 setuptools.setup(
-    name="ReverseBoxTEST",
+    name="ReverseBox",
     version=VERSION_NUM,
     author="Bartlomiej Duda",
     author_email="ikskoks@gmail.com",
