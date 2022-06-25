@@ -1,5 +1,6 @@
 import pytest
-from src.checksum.checksum_crc16 import CRC16Handler
+from reversebox.checksum.checksum_crc16 import CRC16Handler
+from reversebox.common.common import convert_int_to_hex_string
 from tests.common import CRCTestEntry
 
 crc16_handler = CRC16Handler()
@@ -25,12 +26,12 @@ def test_checksum_calculate_crc16_to_match_expected_result():
     for crc_entry in crc_data_list:
         # check expected result from first execution
         test_result = crc16_handler.calculate_crc16(crc_entry.test_data)
-        test_result_str = "0x%02X" % int(test_result)
+        test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == crc_entry.expected_int
         assert test_result_str == crc_entry.expected_str
 
         # check if result is the same after second execution
         test_result = crc16_handler.calculate_crc16(crc_entry.test_data)
-        test_result_str = "0x%02X" % int(test_result)
+        test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == crc_entry.expected_int
         assert test_result_str == crc_entry.expected_str

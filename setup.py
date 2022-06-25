@@ -6,7 +6,7 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.7"
+VERSION_NUM = "0.0.13"
 
 
 def get_long_description() -> str:
@@ -46,4 +46,5 @@ setuptools.setup(
     keywords='ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python',
     python_requires='>=3.6',
     install_requires=[],
+    packages=setuptools.find_packages(),
 )

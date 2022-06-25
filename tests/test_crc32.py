@@ -1,7 +1,8 @@
 import zlib
 import pytest
 from faker import Faker
-from src.checksum.checksum_crc32 import CRC32Handler
+from reversebox.checksum.checksum_crc32 import CRC32Handler
+from reversebox.common.common import convert_int_to_hex_string
 
 crc32_handler = CRC32Handler()
 fake = Faker()
@@ -16,8 +17,8 @@ def test_checksum_calculate_crc32_to_match_zlib_result():
     for test_data in test_data_array:
         test_result = crc32_handler.calculate_crc32(test_data)
         zlib_result = zlib.crc32(test_data)
-        test_result_str = "0x%02X" % int(test_result)
-        zlib_result_str = "0x%02X" % int(zlib_result)
+        test_result_str = convert_int_to_hex_string(test_result)
+        zlib_result_str = convert_int_to_hex_string(zlib_result)
         assert test_result == zlib_result
         assert test_result_str == zlib_result_str
 
@@ -30,12 +31,12 @@ def test_checksum_calculate_crc32_to_match_expected_result():
 
     # check expected result from first execution
     test_result = crc32_handler.calculate_crc32(test_data)
-    test_result_str = "0x%02X" % int(test_result)
+    test_result_str = convert_int_to_hex_string(test_result)
     assert test_result == expected_result
     assert test_result_str == expected_result_str
 
     # check if result is the same after second execution
     test_result = crc32_handler.calculate_crc32(test_data)
-    test_result_str = "0x%02X" % int(test_result)
+    test_result_str = convert_int_to_hex_string(test_result)
     assert test_result == expected_result
     assert test_result_str == expected_result_str

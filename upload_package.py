@@ -11,6 +11,16 @@ try:
 except FileNotFoundError as error:
     pass
 
+try:
+    shutil.rmtree('./ReverseBox.egg-info')
+except FileNotFoundError as error:
+    pass
+
+try:
+    shutil.rmtree('./reversebox/ReverseBox.egg-info')
+except FileNotFoundError as error:
+    pass
+
 repository_url = os.environ['REPOSITORY_URL']
 reversebox_username = os.environ['REVERSEBOX_USERNAME']
 reversebox_password = os.environ['REVERSEBOX_PASSWORD']
