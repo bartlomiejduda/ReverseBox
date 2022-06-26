@@ -48,9 +48,9 @@ or software researchers).
 * Encryption
   - AES (TODO) ❌
   - DES (TODO) ❌
-  - XOR (Basic) (TODO) ❌
-  - (game-specific) XOR (Retro64 ECO) (TODO) ❌
-  - (game-specific) XOR (Giana’s Return ZDA) (TODO) ❌
+  - XOR Cipher (Basic) ✔️
+  - XOR Cipher (game-specific: Retro64 ECO) ✔️
+  - XOR Cipher (game-specific: Giana’s Return ZDA) (TODO) ❌
 
 * Hash
   - SHA-1 (TODO) ❌
