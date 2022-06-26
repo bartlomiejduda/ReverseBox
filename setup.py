@@ -6,11 +6,11 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.13"
+VERSION_NUM = "0.0.20"
 
 
 def get_long_description() -> str:
-    with open(os.path.join(os.path.dirname(__file__), "README.md")) as readme:
+    with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf8") as readme:
         readme_text = readme.read()
         return readme_text
 

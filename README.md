@@ -9,9 +9,10 @@ It's designed to help with:
 2. Decrypting / encrypting data
 3. Tedious reverse engineering tasks
 e.g. testing different checksum algorithms to find the one that was
-used in the software or file format.
-4. Parsing data structures
-5. Wrapping functions for input/output operations
+used in the software or file format
+4. Figuring out file formats
+5. Parsing data structures
+6. Wrapping functions for input/output operations
 
 **Who should use ReverseBox?** <br>
 Mostly developers and reverse engineers (e.g. file format researchers
@@ -20,29 +21,45 @@ or software researchers).
 # List of functionalities
 
 * Checksum
-  - CRC16 :heavy_check_mark:
-  - CRC32 :heavy_check_mark:
-  - CRC-16 (Modbus) (TODO) :x:
-  - CRC-16 (Sick) (TODO) :x:
-  - CRC-CCITT (XModem) (TODO) :x:
-  - CRC-CCITT (0xFFFF) (TODO) :x:
-  - CRC-CCITT (0x1D0F) (TODO) :x:
-  - CRC-CCITT (Kermit) (TODO) :x:
-  - CRC-DNP (TODO) :x:
-  - 1 byte checksum :x:
+  - CRC16 ✔️
+  - CRC32 ✔️
+  - CRC-16 (Modbus) (TODO) ❌
+  - CRC-16 (Sick) (TODO) ❌
+  - CRC-CCITT (XModem) (TODO) ❌ 
+  - CRC-CCITT (0xFFFF) (TODO) ❌
+  - CRC-CCITT (0x1D0F) (TODO) ❌
+  - CRC-CCITT (Kermit) (TODO) ❌
+  - CRC-DNP (TODO) ❌
+  - 1 byte checksum (TODO) ❌
 
 * Compression
-  - ZLIB (TODO) :x:
-  - Refpack (TODO) :x:
+  - BZIP2 (TODO) ❌
+  - GZIP (TODO) ❌
+  - JCALG1 (TODO) ❌
+  - LZMA (TODO) ❌
+  - LZO1X (TODO) ❌
+  - LZSS (TODO) ❌
+  - NitroSDK (TODO) ❌
+  - Oodle (TODO) ❌
+  - Refpack (EA) (TODO) ❌
+  - RNC (TODO) ❌
+  - ZLIB (TODO) ❌
 
 * Encryption
-  - Basic XOR (TODO) :x:
+  - AES (TODO) ❌
+  - DES (TODO) ❌
+  - XOR (Basic) (TODO) ❌
+  - (game-specific) XOR (Retro64 ECO) (TODO) ❌
+  - (game-specific) XOR (Giana’s Return ZDA) (TODO) ❌
 
 * Hash
-  - MD5 (TODO) :x:
+  - SHA-1 (TODO) ❌
+  - MD5 (TODO) ❌
+  - (game-specific) Hercules (TODO) ❌
+  - (game-specific) E-racer (TODO) ❌
 
 * IO
-  - TODO
+  - Basic IO operations (TODO) ❌
 
 # Checksum calculation- example
 Below is an example for checksum calculation using ReverseBox package.
