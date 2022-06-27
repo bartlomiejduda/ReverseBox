@@ -33,6 +33,8 @@ or software researchers).
   - 1 byte checksum (TODO) ❌
 
 * Compression
+  - Asobo (TODO) ❌
+  - BZE/BZZ (TODO) ❌
   - BZIP2 (TODO) ❌
   - GZIP (TODO) ❌
   - JCALG1 (TODO) ❌
@@ -58,10 +60,14 @@ or software researchers).
   - (game-specific) Hercules (TODO) ❌
   - (game-specific) E-racer (TODO) ❌
 
+* Image
+  - PS2 Swizzling/Twiddling (TODO) ❌
+  - PSP Swizzling/Twiddling (TODO) ❌
+
 * IO
   - Basic IO operations (TODO) ❌
 
-# Checksum calculation- example
+# Checksum calculation - example
 Below is an example for checksum calculation using ReverseBox package.
 Calulating other checksums is very similar.
 
@@ -81,4 +87,23 @@ print("CRC16_STR: ", common.convert_int_to_hex_string(crc16))
 ```
 CRC16_INT:  47933
 CRC16_STR:  0xBB3D
+```
+
+
+# XOR encryption - example
+
+// XOR Cipher (Basic)
+```
+from reversebox.encryption.encryption_xor_basic import xor_cipher_basic
+
+
+test_data = b'abcd'
+test_key = b'\x3D'
+xor_result = xor_cipher_basic(test_data, test_key)
+print(xor_result)
+```
+
+// XOR Cipher output
+```
+b'\\_^Y'
 ```

@@ -6,7 +6,7 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.22"
+VERSION_NUM = "0.0.25"
 
 
 def get_long_description() -> str:

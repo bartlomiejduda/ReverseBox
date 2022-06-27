@@ -5,6 +5,9 @@ import struct
 
 
 def xor_cipher_retro64_eco(input_data: bytes, key: int) -> bytes:
+    if len(input_data) == 0:
+        return b''
+
     result: bytes = b''
     for raw_byte in input_data:
         new_key = (201 * key + 11) % 0x7FFF
