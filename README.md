@@ -28,7 +28,7 @@ or software researchers).
   - CRC-CCITT (XModem) (TODO) ❌ 
   - CRC-CCITT (0xFFFF) (TODO) ❌
   - CRC-CCITT (0x1D0F) (TODO) ❌
-  - CRC-CCITT (Kermit) (TODO) ❌
+  - CRC-CCITT (Kermit) ✔️
   - CRC-DNP (TODO) ❌
   - 1 byte checksum (TODO) ❌
 
@@ -51,8 +51,8 @@ or software researchers).
   - AES (TODO) ❌
   - DES (TODO) ❌
   - XOR Cipher (Basic) ✔️
-  - XOR Cipher (game-specific: Retro64 ECO) ✔️
-  - XOR Cipher (game-specific: Giana’s Return ZDA) (TODO) ❌
+  - (game-specific) XOR Cipher (Retro64 ECO) ✔️
+  - (game-specific) XOR Cipher (Giana’s Return ZDA) (TODO) ❌
 
 * Hash
   - SHA-1 (TODO) ❌
