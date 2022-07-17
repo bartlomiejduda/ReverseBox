@@ -1,5 +1,5 @@
 import pytest
-from common import XORTestEntry
+from tests.common import XORTestEntry
 from reversebox.encryption.encryption_xor_basic import xor_cipher_basic
 
 

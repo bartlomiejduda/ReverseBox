@@ -21,8 +21,9 @@ or software researchers).
 # List of functionalities
 
 * Checksum
-  - CRC16 ✔️
-  - CRC32 ✔️
+  - CRC16 (ARC) ✔️
+  - CRC32 (ISO/HDLC) ✔️
+  - CRC32 (Asobo) (TODO) ❌
   - CRC-16 (Modbus) (TODO) ❌
   - CRC-16 (Sick) (TODO) ❌
   - CRC-CCITT (XModem) (TODO) ❌ 

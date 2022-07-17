@@ -1,5 +1,5 @@
 CRC_START_KERMIT = 0x0000
-CRC_POLY_KERMIT = 0x8408  # polynomial reversed, real one is 0x1021
+CRC_POLY_KERMIT = 0x8408
 
 
 class CRC16KermitHandler:

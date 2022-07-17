@@ -1,5 +1,5 @@
 import pytest
-from common import XORRetro64ECOTestEntry
+from tests.common import XORRetro64ECOTestEntry
 from reversebox.encryption.encryption_xor_retro64_eco import xor_cipher_retro64_eco
 
 # Tests for XOR Cipher used in Retro64 *.ECO files
