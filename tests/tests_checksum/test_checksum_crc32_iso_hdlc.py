@@ -1,3 +1,8 @@
+"""
+Copyright © 2022  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 import zlib
 import pytest
 from faker import Faker
@@ -11,8 +16,19 @@ fake = Faker()
 @pytest.mark.unittest
 def test_checksum_calculate_crc32_to_match_zlib_result():
 
-    test_data_array = [b'', b'123456789', b'Hello Python', b'Secret123@123#!', b'\x00\x01\x02\x03', b'1', b'abcdefgh',
-                       b'\n', b'!@#$%^&*()', fake.binary(length=100), fake.binary(length=5000)]
+    test_data_array = [
+        b"",
+        b"123456789",
+        b"Hello Python",
+        b"Secret123@123#!",
+        b"\x00\x01\x02\x03",
+        b"1",
+        b"abcdefgh",
+        b"\n",
+        b"!@#$%^&*()",
+        fake.binary(length=100),
+        fake.binary(length=5000),
+    ]
 
     for test_data in test_data_array:
         test_result = crc32_handler.calculate_crc32(test_data)
@@ -25,7 +41,7 @@ def test_checksum_calculate_crc32_to_match_zlib_result():
 
 @pytest.mark.unittest
 def test_checksum_calculate_crc32_to_match_expected_result():
-    test_data = b'123456789'
+    test_data = b"123456789"
     expected_result = 3421780262
     expected_result_str = "0xCBF43926"
 

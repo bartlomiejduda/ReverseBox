@@ -6,11 +6,13 @@ License: GPL-3.0 License
 import os
 import setuptools
 
-VERSION_NUM = "0.0.25"
+VERSION_NUM = "0.0.27"
 
 
 def get_long_description() -> str:
-    with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf8") as readme:
+    with open(
+        os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf8"
+    ) as readme:
         readme_text = readme.read()
         return readme_text
 
@@ -40,11 +42,11 @@ setuptools.setup(
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
-        "Natural Language :: English"
+        "Natural Language :: English",
     ],
     test_suite="tests",
-    keywords='ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python',
-    python_requires='>=3.6',
+    keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python",
+    python_requires=">=3.6",
     install_requires=[],
     packages=setuptools.find_packages(),
 )

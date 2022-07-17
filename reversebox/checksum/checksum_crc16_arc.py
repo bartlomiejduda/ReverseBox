@@ -1,9 +1,13 @@
+"""
+Copyright © 2022  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 CRC_START_16 = 0x0000
 CRC_POLY_16 = 0xA001
 
 
 class CRC16Handler:
-
     def __init__(self):
         self.crc16_tab_calculated: bool = False
         self.crc16_tab = []
@@ -17,9 +21,9 @@ class CRC16Handler:
         for byte in input_data:
             short_c = 0x00FF & byte
             tmp = crc ^ short_c
-            crc = (crc >> 8) ^ self.crc16_tab[tmp & 0xff]
+            crc = (crc >> 8) ^ self.crc16_tab[tmp & 0xFF]
 
-        return crc & 0xffff
+        return crc & 0xFFFF
 
     def init_crc16_tab(self):
         for i in range(256):

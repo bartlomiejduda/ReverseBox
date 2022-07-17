@@ -1,10 +1,14 @@
+"""
+Copyright © 2022  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 CRC_START_DNP = 0x0000
 CRC_POLY_DNP = 0xA6BC
 
 
 # TODO - correct this
 class CRC16DNPHandler:
-
     def __init__(self):
         self.crc16_dnp_tab_calculated: bool = False
         self.crc16_dnp_tab = []
@@ -18,11 +22,11 @@ class CRC16DNPHandler:
         for byte in input_data:
             short_c = 0x00FF & byte
             tmp = crc ^ short_c
-            crc = (crc >> 8) ^ self.crc16_dnp_tab[tmp & 0xff]
+            crc = (crc >> 8) ^ self.crc16_dnp_tab[tmp & 0xFF]
 
         crc = ~crc
-        low_byte = (crc & 0xff00) >> 8
-        high_byte = (crc & 0x00ff) << 8
+        low_byte = (crc & 0xFF00) >> 8
+        high_byte = (crc & 0x00FF) << 8
         crc = low_byte | high_byte
         return crc
 

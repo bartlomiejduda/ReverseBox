@@ -1,3 +1,8 @@
+"""
+Copyright © 2022  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 import struct
 
 # XOR Cipher used in Retro64 *.ECO files
@@ -6,9 +11,9 @@ import struct
 
 def xor_cipher_retro64_eco(input_data: bytes, key: int) -> bytes:
     if len(input_data) == 0:
-        return b''
+        return b""
 
-    result: bytes = b''
+    result: bytes = b""
     for raw_byte in input_data:
         new_key = (201 * key + 11) % 0x7FFF
         key = new_key
@@ -16,4 +21,3 @@ def xor_cipher_retro64_eco(input_data: bytes, key: int) -> bytes:
         result += struct.pack("B", decrypted_byte)
 
     return result
-

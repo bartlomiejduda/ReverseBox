@@ -1,9 +1,13 @@
+"""
+Copyright © 2022  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 CRC_START_32 = 0xFFFFFFFF
 CRC_POLY_32 = 0xEDB88320
 
 
 class CRC32Handler:
-
     def __init__(self):
         self.crc32_tab_calculated: bool = False
         self.crc32_tab = []
@@ -17,10 +21,10 @@ class CRC32Handler:
         for byte in input_data:
             long_c = 0x000000FF & byte
             tmp = crc ^ long_c
-            crc = (crc >> 8) ^ self.crc32_tab[tmp & 0xff]
+            crc = (crc >> 8) ^ self.crc32_tab[tmp & 0xFF]
 
-        crc ^= 0xffffffff
-        return crc & 0xffffffff
+        crc ^= 0xFFFFFFFF
+        return crc & 0xFFFFFFFF
 
     def init_crc32_tab(self):
         for i in range(256):
