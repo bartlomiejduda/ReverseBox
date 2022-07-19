@@ -4,7 +4,7 @@
 useful in software reverse engineering.
 
 **Why ReverseBox?** <br>
-It's designed to help with: 
+It's designed to help with:
 1. Decompressing / compressing data
 2. Decrypting / encrypting data
 3. Tedious reverse engineering tasks
@@ -26,7 +26,7 @@ or software researchers).
   - CRC32 (Asobo) (TODO) ❌
   - CRC-16 (Modbus) (TODO) ❌
   - CRC-16 (Sick) (TODO) ❌
-  - CRC-CCITT (XModem) (TODO) ❌ 
+  - CRC-CCITT (XModem) (TODO) ❌
   - CRC-CCITT (0xFFFF) (TODO) ❌
   - CRC-CCITT (0x1D0F) (TODO) ❌
   - CRC-CCITT (Kermit) ✔️
