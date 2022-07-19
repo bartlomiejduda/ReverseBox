@@ -4,5 +4,6 @@ mypy==0.960
 pre-commit==2.20.0
 pylint==2.14.0
 pytest==7.1.2
-setuptools==62.6.0
+setuptools==63.2.0
 twine==4.0.1
+types-setuptools==63.2.0
