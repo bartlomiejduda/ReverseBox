@@ -69,25 +69,22 @@ or software researchers).
   - Basic IO operations (TODO) ❌
 
 # Checksum calculation - example
-Below is an example for checksum calculation using ReverseBox package.
-Calulating other checksums is very similar.
 
-// CRC16 calculation
+// CRC16 (Kermit) calculation
 ```
-from reversebox.checksum import checksum_crc16
+from reversebox.checksum import checksum_crc16_kermit
 from reversebox.common import common
 
-
 test_data = b'123456789'
-crc16_handler = checksum_crc16.CRC16Handler()
-crc16 = crc16_handler.calculate_crc16(test_data)
+crc16_handler = checksum_crc16_kermit.CRC16KermitHandler()
+crc16 = crc16_handler.calculate_crc16_kermit(test_data)
 print("CRC16_INT: ", crc16)
 print("CRC16_STR: ", common.convert_int_to_hex_string(crc16))
 ```
-// CRC16 output
+// CRC16 (Kermit) output
 ```
-CRC16_INT:  47933
-CRC16_STR:  0xBB3D
+CRC16_INT:  35105
+CRC16_STR:  0x8921
 ```
 
 
