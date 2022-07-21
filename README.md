@@ -30,7 +30,7 @@ or software researchers).
   - CRC-CCITT (0xFFFF) (TODO) ❌
   - CRC-CCITT (0x1D0F) (TODO) ❌
   - CRC-CCITT (Kermit) ✔️
-  - CRC-DNP (TODO) ❌
+  - CRC-DNP ✔️
   - 1 byte checksum (TODO) ❌
 
 * Compression
