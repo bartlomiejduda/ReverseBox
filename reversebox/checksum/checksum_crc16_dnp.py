@@ -7,7 +7,6 @@ CRC_START_DNP = 0x0000
 CRC_POLY_DNP = 0xA6BC
 
 
-# TODO - correct this
 class CRC16DNPHandler:
     def __init__(self):
         self.crc16_dnp_tab_calculated: bool = False

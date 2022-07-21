@@ -25,7 +25,7 @@ or software researchers).
   - CRC32 (ISO/HDLC) ✔️
   - CRC32 (Asobo) (TODO) ❌
   - CRC-16 (Modbus) (TODO) ❌
-  - CRC-16 (Sick) (TODO) ❌
+  - CRC-16 (Sick) ✔️
   - CRC-CCITT (XModem) (TODO) ❌
   - CRC-CCITT (0xFFFF) (TODO) ❌
   - CRC-CCITT (0x1D0F) (TODO) ❌
