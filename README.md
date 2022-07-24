@@ -21,17 +21,17 @@ or software researchers).
 # List of functionalities
 
 * Checksum
+  - CRC8 (TODO) ❌
   - CRC16 (ARC) ✔️
+  - CRC16 (Modbus) ✔️
+  - CRC16 (Sick) ✔️
+  - CRC16 (DNP) ✔️
+  - CRC16-CCITT (XModem) ✔️
+  - CRC16-CCITT (0xFFFF) ✔️
+  - CRC16-CCITT (0x1D0F) ✔️
+  - CRC16-CCITT (Kermit) ✔️
   - CRC32 (ISO/HDLC) ✔️
   - CRC32 (Asobo) (TODO) ❌
-  - CRC-16 (Modbus) (TODO) ❌
-  - CRC-16 (Sick) ✔️
-  - CRC-CCITT (XModem) (TODO) ❌
-  - CRC-CCITT (0xFFFF) (TODO) ❌
-  - CRC-CCITT (0x1D0F) (TODO) ❌
-  - CRC-CCITT (Kermit) ✔️
-  - CRC-DNP ✔️
-  - 1 byte checksum (TODO) ❌
 
 * Compression
   - Asobo (TODO) ❌
