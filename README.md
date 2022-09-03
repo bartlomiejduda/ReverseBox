@@ -51,6 +51,7 @@ or software researchers).
 * Encryption
   - AES (TODO) ❌
   - DES (TODO) ❌
+  - Lucifer / DTD-1 (TODO) ❌
   - XOR Cipher (Basic) ✔️
   - (game-specific) XOR Cipher (Retro64 ECO) ✔️
   - (game-specific) XOR Cipher (Giana’s Return ZDA) (TODO) ❌
@@ -67,6 +68,7 @@ or software researchers).
 
 * IO
   - Basic IO operations (TODO) ❌
+  - File extension checking ✔️
 
 # Checksum calculation - example
 
