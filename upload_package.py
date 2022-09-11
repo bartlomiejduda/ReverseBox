@@ -5,20 +5,19 @@ import os
 import shutil
 import subprocess
 
-
 try:
     shutil.rmtree("./dist")
-except FileNotFoundError as error:
+except FileNotFoundError:
     pass
 
 try:
     shutil.rmtree("./ReverseBox.egg-info")
-except FileNotFoundError as error:
+except FileNotFoundError:
     pass
 
 try:
     shutil.rmtree("./reversebox/ReverseBox.egg-info")
-except FileNotFoundError as error:
+except FileNotFoundError:
     pass
 
 repository_url = os.environ["REPOSITORY_URL"]

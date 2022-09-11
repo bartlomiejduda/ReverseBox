@@ -4,9 +4,10 @@ License: GPL-3.0 License
 """
 
 import os
+
 import setuptools
 
-VERSION_NUM = "0.1.2"
+VERSION_NUM = "0.2.1"
 
 
 def get_long_description() -> str:

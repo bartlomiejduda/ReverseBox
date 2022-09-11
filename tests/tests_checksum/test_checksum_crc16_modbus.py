@@ -4,6 +4,7 @@ License: GPL-3.0 License
 """
 
 import pytest
+
 from reversebox.checksum.checksum_crc16_modbus import CRC16MODBUSHandler
 from reversebox.common.common import convert_int_to_hex_string
 from tests.common import CRCTestEntry

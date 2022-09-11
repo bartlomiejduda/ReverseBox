@@ -3,9 +3,14 @@ Copyright © 2022  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
+# fmt: off
 import pytest
+
+from reversebox.encryption.encryption_xor_retro64_eco import \
+    xor_cipher_retro64_eco
 from tests.common import XORRetro64ECOTestEntry
-from reversebox.encryption.encryption_xor_retro64_eco import xor_cipher_retro64_eco
+
+# fmt: on
 
 # Tests for XOR Cipher used in Retro64 *.ECO files
 # Read more here: http://wiki.xentax.com/index.php/Retro64_ECO

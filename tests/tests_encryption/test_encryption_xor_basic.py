@@ -4,8 +4,9 @@ License: GPL-3.0 License
 """
 
 import pytest
-from tests.common import XORTestEntry
+
 from reversebox.encryption.encryption_xor_basic import xor_cipher_basic
+from tests.common import XORTestEntry
 
 
 @pytest.mark.unittest

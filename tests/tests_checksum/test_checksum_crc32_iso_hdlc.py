@@ -4,8 +4,10 @@ License: GPL-3.0 License
 """
 
 import zlib
+
 import pytest
 from faker import Faker
+
 from reversebox.checksum.checksum_crc32_iso_hdlc import CRC32Handler
 from reversebox.common.common import convert_int_to_hex_string
 from tests.common import CRCTestEntry

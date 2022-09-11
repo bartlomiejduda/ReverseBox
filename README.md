@@ -67,7 +67,8 @@ or software researchers).
   - PSP Swizzling/Twiddling (TODO) ❌
 
 * IO
-  - Basic IO operations (TODO) ❌
+  - File Reader ✔️
+  - File Writer (TODO) ❌
   - File extension checking ✔️
 
 # Checksum calculation - example
@@ -106,4 +107,24 @@ print(xor_result)
 // XOR Cipher output
 ```
 b'\\_^Y'
+```
+
+
+# File Reader - example
+
+// File Reader Usage
+```
+from reversebox.io_files.file_reader import FileReader
+
+
+file_path = os.path.join(os.path.dirname(__file__), "data\\file.bin")
+file_reader = FileReader(file_path, "rb")
+file_reader.open()
+value = file_reader.read_str(4, "utf8")
+print(value)
+```
+
+// File Reader Output
+```
+ABCD
 ```
