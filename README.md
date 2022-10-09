@@ -58,7 +58,7 @@ or software researchers).
 
 * Hash
   - SHA-1 (TODO) ❌
-  - MD5 (TODO) ❌
+  - MD5 ✔️ <span style="color:yellow">(wrapper only)</span>
   - (game-specific) Hercules (TODO) ❌
   - (game-specific) E-racer (TODO) ❌
 
