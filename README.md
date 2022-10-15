@@ -46,7 +46,7 @@ or software researchers).
   - Oodle (TODO) ❌
   - Refpack (EA) (TODO) ❌
   - RNC (TODO) ❌
-  - ZLIB (TODO) ❌
+  - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
 
 * Encryption
   - AES (TODO) ❌
@@ -68,7 +68,7 @@ or software researchers).
 
 * IO
   - File Reader ✔️
-  - File Writer (TODO) ❌
+  - File Writer ✔️
   - File extension checking ✔️
 
 # Checksum calculation - example
