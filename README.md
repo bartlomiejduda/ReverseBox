@@ -110,15 +110,15 @@ b'\\_^Y'
 ```
 
 
-# File Reader - example
+# File Handler - example
 
-// File Reader Usage
+// File reading
 ```
-from reversebox.io_files.file_reader import FileReader
+from reversebox.io_files.file_handler import FileHandler
 
 
-file_path = os.path.join(os.path.dirname(__file__), "data\\file.bin")
-file_reader = FileReader(file_path, "rb")
+file_path = os.path.join(os.path.dirname(__file__), "file.bin")
+file_reader = FileHandler(file_path, "rb")
 file_reader.open()
 value = file_reader.read_str(4, "utf8")
 print(value)

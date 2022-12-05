@@ -32,6 +32,16 @@ def test_open_seek_and_read_little_endian_file():
     value5 = file_reader.read_uint32()
     assert value5 == 100
 
+    file_reader.seek(0)
+    value6 = file_reader.read_bytes(4)
+    assert value6 == b"\x41\x42\x43\x44"  # ABCD
+
+    file_reader.seek(0)
+    assert file_reader.get_position() == 0
+
+    file_reader.seek(2)
+    assert file_reader.get_position() == 2
+
     result = file_reader.close()
     assert result
 
@@ -58,6 +68,16 @@ def test_open_seek_and_read_big_endian_file():
     file_reader.seek(4)
     value5 = file_reader.read_uint32()
     assert value5 == 100
+
+    file_reader.seek(0)
+    value6 = file_reader.read_bytes(4)
+    assert value6 == b"\x44\x43\x42\x41"  # DCBA
+
+    file_reader.seek(0)
+    assert file_reader.get_position() == 0
+
+    file_reader.seek(2)
+    assert file_reader.get_position() == 2
 
     result = file_reader.close()
     assert result
@@ -97,6 +117,16 @@ def test_open_and_read_multi_endian_file():
 
     value8 = file_reader.read_uint8()
     assert value8 == 102
+
+    file_reader.seek(0)
+    value9 = file_reader.read_bytes(4)
+    assert value9 == b"\x41\x41\x41\x41"  # AAAA
+
+    file_reader.seek(0)
+    assert file_reader.get_position() == 0
+
+    file_reader.seek(2)
+    assert file_reader.get_position() == 2
 
     result = file_reader.close()
     assert result

@@ -24,6 +24,8 @@ def test_open_and_write_little_endian_file():
     assert result
     result = file_handler.write_uint8(102)
     assert result
+    result = file_handler.write_bytes(b"\x41\x42\x43\x44")
+    assert result
 
     result = file_handler.close()
     assert result

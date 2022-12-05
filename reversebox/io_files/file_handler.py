@@ -72,15 +72,28 @@ class FileHandler:
             raise Exception(error_message)
         return True
 
-    def seek(self, seek_value):
+    def seek(self, seek_value, seek_type: int = 0):
+        # 0 = SEEK_SET
+        # 1 = SEEK_CUR
+        # 2 = SEEK_END
         self._check_file()
-        self.file.seek(seek_value)
+        self.file.seek(seek_value, seek_type)
+
+    def get_position(self) -> int:
+        self._check_file()
+        return self.file.tell()
 
     def read_str(self, str_length: int, encoding: str = "utf8") -> str:
         self._check_file()
         self._check_read_mode()
         data = self.file.read(str_length)
         return data.decode(encoding)
+
+    def read_bytes(self, number_of_bytes: int) -> bytes:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(number_of_bytes)
+        return data
 
     def read_uint32(self) -> int:
         self._check_file()
@@ -128,6 +141,12 @@ class FileHandler:
             logger.error(f"Couldn't write string to file: {error}")
             return False
 
+        return True
+
+    def write_bytes(self, data_to_write: bytes) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(data_to_write)
         return True
 
     def write_uint32(self, value: int) -> bool:
