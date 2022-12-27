@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.3.1"
+VERSION_NUM = "0.3.2"
 
 
 def get_long_description() -> str:
@@ -34,6 +34,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Development Status :: 4 - Beta",
         "Topic :: Software Development",
         "Topic :: System :: Archiving :: Compression",
@@ -48,6 +49,6 @@ setuptools.setup(
     test_suite="tests",
     keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python",
     python_requires=">=3.6",
-    install_requires=[],
+    install_requires=["lzokay"],
     packages=setuptools.find_packages(),
 )

@@ -40,7 +40,7 @@ or software researchers).
   - GZIP (TODO) ❌
   - JCALG1 (TODO) ❌
   - LZMA (TODO) ❌
-  - LZO1X (TODO) ❌
+  - LZO / LZO1X ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZSS (TODO) ❌
   - NitroSDK (TODO) ❌
   - Oodle (TODO) ❌
