@@ -13,6 +13,7 @@ used in the software or file format
 4. Figuring out file formats
 5. Parsing data structures
 6. Wrapping functions for input/output operations
+7. Searching for raw images
 
 **Who should use ReverseBox?** <br>
 Mostly developers and reverse engineers (e.g. file format researchers
@@ -63,6 +64,7 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
 
 * Image
+  - Image Finder  (in progress) ❌
   - PS2 Swizzling/Twiddling (TODO) ❌
   - PSP Swizzling/Twiddling (TODO) ❌
 
