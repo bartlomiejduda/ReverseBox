@@ -7,15 +7,15 @@ import os
 import sys
 import tkinter as tk
 import webbrowser
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 
 from PIL import Image, ImageTk
 
 from reversebox.common.logger import get_logger
 
 # default app settings
-WINDOW_HEIGHT = 490
-WINDOW_WIDTH = 690
+WINDOW_HEIGHT = 500
+WINDOW_WIDTH = 700
 
 logger = get_logger(__name__)
 
@@ -29,6 +29,7 @@ class ImageFinderGUI:
         self.VERSION_NUM = in_version_num
         self.MAIN_DIRECTORY = in_main_directory
         master.title(f"ReverseBox - image finder {in_version_num}")
+        master.minsize(WINDOW_WIDTH, WINDOW_HEIGHT)
         master.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         self.icon_dir = self.MAIN_DIRECTORY + "\\data\\icon.ico"
@@ -39,32 +40,30 @@ class ImageFinderGUI:
         except tk.TclError:
             logger.info("Can't load the icon file from %s", self.icon_dir)
 
-
-        # main frame
+        ########################
+        # MAIN FRAME           #
+        ########################
         self.main_frame = tk.Frame(master, bg="#f0f0f0")
         self.main_frame.place(x=0, y=0, relwidth=1, relheight=1)
 
-
         ########################
-        # PARAMETERS BOX #     #
+        # IMAGE PARAMETERS BOX #
         ########################
-        self.parameters_labelframe = tk.LabelFrame(self.main_frame, text="Parameters", font=self.gui_font)
-        self.parameters_labelframe.place(x=5, y=5, width=160, relheight=1, height=-20)
+        self.parameters_labelframe = tk.LabelFrame(self.main_frame, text="Image Parameters", font=self.gui_font)
+        self.parameters_labelframe.place(x=5, y=5, width=160, height=310)
 
-
-        #############################
-        # PARAMETERS - IMAGE WIDTH  #
-        ############################
+        ###################################
+        # IMAGE PARAMETERS - IMAGE WIDTH  #
+        ###################################
         self.width_label = tk.Label(self.parameters_labelframe, text="Img Width", anchor="w", font=self.gui_font)
         self.width_label.place(x=5, y=5, width=60, height=20)
 
         self.width_spinbox = tk.Spinbox(self.parameters_labelframe, from_=0, to=sys.maxsize)
         self.width_spinbox.place(x=5, y=25, width=60, height=20)
 
-
-        ################################
-        # PARAMETERS - IMAGE HEIGHT    #
-        ################################
+        ######################################
+        # IMAGE PARAMETERS - IMAGE HEIGHT    #
+        ######################################
         self.height_label = tk.Label(self.parameters_labelframe, text="Img Height", anchor="w", font=self.gui_font)
         self.height_label.place(x=80, y=5, width=60, height=20)
 
@@ -72,29 +71,144 @@ class ImageFinderGUI:
         self.height_spinbox.place(x=80, y=25, width=60, height=20)
 
 
-        #####################################
-        # PARAMETERS - IMAGE START OFFSET   #
-        #####################################
+        ###########################################
+        # IMAGE PARAMETERS - IMAGE START OFFSET   #
+        ###########################################
         self.img_start_offset_label = tk.Label(self.parameters_labelframe, text="Start Offset", anchor="w", font=self.gui_font)
         self.img_start_offset_label.place(x=5, y=50, width=60, height=20)
 
         self.img_start_offset_spinbox = tk.Spinbox(self.parameters_labelframe, from_=0, to=sys.maxsize)
         self.img_start_offset_spinbox.place(x=5, y=70, width=60, height=20)
 
-        ####################################
-        # PARAMETERS - IMAGE END OFFSET    #
-        ####################################
+        ##########################################
+        # IMAGE PARAMETERS - IMAGE END OFFSET    #
+        ##########################################
         self.img_end_offset_label = tk.Label(self.parameters_labelframe, text="End Offset", anchor="w", font=self.gui_font)
         self.img_end_offset_label.place(x=80, y=50, width=60, height=20)
 
         self.img_end_offset_spinbox = tk.Spinbox(self.parameters_labelframe, from_=0, to=sys.maxsize)
         self.img_end_offset_spinbox.place(x=80, y=70, width=60, height=20)
 
+        ####################################
+        # IMAGE PARAMETERS - PIXEL FORMAT  #
+        ####################################
+        self.pixel_format_label = tk.Label(self.parameters_labelframe, text="Pixel Format", anchor="w", font=self.gui_font)
+        self.pixel_format_label.place(x=5, y=95, width=60, height=20)
+
+        self.PIXEL_FORMATS = ["RGB8888", "RGB565"]
+        self.pixel_format_combobox = ttk.Combobox(self.parameters_labelframe,
+                                                  values=self.PIXEL_FORMATS, font=self.gui_font, state='readonly')
+        self.pixel_format_combobox.place(x=5, y=115, width=135, height=20)
+        self.pixel_format_combobox.set(self.PIXEL_FORMATS[0])
+
+        ####################################
+        # IMAGE PARAMETERS - SWIZZLING     #
+        ####################################
+        self.swizzling_label = tk.Label(self.parameters_labelframe, text="Swizzling Type", anchor="w", font=self.gui_font)
+        self.swizzling_label.place(x=5, y=140, width=100, height=20)
+
+        self.SWIZZLING_TYPES = ["None", "PS1 Swizzle", "PS2 Swizzle", "PSP Swizzle"]
+        self.swizzling_combobox = ttk.Combobox(self.parameters_labelframe,
+                                               values=self.SWIZZLING_TYPES, font=self.gui_font, state='readonly')
+        self.swizzling_combobox.place(x=5, y=160, width=135, height=20)
+        self.swizzling_combobox.set(self.SWIZZLING_TYPES[0])
+
+        #####################################
+        # IMAGE PARAMETERS - CHECKBOXES     #
+        #####################################
+
+        self.vertical_flip_checkbox = tk.Checkbutton(self.parameters_labelframe, text="V Flip (top-down)", anchor="w")
+        self.vertical_flip_checkbox.place(x=5, y=190, width=140, height=20)
+
+        self.horizontal_flip_checkbox = tk.Checkbutton(self.parameters_labelframe, text="H Flip (left-right)", anchor="w")
+        self.horizontal_flip_checkbox.place(x=5, y=210, width=140, height=20)
+
+        self.invert_colors_checkbox = tk.Checkbutton(self.parameters_labelframe, text="Invert colors", anchor="w")
+        self.invert_colors_checkbox.place(x=5, y=230, width=140, height=20)
+
+
+        ####################################
+        # IMAGE PARAMETERS - ZOOM          #
+        ####################################
+        self.zoom_label = tk.Label(self.parameters_labelframe, text="Zoom", anchor="w", font=self.gui_font)
+        self.zoom_label.place(x=5, y=260, width=100, height=20)
+
+        self.ZOOM_TYPES = ["1x", "2x", "3x", "4x", "5x", "10x"]
+        self.zoom_combobox = ttk.Combobox(self.parameters_labelframe,
+                                          values=self.ZOOM_TYPES, font=self.gui_font, state='readonly')
+        self.zoom_combobox.place(x=40, y=260, width=50, height=20)
+        self.zoom_combobox.set(self.ZOOM_TYPES[0])
+
+
+
+
+
+        ##########################
+        # PALETTE PARAMETERS BOX #
+        ##########################
+        self.palette_parameters_labelframe = tk.LabelFrame(self.main_frame, text="Palette Parameters", font=self.gui_font)
+        self.palette_parameters_labelframe.place(x=5, y=320, width=160, height=170)
+
+        ##########################################
+        # PALETTE PARAMETERS BOX - PALETTE TYPE  #
+        ##########################################
+        self.palette_type_label = tk.Label(self.palette_parameters_labelframe, text="Palette type", anchor="w", font=self.gui_font)
+        self.palette_type_label.place(x=5, y=5, width=100, height=20)
+
+        self.PALETTE_TYPES = ["RGB", "Other"]
+        self.palette_type_combobox = ttk.Combobox(self.palette_parameters_labelframe,
+                                                  values=self.PALETTE_TYPES, font=self.gui_font, state='readonly')
+        self.palette_type_combobox.place(x=5, y=25, width=140, height=20)
+        self.palette_type_combobox.set(self.PALETTE_TYPES[0])
+
+        ##########################################
+        # PALETTE PARAMETERS BOX - OFFSET  #
+        ##########################################
+        self.palette_offset_label = tk.Label(self.palette_parameters_labelframe, text="Palette offset", anchor="w", font=self.gui_font)
+        self.palette_offset_label.place(x=5, y=45, width=90, height=20)
+
+        self.palette_offset_spinbox = tk.Spinbox(self.palette_parameters_labelframe, from_=0, to=sys.maxsize)
+        self.palette_offset_spinbox.place(x=5, y=65, width=60, height=20)
+
+
+
+
+        ##########################
+        # INFO BOX #
+        ##########################
+        self.info_labelframe = tk.LabelFrame(self.main_frame, text="Info", font=self.gui_font)
+        self.info_labelframe.place(x=-170, y=5, width=165, height=160, relx=1)
+
+        self.file_name_label = tk.Label(self.info_labelframe, text="File name:", font=self.gui_font, anchor="w")
+        self.file_name_label.place(x=5, y=5, width=145, height=20)
+
+        self.file_size_label = tk.Label(self.info_labelframe, text="File size:", font=self.gui_font, anchor="w")
+        self.file_size_label.place(x=5, y=25, width=145, height=20)
+
+        self.file_offset_label = tk.Label(self.info_labelframe, text="File offset:", font=self.gui_font, anchor="w")
+        self.file_offset_label.place(x=5, y=45, width=145, height=20)
+
+        self.file_displayed_label = tk.Label(self.info_labelframe, text="Displayed:", font=self.gui_font, anchor="w")
+        self.file_displayed_label.place(x=5, y=65, width=145, height=20)
+
+        self.mouse_x_label = tk.Label(self.info_labelframe, text="Mouse X:", font=self.gui_font, anchor="w")
+        self.mouse_x_label.place(x=5, y=85, width=145, height=20)
+
+        self.mouse_x_label = tk.Label(self.info_labelframe, text="Mouse Y:", font=self.gui_font, anchor="w")
+        self.mouse_x_label.place(x=5, y=105, width=145, height=20)
+
+
+
+
+
+
+
+
         ########################
         # IMAGE BOX            #
         ########################
         self.image_labelframe = tk.LabelFrame(self.main_frame, text="Image preview", font=self.gui_font)
-        self.image_labelframe.place(x=170, y=5, relwidth=1, relheight=1, height=-20, width=-175)
+        self.image_labelframe.place(x=170, y=5, relwidth=1, relheight=1, height=-15, width=-345)
 
         ##############################
         # IMAGE BOX - IMAGE CANVAS   #

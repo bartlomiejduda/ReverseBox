@@ -21,7 +21,7 @@ def run_image_finder() -> int:
     logger.info("Starting image finder...")
 
     root = tk.Tk()
-    ImageFinderGUI(root, "v1.0", MAIN_DIRECTORY)  # start GUI
+    ImageFinderGUI(root, "v0.1", MAIN_DIRECTORY)  # start GUI
     root.lift()
     center_tk_window.center_on_screen(root)
     root.mainloop()
