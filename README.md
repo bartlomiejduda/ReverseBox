@@ -58,7 +58,8 @@ or software researchers).
   - (game-specific) XOR Cipher (Giana’s Return ZDA) (TODO) ❌
 
 * Hash
-  - SHA-1 (TODO) ❌
+  - SHA-1 ✔️ <span style="color:yellow">(wrapper only)</span>
+  - SHA-2 (256 bits) ✔️ <span style="color:yellow">(wrapper only)</span>
   - MD5 ✔️ <span style="color:yellow">(wrapper only)</span>
   - (game-specific) Hercules (TODO) ❌
   - (game-specific) E-racer (TODO) ❌
@@ -71,6 +72,7 @@ or software researchers).
 * IO
   - File Reader ✔️
   - File Writer ✔️
+  - Bytes Handler ✔️
   - File extension checking ✔️
 
 # Checksum calculation - example

@@ -28,6 +28,6 @@ class XORRetro64ECOTestEntry:
 
 
 @dataclass
-class MD5TestEntry:
+class HashTestEntry:
     test_data: bytes
     expected_result: bytes
