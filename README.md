@@ -77,21 +77,21 @@ or software researchers).
 
 # Checksum calculation - example
 
-// CRC16 (Kermit) calculation
+// CRC32 calculation
 ```
-from reversebox.checksum import checksum_crc16_kermit
+from reversebox.checksum import checksum_crc32_iso_hdlc
 from reversebox.common import common
 
 test_data = b'123456789'
-crc16_handler = checksum_crc16_kermit.CRC16KermitHandler()
-crc16 = crc16_handler.calculate_crc16_kermit(test_data)
-print("CRC16_INT: ", crc16)
-print("CRC16_STR: ", common.convert_int_to_hex_string(crc16))
+crc32_handler = checksum_crc32_iso_hdlc.CRC32Handler()
+crc32 = crc32_handler.calculate_crc32(test_data)
+print("CRC32_INT: ", crc32)
+print("CRC32_STR: ", common.convert_int_to_hex_string(crc32))
 ```
-// CRC16 (Kermit) output
+// CRC32 output
 ```
-CRC16_INT:  35105
-CRC16_STR:  0x8921
+CRC32_INT:  3421780262
+CRC32_STR:  0xCBF43926
 ```
 
 
@@ -131,4 +131,22 @@ print(value)
 // File Reader Output
 ```
 ABCD
+```
+
+
+# Hash calculation - example
+
+// SHA-1 calculation
+```
+from reversebox.hash.hash_sha1 import SHA1Handler
+
+test_data = b'abcd'
+sha1_handler = SHA1Handler()
+sha1 = sha1_handler.calculate_sha1_hash(test_data)
+print("SHA-1 hash: ", sha1)
+```
+
+// SHA-1 Output
+```
+SHA-1 hash:  b'\x81\xfe\x8b\xfe\x87Wl>\xcb"Bo\x8eW\x84s\x82\x91z\xcf'
 ```
