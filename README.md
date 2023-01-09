@@ -21,8 +21,12 @@ or software researchers).
 
 # List of functionalities
 
-* Checksum/CRC
+* Checksum
   - Adler-32 ✔️
+  - Fletcher-16 ✔️
+  - Fletcher-32 ✔️
+
+* CRC
   - CRC-8 (TODO) ❌
   - CRC-16 (ARC) ✔️
   - CRC-16 (Modbus) ✔️
