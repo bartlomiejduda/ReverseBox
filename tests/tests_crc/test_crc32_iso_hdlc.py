@@ -8,8 +8,8 @@ import zlib
 import pytest
 from faker import Faker
 
-from reversebox.checksum.checksum_crc32_iso_hdlc import CRC32Handler
 from reversebox.common.common import convert_int_to_hex_string
+from reversebox.crc.crc32_iso_hdlc import CRC32Handler
 from tests.common import CRCTestEntry
 
 crc32_handler = CRC32Handler()
@@ -17,7 +17,7 @@ fake = Faker()
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc32_iso_hdlc_to_match_expected_result():
+def test_crc_calculate_crc32_iso_hdlc_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(
             test_data=b"123456789", expected_int=3421780262, expected_str="0xCBF43926"
@@ -54,7 +54,7 @@ def test_checksum_calculate_crc32_iso_hdlc_to_match_expected_result():
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc32_iso_hdlc_to_match_zlib_result():
+def test_crc_calculate_crc32_iso_hdlc_to_match_zlib_result():
 
     test_data_array = [
         b"",

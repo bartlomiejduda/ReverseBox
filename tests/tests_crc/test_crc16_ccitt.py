@@ -5,15 +5,15 @@ License: GPL-3.0 License
 
 import pytest
 
-from reversebox.checksum.checksum_crc16_ccitt import CRC16CCITTHandler
 from reversebox.common.common import convert_int_to_hex_string
+from reversebox.crc.crc16_ccitt import CRC16CCITTHandler
 from tests.common import CRCTestEntry
 
 crc16_ccitt_handler = CRC16CCITTHandler()
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc16_ccitt_ffff_to_match_expected_result():
+def test_crc_calculate_crc16_ccitt_ffff_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(test_data=b"123456789", expected_int=10673, expected_str="0x29B1"),
         CRCTestEntry(test_data=b"123", expected_int=23502, expected_str="0x5BCE"),
@@ -44,7 +44,7 @@ def test_checksum_calculate_crc16_ccitt_ffff_to_match_expected_result():
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc16_ccitt_1d0f_to_match_expected_result():
+def test_crc_calculate_crc16_ccitt_1d0f_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(test_data=b"123456789", expected_int=58828, expected_str="0xE5CC"),
         CRCTestEntry(test_data=b"123", expected_int=34398, expected_str="0x865E"),
@@ -75,7 +75,7 @@ def test_checksum_calculate_crc16_ccitt_1d0f_to_match_expected_result():
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc16_ccitt_xmodem_to_match_expected_result():
+def test_crc_calculate_crc16_ccitt_xmodem_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(test_data=b"123456789", expected_int=12739, expected_str="0x31C3"),
         CRCTestEntry(test_data=b"123", expected_int=38738, expected_str="0x9752"),

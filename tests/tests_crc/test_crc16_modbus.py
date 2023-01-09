@@ -5,15 +5,15 @@ License: GPL-3.0 License
 
 import pytest
 
-from reversebox.checksum.checksum_crc16_modbus import CRC16MODBUSHandler
 from reversebox.common.common import convert_int_to_hex_string
+from reversebox.crc.crc16_modbus import CRC16MODBUSHandler
 from tests.common import CRCTestEntry
 
 crc16_modbus_handler = CRC16MODBUSHandler()
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc16_modbus_to_match_expected_result():
+def test_crc_calculate_crc16_modbus_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(test_data=b"123456789", expected_int=19255, expected_str="0x4B37"),
         CRCTestEntry(test_data=b"123", expected_int=31349, expected_str="0x7A75"),

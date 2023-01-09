@@ -5,15 +5,15 @@ License: GPL-3.0 License
 
 import pytest
 
-from reversebox.checksum.checksum_crc16_arc import CRC16Handler
 from reversebox.common.common import convert_int_to_hex_string
+from reversebox.crc.crc16_arc import CRC16Handler
 from tests.common import CRCTestEntry
 
 crc16_handler = CRC16Handler()
 
 
 @pytest.mark.unittest
-def test_checksum_calculate_crc16_to_match_expected_result():
+def test_crc_calculate_crc16_to_match_expected_result():
     crc_data_list = [
         CRCTestEntry(test_data=b"123456789", expected_int=47933, expected_str="0xBB3D"),
         CRCTestEntry(test_data=b"123", expected_int=47620, expected_str="0xBA04"),

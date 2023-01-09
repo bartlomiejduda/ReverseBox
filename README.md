@@ -80,11 +80,11 @@ or software researchers).
 
 // CRC32 calculation
 ```
-from reversebox.checksum import checksum_crc32_iso_hdlc
+from reversebox.crc import checksum_crc32_iso_hdlc
 from reversebox.common import common
 
 test_data = b'123456789'
-crc32_handler = checksum_crc32_iso_hdlc.CRC32Handler()
+crc32_handler = crc32_iso_hdlc.CRC32Handler()
 crc32 = crc32_handler.calculate_crc32(test_data)
 print("CRC32_INT: ", crc32)
 print("CRC32_STR: ", common.convert_int_to_hex_string(crc32))
