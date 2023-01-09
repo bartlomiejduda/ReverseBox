@@ -84,7 +84,7 @@ or software researchers).
 
 // CRC32 calculation
 ```
-from reversebox.crc import checksum_crc32_iso_hdlc
+from reversebox.crc import crc32_iso_hdlc
 from reversebox.common import common
 
 test_data = b'123456789'
@@ -123,6 +123,7 @@ b'\\_^Y'
 
 // File reading
 ```
+import os
 from reversebox.io_files.file_handler import FileHandler
 
 
