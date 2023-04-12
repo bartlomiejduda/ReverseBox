@@ -31,3 +31,10 @@ class XORRetro64ECOTestEntry:
 class HashTestEntry:
     test_data: bytes
     expected_result: bytes
+
+
+@dataclass
+class PaddingTestEntry:
+    test_offset: int
+    test_div: int
+    expected_padding: int

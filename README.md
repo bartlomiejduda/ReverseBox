@@ -73,12 +73,15 @@ or software researchers).
   - Image Finder  (in progress) ❌
   - PS2 Swizzling/Twiddling (TODO) ❌
   - PSP Swizzling/Twiddling (TODO) ❌
+  - [SourceSDK Swizzling](https://forum.xentax.com/viewtopic.php?p=139510#p139510) (TODO) ❌
 
 * IO
   - File Reader ✔️
   - File Writer ✔️
   - Bytes Handler ✔️
   - File extension checking ✔️
+  - Padding calculation ✔️
+  - File size checking ✔️
 
 # Checksum calculation - example
 

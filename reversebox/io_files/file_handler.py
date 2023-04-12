@@ -73,15 +73,22 @@ class FileHandler:
         return True
 
     def seek(self, seek_value, seek_type: int = 0):
-        # 0 = SEEK_SET
-        # 1 = SEEK_CUR
-        # 2 = SEEK_END
+        # 0 = SEEK_SET (from file start)
+        # 1 = SEEK_CUR (from current offset)
+        # 2 = SEEK_END (from file end)
         self._check_file()
         self.file.seek(seek_value, seek_type)
 
     def get_position(self) -> int:
         self._check_file()
         return self.file.tell()
+
+    def get_file_size(self) -> int:
+        current_position = self.get_position()
+        self.seek(0, 2)
+        end_of_file__position = self.get_position()
+        self.seek(current_position, 0)
+        return end_of_file__position
 
     def read_str(self, str_length: int, encoding: str = "utf8") -> str:
         self._check_file()
