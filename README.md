@@ -60,7 +60,7 @@ or software researchers).
   - Lucifer / DTD-1 (TODO) ❌
   - XOR Cipher (Basic) ✔️
   - (game-specific) XOR Cipher (Retro64 ECO) ✔️
-  - (game-specific) XOR Cipher (Giana’s Return ZDA) (TODO) ❌
+  - (game-specific) XOR Cipher (Giana’s Return ZDA) ✔️
 
 * Hash
   - SHA-1 ✔️ <span style="color:yellow">(wrapper only)</span>
@@ -70,9 +70,9 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
 
 * Image
-  - Image Finder  (in progress) ❌
+  - Image Finder  (IN PROGRESS) ❌
   - PS2 Swizzling/Twiddling (TODO) ❌
-  - PSP Swizzling/Twiddling (TODO) ❌
+  - PSP Swizzling/Twiddling ✔️
   - [SourceSDK Swizzling](https://forum.xentax.com/viewtopic.php?p=139510#p139510) (TODO) ❌
 
 * IO
