@@ -54,6 +54,7 @@ class TranslationTextHandler(FileHandler):
         self.open_mode = "rb"
         self.open()
         entries_count: int = 0
+        binary_total_file_size: int = self.get_file_size()
         output_po_file = polib.POFile()
         output_po_file.metadata = {
             "Project-Id-Version": "1.0",
@@ -73,6 +74,22 @@ class TranslationTextHandler(FileHandler):
 
         for translation_entry in self.translation_memory:
             entries_count += 1
+            if translation_entry.text_offset >= binary_total_file_size:
+                logger.error(
+                    f"Wrong offset: {translation_entry.text_offset}. "
+                    f"It's larger than binary total size."
+                )
+                self.close()
+                return False
+            if (
+                translation_entry.text_offset + translation_entry.text_export_length
+            ) > binary_total_file_size:
+                logger.error(
+                    f"Wrong str length for str at offset: {translation_entry.text_offset}."
+                    f"It's larger than binary total size."
+                )
+                self.close()
+                return False
             self.seek(translation_entry.text_offset)
             text_entry_key: str = key + str(entries_count)  # default key
             if translation_entry.text_key:
@@ -84,7 +101,15 @@ class TranslationTextHandler(FileHandler):
                 text_entry_bytes = translation_entry.text_export_transform_function(
                     text_entry_bytes
                 )
-            text_entry_str: str = text_entry_bytes.decode(encoding)
+            try:
+                text_entry_str: str = text_entry_bytes.decode(encoding)
+            except Exception as error:
+                logger.error(
+                    f"Couldn't decode entry at offset {translation_entry.text_offset}. "
+                    f"Error: {error}"
+                )
+                self.close()
+                return False
 
             output_po_file.append(
                 polib.POEntry(msgctxt=text_entry_key, msgid=text_entry_str, msgstr="")
