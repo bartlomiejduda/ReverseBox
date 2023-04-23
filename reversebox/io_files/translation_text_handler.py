@@ -111,8 +111,19 @@ class TranslationTextHandler(FileHandler):
                 self.close()
                 return False
 
+            comment_text: str = (
+                f"text_offset={translation_entry.text_offset} | "
+                f"export_length={translation_entry.text_export_length} | "
+                f"import_length={translation_entry.text_import_length}"
+            )
+
             output_po_file.append(
-                polib.POEntry(msgctxt=text_entry_key, msgid=text_entry_str, msgstr="")
+                polib.POEntry(
+                    msgctxt=text_entry_key,
+                    msgid=text_entry_str,
+                    msgstr="",
+                    comment=comment_text,
+                )
             )
         try:
             output_po_file.save(output_po_file_path)

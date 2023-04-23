@@ -11,50 +11,62 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf8\n"
 
+#. text_offset=35 | export_length=9 | import_length=None
 msgctxt "text_to_translate_1"
 msgid "Save Game"
 msgstr ""
 
+#. text_offset=97 | export_length=9 | import_length=None
 msgctxt "text_to_translate_2"
 msgid "Load Game"
 msgstr ""
 
+#. text_offset=107 | export_length=7 | import_length=None
 msgctxt "text_to_translate_3"
 msgid "Options"
 msgstr ""
 
+#. text_offset=115 | export_length=4 | import_length=None
 msgctxt "text_to_translate_4"
 msgid "Exit"
 msgstr ""
 
+#. text_offset=157 | export_length=42 | import_length=None
 msgctxt "text_to_translate_5"
 msgid "Once upon a time there was a brave knight."
 msgstr ""
 
+#. text_offset=224 | export_length=33 | import_length=None
 msgctxt "text_to_translate_6"
 msgid "He was fighting with a monster..."
 msgstr ""
 
+#. text_offset=315 | export_length=9 | import_length=None
 msgctxt "text_to_translate_7"
 msgid "Save Game"
 msgstr ""
 
+#. text_offset=342 | export_length=10 | import_length=None
 msgctxt "text_to_translate_8"
 msgid "0123456789"
 msgstr ""
 
+#. text_offset=411 | export_length=9 | import_length=None
 msgctxt "text_to_translate_9"
 msgid "AAAbbbCCC"
 msgstr ""
 
+#. text_offset=422 | export_length=9 | import_length=None
 msgctxt "text_to_translate_10"
 msgid "SAVE GAME"
 msgstr ""
 
+#. text_offset=434 | export_length=12 | import_length=None
 msgctxt "text_to_translate_11"
 msgid "Yellow Scarf"
 msgstr ""
 
+#. text_offset=452 | export_length=13 | import_length=17
 msgctxt "text_to_translate_12"
 msgid "Yellow Jacket"
 msgstr ""
