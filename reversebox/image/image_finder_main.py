@@ -17,7 +17,6 @@ MAIN_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_image_finder() -> int:
-
     logger.info("Starting image finder...")
 
     root = tk.Tk()

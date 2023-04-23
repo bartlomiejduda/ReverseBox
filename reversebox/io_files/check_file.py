@@ -1,3 +1,8 @@
+"""
+Copyright © 2023  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
 import os
 from typing import Tuple
 

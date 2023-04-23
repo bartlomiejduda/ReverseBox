@@ -6,8 +6,7 @@ License: GPL-3.0 License
 # fmt: off
 import pytest
 
-from reversebox.encryption.encryption_xor_retro64_eco import \
-    xor_cipher_retro64_eco
+from reversebox.encryption.encryption_xor_retro64_eco import xor_cipher_retro64_eco
 from tests.common import XORRetro64ECOTestEntry
 
 # fmt: on

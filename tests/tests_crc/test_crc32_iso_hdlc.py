@@ -55,7 +55,6 @@ def test_crc_calculate_crc32_iso_hdlc_to_match_expected_result():
 
 @pytest.mark.unittest
 def test_crc_calculate_crc32_iso_hdlc_to_match_zlib_result():
-
     test_data_array = [
         b"",
         b" ",

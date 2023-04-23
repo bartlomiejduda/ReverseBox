@@ -49,6 +49,6 @@ setuptools.setup(
     test_suite="tests",
     keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python",
     python_requires=">=3.6",
-    install_requires=["lzokay"],
+    install_requires=["lzokay", "polib"],
     packages=setuptools.find_packages(),
 )

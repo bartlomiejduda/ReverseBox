@@ -79,6 +79,7 @@ or software researchers).
   - File Reader ✔️
   - File Writer ✔️
   - Bytes Handler ✔️
+  - Translation Text Handler ✔️
   - File extension checking ✔️
   - Padding calculation ✔️
   - File size checking ✔️
@@ -159,3 +160,11 @@ print("SHA-1 hash: ", sha1)
 ```
 SHA-1 hash:  b'\x81\xfe\x8b\xfe\x87Wl>\xcb"Bo\x8eW\x84s\x82\x91z\xcf'
 ```
+
+# More Examples
+
+Need more examples? <br>
+Check out list of tools written using ReverseBox:
+- [Giana's Return ZDA Tool](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/Gianas%20Return/Gianas_Return_ZDA_Tool.py)
+- [ObsCure 2 HVP Extractor](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/ObsCure%202/ObsCure%202%20HVP%20Tools/Obscure_2_hvp_extractor.py)
+- and more...

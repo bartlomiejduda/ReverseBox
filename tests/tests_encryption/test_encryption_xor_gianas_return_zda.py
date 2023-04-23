@@ -7,7 +7,9 @@ License: GPL-3.0 License
 import pytest
 
 from reversebox.encryption.encryption_xor_gianas_return_zda import (
-    xor_zda_decrypt_data, xor_zda_encrypt_data)
+    xor_zda_decrypt_data,
+    xor_zda_encrypt_data,
+)
 from tests.common import XORTestEntry
 
 

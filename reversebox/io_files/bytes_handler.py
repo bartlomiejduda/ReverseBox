@@ -1,3 +1,9 @@
+"""
+Copyright © 2023  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
+
 class BytesHandler:
     def __init__(self, input_bytes: bytes):
         self.input_bytes = input_bytes

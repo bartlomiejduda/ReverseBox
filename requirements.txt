@@ -5,6 +5,7 @@ lzokay==1.1.2
 mypy==0.960
 numpy==1.24.1
 Pillow==9.3.0
+polib==1.2.0
 pre-commit==2.20.0
 pylint==2.14.0
 pytest==7.1.2
