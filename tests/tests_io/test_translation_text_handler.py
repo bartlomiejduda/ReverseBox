@@ -25,6 +25,10 @@ def fake_import_transform(input_bytes: bytes) -> bytes:
     return input_bytes
 
 
+def get_fake_datetime_string() -> str:
+    return "21/01/2003 20:06:57"
+
+
 # fmt: off
 translation_memory: List[TranslationEntry] = [
     TranslationEntry(text_offset=35, text_export_length=9),
@@ -47,7 +51,7 @@ translation_memory: List[TranslationEntry] = [
 @pytest.mark.unittest
 def test_translation_text_handler_extract_all_text():
     binary_file_path = os.path.join(
-        os.path.dirname(__file__), "data/fake_file8_translation_before.bin"
+        os.path.dirname(__file__), "data\\fake_file8_translation_before.bin"
     )
     po_file_path = os.path.join(
         os.path.dirname(__file__), "data\\fake_file8_translation_before.po"
@@ -55,7 +59,11 @@ def test_translation_text_handler_extract_all_text():
     translation_handler = TranslationTextHandler(
         translation_memory=translation_memory, file_path=binary_file_path
     )
-    result = translation_handler.export_all_text(po_file_path)
+    result = translation_handler.export_all_text(
+        po_file_path,
+        creation_date_string=get_fake_datetime_string(),
+        revision_date_string=get_fake_datetime_string(),
+    )
     assert result
 
 

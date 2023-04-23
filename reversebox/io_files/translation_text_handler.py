@@ -47,6 +47,8 @@ class TranslationTextHandler(FileHandler):
         output_po_file_path: str,
         language: str = "pl",
         key: str = "text_to_translate_",
+        creation_date_string: str = None,
+        revision_date_string: str = None,
         encoding: str = "utf8",
     ) -> bool:
         self.open_mode = "rb"
@@ -56,8 +58,12 @@ class TranslationTextHandler(FileHandler):
         output_po_file.metadata = {
             "Project-Id-Version": "1.0",
             "Report-Msgid-Bugs-To": "you@example.com",
-            "POT-Creation-Date": self._get_current_utc_datetime_for_po_file(),
-            "PO-Revision-Date": self._get_current_utc_datetime_for_po_file(),
+            "POT-Creation-Date": creation_date_string
+            if creation_date_string
+            else self._get_current_utc_datetime_for_po_file(),
+            "PO-Revision-Date": revision_date_string
+            if revision_date_string
+            else self._get_current_utc_datetime_for_po_file(),
             "Last-Translator": "you <you@example.com>",
             "Language-Team": "English <yourteam@example.com>",
             "Language": language,
