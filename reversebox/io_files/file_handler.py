@@ -2,7 +2,7 @@
 Copyright © 2023  Bartłomiej Duda
 License: GPL-3.0 License
 """
-
+import os
 import struct
 from io import BufferedReader
 from typing import Optional
@@ -22,9 +22,22 @@ class FileHandler:
         self.file: Optional[BufferedReader] = None
 
     def open(self) -> bool:
-        self.file = open(self.file_path, self.open_mode)
+        error_message = "File can't be opened!"
+        if "r" in self.open_mode:
+            if not self.check_if_file_is_readable():
+                raise Exception(error_message)
+        if "w" in self.open_mode:
+            if not self.check_if_file_is_writable():
+                raise Exception(error_message)
+
+        try:
+            self.file = open(self.file_path, self.open_mode)
+        except OSError as error:
+            error_message += " Error: " + str(error)
+            logger.error(error_message)
+            raise Exception(error_message)
+
         if not self.file:
-            error_message = "File can't be opened!"
             logger.error(error_message)
             raise Exception(error_message)
         return True
@@ -70,12 +83,30 @@ class FileHandler:
             raise Exception(error_message)
         return True
 
+    def check_if_file_is_readable(self) -> bool:
+        if not os.access(self.file_path, os.R_OK):
+            error_message = "Can't read from this file!"
+            logger.error(error_message)
+            raise Exception(error_message)
+        return True
+
     def _check_write_mode(self) -> bool:
-        if "w" not in self.open_mode:
+        if "w" not in self.open_mode and "a" not in self.open_mode:
             error_message = 'Wrong file open mode! You need to specify one of the "write" open modes!'
             logger.error(error_message)
             raise Exception(error_message)
         return True
+
+    def check_if_file_is_writable(self) -> bool:
+        if os.path.exists(self.file_path):
+            if os.path.isfile(self.file_path):
+                return os.access(self.file_path, os.W_OK)
+            else:
+                return False
+        pdir = os.path.dirname(self.file_path)
+        if not pdir:
+            pdir = "."
+        return os.access(pdir, os.W_OK)
 
     def seek(self, seek_value, seek_type: int = 0):
         # 0 = SEEK_SET (from file start)
@@ -91,9 +122,9 @@ class FileHandler:
     def get_file_size(self) -> int:
         current_position = self.get_position()
         self.seek(0, 2)
-        end_of_file__position = self.get_position()
+        end_of_file_position = self.get_position()
         self.seek(current_position, 0)
-        return end_of_file__position
+        return end_of_file_position
 
     def read_str(self, str_length: int, encoding: str = "utf8") -> str:
         self._check_file()
@@ -105,6 +136,15 @@ class FileHandler:
         self._check_file()
         self._check_read_mode()
         data = self.file.read(number_of_bytes)
+        return data
+
+    def read_whole_file_content(self) -> bytes:
+        self._check_file()
+        self._check_read_mode()
+        current_position = self.get_position()
+        self.seek(0)
+        data = self.file.read()
+        self.seek(current_position)
         return data
 
     def read_uint32(self) -> int:

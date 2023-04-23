@@ -1,5 +1,5 @@
 """
-Copyright © 2022  Bartłomiej Duda
+Copyright © 2023  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.4.9"
+VERSION_NUM = "0.5.0"
 
 
 def get_long_description() -> str:
