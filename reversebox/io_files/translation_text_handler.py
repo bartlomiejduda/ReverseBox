@@ -150,11 +150,30 @@ class TranslationTextHandler(FileHandler):
         self.close()
         return True
 
-    def import_all_text(self, input_po_file_path, encoding: str = "utf8") -> bool:
+    def import_all_text(
+        self,
+        input_po_file_path,
+        encoding: str = "utf8",
+        create_backup_file: bool = True,
+    ) -> bool:
         self.open_mode = "rb"
         self.open()
         import_file_whole_file_content: bytes = self.read_whole_file_content()
         self.close()
+
+        if create_backup_file:
+            backup_file_path = self.file_path + ".backup"
+            logger.info(f"Creating backup file at path: {backup_file_path}")
+            try:
+                backup_file = open(backup_file_path, "wb")
+                backup_file.write(import_file_whole_file_content)
+                backup_file.close()
+                logger.info(
+                    "fSuccessfully created backup file at path: {backup_file_path}"
+                )
+            except Exception as error:
+                logger.error(f"Error occurred while creating backup file: {error}")
+
         self.open_mode = "wb"
         self.open()
         self.write_bytes(import_file_whole_file_content)
