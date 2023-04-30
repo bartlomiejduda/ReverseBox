@@ -3,6 +3,7 @@ Copyright © 2023  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
+import logging
 from dataclasses import dataclass
 
 # mypy: ignore-errors
@@ -34,8 +35,18 @@ class TranslationTextHandler(FileHandler):
         translation_memory: List[TranslationEntry],
         file_path: str,
         endianess_str: str = "little",
+        global_export_function: Optional[Callable[[bytes], bytes]] = None,
+        global_import_function: Optional[Callable[[bytes], bytes]] = None,
+        log_level: int = logging.WARNING,
     ):
         self.translation_memory: List[TranslationEntry] = translation_memory
+        self.global_export_function: Optional[
+            Callable[[bytes], bytes]
+        ] = global_export_function
+        self.global_import_function: Optional[
+            Callable[[bytes], bytes]
+        ] = global_import_function
+        logger.setLevel(log_level)
         super(TranslationTextHandler, self).__init__(file_path, "rb", endianess_str)
 
     def _get_current_utc_datetime_for_po_file(self) -> str:
@@ -101,6 +112,10 @@ class TranslationTextHandler(FileHandler):
                 text_entry_bytes = translation_entry.text_export_transform_function(
                     text_entry_bytes
                 )
+            elif self.global_export_function:
+                text_entry_bytes = self.global_export_function(text_entry_bytes)
+            else:
+                logger.info("No export function for this entry...")
             try:
                 text_entry_str: str = text_entry_bytes.decode(encoding)
             except Exception as error:
@@ -160,6 +175,10 @@ class TranslationTextHandler(FileHandler):
             import_bytes: bytes = translated_text.encode(encoding)
             if memory_entry.text_import_transform_function:
                 import_bytes = memory_entry.text_import_transform_function(import_bytes)
+            elif self.global_import_function:
+                import_bytes = self.global_import_function(import_bytes)
+            else:
+                logger.info("No import function for this entry")
 
             bytes_length: int = len(import_bytes)
 

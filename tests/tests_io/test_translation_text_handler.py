@@ -2,6 +2,7 @@
 Copyright © 2023  Bartłomiej Duda
 License: GPL-3.0 License
 """
+import logging
 import os
 from typing import List
 
@@ -57,7 +58,9 @@ def test_translation_text_handler_extract_all_text():
         os.path.dirname(__file__), "data\\fake_file8_translation_before.po"
     )
     translation_handler = TranslationTextHandler(
-        translation_memory=translation_memory, file_path=binary_file_path
+        translation_memory=translation_memory,
+        file_path=binary_file_path,
+        log_level=logging.ERROR,
     )
     result = translation_handler.export_all_text(
         po_file_path,
@@ -76,7 +79,9 @@ def test_translation_text_handler_import_all_text():
         os.path.dirname(__file__), "data\\fake_file8_translation_after.po"
     )
     translation_handler = TranslationTextHandler(
-        translation_memory=translation_memory, file_path=binary_file_path
+        translation_memory=translation_memory,
+        file_path=binary_file_path,
+        log_level=logging.ERROR,
     )
     result = translation_handler.import_all_text(po_file_path)
     assert result
