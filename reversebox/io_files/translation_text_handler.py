@@ -66,7 +66,7 @@ class TranslationTextHandler(FileHandler):
         self.open()
         entries_count: int = 0
         binary_total_file_size: int = self.get_file_size()
-        output_po_file = polib.POFile()
+        output_po_file = polib.POFile(encoding=encoding)
         output_po_file.metadata = {
             "Project-Id-Version": "1.0",
             "Report-Msgid-Bugs-To": "you@example.com",
