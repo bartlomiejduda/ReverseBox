@@ -80,6 +80,7 @@ or software researchers).
   - File Writer ✔️
   - Bytes Handler ✔️
   - Translation Text Handler ✔️
+  - Mod Handler ✔️
   - File extension checking ✔️
   - Padding calculation ✔️
   - File size checking ✔️
@@ -167,4 +168,5 @@ Need more examples? <br>
 Check out list of tools written using ReverseBox:
 - [Giana's Return ZDA Tool](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/Gianas%20Return/Gianas_Return_ZDA_Tool.py)
 - [ObsCure 2 HVP Extractor](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/ObsCure%202/ObsCure%202%20HVP%20Tools/Obscure_2_hvp_extractor.py)
+- [Tail Concerto Translation Tools](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Tail%20Concerto/Tail%20Concerto%20Tools)
 - and more...

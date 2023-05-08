@@ -169,7 +169,7 @@ class TranslationTextHandler(FileHandler):
                 backup_file.write(import_file_whole_file_content)
                 backup_file.close()
                 logger.info(
-                    "fSuccessfully created backup file at path: {backup_file_path}"
+                    f"Successfully created backup file at path: {backup_file_path}"
                 )
             except Exception as error:
                 logger.error(f"Error occurred while creating backup file: {error}")
@@ -217,3 +217,77 @@ class TranslationTextHandler(FileHandler):
 
         self.close()
         return True
+
+
+def generate_translation_entries(
+    txt_file_path: str, text_key: str = "text_to_translate"
+) -> bool:
+    """
+    This function should be used along with "strings" program from SysInternals https://learn.microsoft.com/en-us/sysinternals/downloads/strings
+    First, you should generate text dump using command "strings64.exe -o <binary_file_path> > <output_path>.
+    Then you should search for text entries in the dump and copy them to some output file e.g. "entries.txt"
+    Then you just need to run this function with your "entries.txt" as an input parameter for this function.
+    """
+    try:
+        txt_file = open(txt_file_path, "rt")
+    except Exception as error:
+        logger.error(f"Error with opening file: {error}")
+        return False
+
+    for line in txt_file:
+        line = line.strip()
+        offset = line.split(":")[0]
+        text = line.split(":")[-1]
+        output_entry = f'\tTranslationEntry(text_offset={offset}, text_export_length={len(text)}, text_key="{text_key}"),'
+        print(output_entry)
+
+    return True
+
+
+def check_translation_entries(
+    translation_memory_to_check: List[TranslationEntry],
+) -> bool:
+    """
+    Default function for checking if entries in Translation Memory are correct.
+    """
+    check_offsets_list: List[int] = []
+
+    for translation_entry in translation_memory_to_check:
+        if translation_entry.text_offset in check_offsets_list:
+            logger.error(f"Duplicated text_offset: {translation_entry.text_offset}")
+            return False
+
+        if (
+            translation_entry.text_import_length
+            and translation_entry.text_import_length
+            < translation_entry.text_export_length
+        ):
+            logger.error(
+                f"Import length is lower than export length for entry with offset {translation_entry.text_offset}"
+            )
+            return False
+
+        check_offsets_list.append(translation_entry.text_offset)
+    return True
+
+
+windows_1250_pl_no_accents_character_mapping: dict = {
+    b"\xAF": b"\x5A",  # Ż -> Z
+    b"\xD3": b"\x4F",  # Ó -> O
+    b"\xA3": b"\x4C",  # Ł -> L
+    b"\xC6": b"\x43",  # Ć -> C
+    b"\xCA": b"\x45",  # Ę -> E
+    b"\x8C": b"\x53",  # Ś -> S
+    b"\xA5": b"\x41",  # Ą -> A
+    b"\x8F": b"\x5A",  # Ź -> Z
+    b"\xD1": b"\x4E",  # Ń -> N
+    b"\xBF": b"\x7A",  # ż -> z
+    b"\xF3": b"\x6F",  # ó -> o
+    b"\xB3": b"\x6C",  # ł -> l
+    b"\xE6": b"\x63",  # ć -> c
+    b"\xEA": b"\x65",  # ę -> e
+    b"\x9C": b"\x73",  # ś -> s
+    b"\xB9": b"\x61",  # ą -> a
+    b"\x9F": b"\x7A",  # ź -> z
+    b"\xF1": b"\x6E",  # ń -> n
+}
