@@ -23,6 +23,7 @@ or software researchers).
 
 * Checksum
   - Adler-32 ✔️
+  - BSD-16 ✔️
   - Fletcher-16 ✔️
   - Fletcher-32 ✔️
 

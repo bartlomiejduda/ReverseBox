@@ -14,3 +14,7 @@ def convert_hex_string_to_int(input_string: str) -> int:
 
 def calculate_padding_length(input_length: int, div: int) -> int:
     return (div - (input_length % div)) % div
+
+
+def convert_bits_str_to_int(input_bits_str: str) -> int:
+    return int(input_bits_str, 2)
