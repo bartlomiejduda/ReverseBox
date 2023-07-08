@@ -28,7 +28,9 @@ or software researchers).
   - Fletcher-32 ✔️
 
 * CRC
-  - CRC-8 (TODO) ❌
+  - CRC-8 ✔️
+  - CRC-8/CDMA2000 ✔️
+  - CRC-8/DARC ✔️ <span style="color:yellow">(wrapper only)</span>
   - CRC-16 (ARC) ✔️
   - CRC-16 (Modbus) ✔️
   - CRC-16 (Sick) ✔️
