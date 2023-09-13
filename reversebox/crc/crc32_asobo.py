@@ -1,3 +1,4 @@
+# fmt: off
 CRC32_TABLE = [
     0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005,
     0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61, 0x350C9B64, 0x31CD86D3, 0x3C8EA00A, 0x384FBDBD,
@@ -32,17 +33,22 @@ CRC32_TABLE = [
     0x89B8FD09, 0x8D79E0BE, 0x803AC667, 0x84FBDBD0, 0x9ABC8BD5, 0x9E7D9662, 0x933EB0BB, 0x97FFAD0C,
     0xAFB010B1, 0xAB710D06, 0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4,
 ]
+# fmt: on
+
+
 class CRC32AsoboHandler:
     def __init__(self):
         pass
 
     # Python doesn't have lower() for a single char, let's make our own
-    def tolower(self,c):
-        if c >= 0x41 and c <= 0x5A:
+    def tolower(self, c):
+        if 0x41 <= c <= 0x5A:
             c += 0x20
         return c
 
-    def calculate_crc32_asobo(self, data, hash = 0):
-        for c in data:
-            hash = (hash >> 8) ^ CRC32_TABLE[(self.tolower(c) ^ hash) & 0xff]
-        return hash
+    def calculate_crc32_asobo(self, input_data: bytes, asobo_hash: int = 0):
+        for c in input_data:
+            asobo_hash = (asobo_hash >> 8) ^ CRC32_TABLE[
+                (self.tolower(c) ^ asobo_hash) & 0xFF
+            ]
+        return asobo_hash

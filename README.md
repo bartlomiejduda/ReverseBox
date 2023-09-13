@@ -40,7 +40,7 @@ or software researchers).
   - CRC-16-CCITT (0x1D0F) ✔️
   - CRC-16-CCITT (Kermit) ✔️
   - CRC-32 (ISO/HDLC) ✔️
-  - CRC-32 (Asobo) (TODO) ❌
+  - CRC-32 (Asobo) ✔️
 
 * Compression
   - Asobo (TODO) ❌
