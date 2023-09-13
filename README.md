@@ -74,6 +74,8 @@ or software researchers).
 
 * Image
   - Image Finder  (IN PROGRESS) ❌
+  - Convert b8g8r8a8 (bgra8888) to r8b8g8a8 (rgba8888) (TODO) ❌
+  - Convert r5g5b5p1 (rgb5551) to r8b8g8a8 (rgba888) (TODO) ❌
   - PS2 Swizzling/Twiddling (TODO) ❌
   - PSP Swizzling/Twiddling ✔️
   - [SourceSDK Swizzling](https://forum.xentax.com/viewtopic.php?p=139510#p139510) (TODO) ❌
@@ -172,4 +174,5 @@ Check out list of tools written using ReverseBox:
 - [Giana's Return ZDA Tool](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/Gianas%20Return/Gianas_Return_ZDA_Tool.py)
 - [ObsCure 2 HVP Extractor](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/ObsCure%202/ObsCure%202%20HVP%20Tools/Obscure_2_hvp_extractor.py)
 - [Tail Concerto Translation Tools](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Tail%20Concerto/Tail%20Concerto%20Tools)
+- [EA Graphics Manager](https://github.com/bartlomiejduda/EA-Graphics-Manager)
 - and more...
