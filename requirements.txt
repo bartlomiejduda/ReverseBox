@@ -1,10 +1,11 @@
+bitstring==4.0.2
 black==22.3.0
 center_tk_window==1.0.0
 crc==4.3.0
 faker==13.13.0
 lzokay==1.1.2
 mypy==0.960
-numpy==1.24.1
+numpy==1.25.1
 Pillow==9.3.0
 polib==1.2.0
 pre-commit==2.20.0

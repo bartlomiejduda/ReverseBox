@@ -16,6 +16,15 @@ def test_bytes_handler_get_bytes():
 
 
 @pytest.mark.unittest
+def test_bytes_handler_get_bits():
+    bytes_handler = BytesHandler(b"\x01\x02\x03\x04")
+    result = bytes_handler.get_int_from_bits(35345345, 16, 8)
+
+    # TODO - adjust this assert
+    assert result
+
+
+@pytest.mark.unittest
 def test_bytes_handler_fill_to_length():
     bytes_handler = BytesHandler(b"\x01\x02\x03\x04")
 
