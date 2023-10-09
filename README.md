@@ -41,6 +41,7 @@ or software researchers).
   - CRC-16-CCITT (Kermit) ✔️
   - CRC-32 (ISO/HDLC) ✔️
   - CRC-32 (Asobo) ✔️
+  - CRC-64 (Asobo) ✔️
 
 * Compression
   - Asobo (TODO) ❌
