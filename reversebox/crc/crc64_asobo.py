@@ -1,6 +1,5 @@
-import sys
-import os
 import numpy as np
+
 # fmt: off
 crc64_table = [
     0x0000000000000000, 0x42f0e1eba9ea3693, 0x85e1c3d753d46d26, 0xc711223cfa3e5bb5, 0x493366450e42ecdf, 0x0bc387aea7a8da4c, 0xccd2a5925d9681f9, 0x8e224479f47cb76a,
@@ -37,15 +36,27 @@ crc64_table = [
     0x14dea25f3af9026d, 0x562e43b4931334fe, 0x913f6188692d6f4b, 0xd3cf8063c0c759d8, 0x5dedc41a34bbeeb2, 0x1f1d25f19d51d821, 0xd80c07cd676f8394, 0x9afce626ce85b507
 ]
 # fmt:on
+
+
 class CRC64AsoboHandler:
     def __init__(self):
         pass
-    def tolower(self,c):
-        if c >= 0x41 and c <= 0x5A:
+
+    def tolower(self, c):
+        if 0x41 <= c <= 0x5A:
             c += 0x20
         return c
-    def calculate_crc64_asobo(self, data, hash = 0):
-        hash = np.uint64(hash)
+
+    def calculate_crc64_asobo(self, data, hash_value=0):
+        hash_value = np.uint64(hash_value)
         for c in data:
-            hash = np.uint64(crc64_table[(np.uint64(self.tolower(c)) ^ np.uint64((np.uint64(hash) >> np.uint64(0x38)))) & np.uint64(0xff)]) ^ np.uint64((np.uint64(hash) << np.uint64(8)))
-        return hash
+            hash_value = np.uint64(
+                crc64_table[
+                    (
+                        np.uint64(self.tolower(c))
+                        ^ np.uint64((np.uint64(hash_value) >> np.uint64(0x38)))
+                    )
+                    & np.uint64(0xFF)
+                ]
+            ) ^ np.uint64((np.uint64(hash_value) << np.uint64(8)))
+        return hash_value
