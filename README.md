@@ -67,6 +67,12 @@ or software researchers).
   - (game-specific) XOR Cipher (Giana’s Return ZDA) ✔️
 
 * Hash
+  - FNV0-32 ✔️
+  - FNV0-64 ✔️
+  - FNV1-32 ✔️
+  - FNV1-64 ✔️
+  - FNV1A-32 ✔️
+  - FNV1A-64 ✔️
   - SHA-1 ✔️ <span style="color:yellow">(wrapper only)</span>
   - SHA-2 (256 bits) ✔️ <span style="color:yellow">(wrapper only)</span>
   - MD2 ✔️ <span style="color:yellow">(wrapper only)</span>
