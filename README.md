@@ -62,6 +62,7 @@ or software researchers).
   - AES (TODO) ❌
   - DES (TODO) ❌
   - Lucifer / DTD-1 (TODO) ❌
+  - ROT13 ✔️
   - XOR Cipher (Basic) ✔️
   - (game-specific) XOR Cipher (Retro64 ECO) ✔️
   - (game-specific) XOR Cipher (Giana’s Return ZDA) ✔️

@@ -21,6 +21,13 @@ class XORTestEntry:
 
 
 @dataclass
+class ROT13TestEntry:
+    test_data: bytes
+    key: bytes
+    expected_result: bytes
+
+
+@dataclass
 class XORRetro64ECOTestEntry:
     test_data: bytes
     key: int
