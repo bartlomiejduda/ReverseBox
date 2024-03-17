@@ -21,6 +21,14 @@ class XORTestEntry:
 
 
 @dataclass
+class XORGuesserEntry:
+    encrypted_data: bytes
+    decrypted_data: bytes
+    max_key_length: int
+    expected_xor_key: bytes
+
+
+@dataclass
 class ROT13TestEntry:
     test_data: bytes
     key: bytes

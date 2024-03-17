@@ -64,6 +64,7 @@ or software researchers).
   - Lucifer / DTD-1 (TODO) ❌
   - ROT13 ✔️
   - XOR Cipher (Basic) ✔️
+  - XOR Cipher (Basic) Guesser ✔️
   - (game-specific) XOR Cipher (Retro64 ECO) ✔️
   - (game-specific) XOR Cipher (Giana’s Return ZDA) ✔️
 
