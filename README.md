@@ -86,9 +86,13 @@ or software researchers).
   - Image Finder  (IN PROGRESS) ❌
   - Convert b8g8r8a8 (bgra8888) to r8b8g8a8 (rgba8888) (TODO) ❌
   - Convert r5g5b5p1 (rgb5551) to r8b8g8a8 (rgba888) (TODO) ❌
-  - PS2 Swizzling/Twiddling (TODO) ❌
+  - 3DS Swizzling/Twiddling ✔️
+  - CMPR Swizzling/Twiddling ✔️
+  - PS2 Swizzling/Twiddling ✔️
   - PSP Swizzling/Twiddling ✔️
-  - [SourceSDK Swizzling](https://forum.xentax.com/viewtopic.php?p=139510#p139510) (TODO) ❌
+  - PSVITA Swizzling/Twiddling ✔️
+  - Switch Swizzling/Twiddling ✔️
+  - XBOX Swizzling/Twiddling (Morton Order) ❌
 
 * IO
   - File Reader ✔️
