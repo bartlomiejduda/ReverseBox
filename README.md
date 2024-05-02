@@ -84,8 +84,22 @@ or software researchers).
 
 * Image
   - Image Finder  (IN PROGRESS) ❌
-  - Convert b8g8r8a8 (bgra8888) to r8b8g8a8 (rgba8888) (TODO) ❌
-  - Convert r5g5b5p1 (rgb5551) to r8b8g8a8 (rgba888) (TODO) ❌
+  - Decode RGB565 ✔️
+  - Decode RGB888 ✔️
+  - Decode ARGB4444 ✔️
+  - Decode RGBA4444 ✔️
+  - Decode XRGB1555 ✔️
+  - Decode ABGR1555 ✔️
+  - Decode XBGR1555 ✔️
+  - Decode ARGB8888 ✔️
+  - Decode PAL4_RGBX5551 ✔️
+  - Decode PAL4_RGB888 ✔️
+  - Decode PAL4_RGBA8888 ✔️
+  - Decode PAL8_RGBX5551 ✔️
+  - Decode PAL8_RGB888 ✔️
+  - Decode PAL8_RGBA8888 ✔️
+  - Decode DXT1 ✔️
+  - Decode DXT3 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️

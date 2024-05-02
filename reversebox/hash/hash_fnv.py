@@ -46,6 +46,8 @@ class FNVHashHandler:
     def fnv1_32(self, data: bytes, hval_init=FNV1_32_INIT) -> bytes:
         return struct.pack("<I", self.fnv1(data, hval_init, FNV_32_PRIME, 2**32))
 
+    # used in "Mercenaries: Playground of Destruction" xbox game
+    # used by "WinHash" program
     def fnv1a_32(self, data: bytes, hval_init=FNV1_32_INIT) -> bytes:
         return struct.pack("<I", self.fnva(data, hval_init, FNV_32_PRIME, 2**32))
 
