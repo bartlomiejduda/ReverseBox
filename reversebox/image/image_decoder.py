@@ -185,21 +185,21 @@ class ImageDecoder:
             bytes_per_pixel = 2
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
-                pixel_int: int = image_entry_read_function(self, image_pixel, image_endianess_format)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
                 read_offset += bytes_per_pixel
                 texture_data[i * 4 : (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
         elif bits_per_pixel == 24:
             bytes_per_pixel = 3
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
-                pixel_int: int = image_entry_read_function(self, image_pixel, image_endianess_format)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
                 read_offset += bytes_per_pixel
                 texture_data[i * 4: (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
         elif bits_per_pixel == 32:
             bytes_per_pixel = 4
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
-                pixel_int: int = image_entry_read_function(self, image_pixel, image_endianess_format)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
                 read_offset += bytes_per_pixel
                 texture_data[i * 4: (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
         else:
@@ -221,7 +221,7 @@ class ImageDecoder:
         palette_data_ints = []
         for i in range(len(palette_data) // palette_entry_size):
             palette_entry = palette_handler.get_bytes(palette_offset, palette_entry_size)
-            palette_entry_int = palette_entry_read_function(self, palette_entry, palette_endianess_format)
+            palette_entry_int = palette_entry_read_function(palette_entry, palette_endianess_format)
             palette_offset += palette_entry_size
             palette_data_ints.append(palette_entry_int)
 
