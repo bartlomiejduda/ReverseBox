@@ -9,6 +9,11 @@ from PIL import Image
 from reversebox.common.logger import get_logger
 from reversebox.image.image_formats import ImageFormats
 from reversebox.io_files.bytes_handler import BytesHandler
+from reversebox.io_files.bytes_helper_functions import (
+    get_uint16,
+    get_uint24,
+    get_uint32,
+)
 
 logger = get_logger(__name__)
 
@@ -131,44 +136,27 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
-    def _get_uint16(self, in_bytes: bytes, endianess: str) -> int:
-        result = struct.unpack(endianess + "H", in_bytes)[0]
-        return result
-
-    def _get_uint24(self, in_bytes: bytes, endianess: str) -> int:
-        if endianess == "<":
-            result = struct.unpack(endianess + "I", in_bytes + b"\x00")[0]
-        elif endianess == ">":
-            result = struct.unpack(endianess + "I", b"\x00" + in_bytes)[0]
-        else:
-            raise Exception("Wrong endianess!")
-        return result
-
-    def _get_uint32(self, in_bytes: bytes, endianess: str) -> int:
-        result = struct.unpack(endianess + "I", in_bytes)[0]
-        return result
-
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
-        ImageFormats.RGB565: (_decode_rgb565_pixel, 16, _get_uint16),
-        ImageFormats.RGB888: (_decode_rgb888_pixel, 24, _get_uint24),
-        ImageFormats.BGR888: (_decode_bgr888_pixel, 24, _get_uint24),
-        ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, _get_uint16),
-        ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, _get_uint16),
-        ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, _get_uint16),
-        ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, _get_uint16),
-        ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, _get_uint16),
-        ImageFormats.ARGB8888: (_decode_argb8888_pixel, 32, _get_uint32),
+        ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
+        ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
+        ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
+        ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
+        ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
+        ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),
+        ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
+        ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),
+        ImageFormats.ARGB8888: (_decode_argb8888_pixel, 32, get_uint32),
     }
 
     indexed_data_formats = {
         # image_format: (decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
-        ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, _get_uint16),
-        ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, _get_uint24),
-        ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, _get_uint32),
-        ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, _get_uint16),
-        ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, _get_uint24),
-        ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, _get_uint32),
+        ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
+        ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
+        ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
+        ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
+        ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
+        ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
     }
 
     compressed_data_formats = {
