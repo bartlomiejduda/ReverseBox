@@ -54,7 +54,7 @@ or software researchers).
   - LZSS (TODO) ❌
   - NitroSDK (TODO) ❌
   - Oodle (TODO) ❌
-  - Refpack (EA) (TODO) ❌
+  - Refpack (EA Games) ✔️ <span style="color:yellow">(wrapper only)</span>
   - RNC (TODO) ❌
   - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
 

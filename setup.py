@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.8.2"
+VERSION_NUM = "0.8.5"
 
 
 def get_long_description() -> str:
@@ -47,8 +47,8 @@ setuptools.setup(
         "Natural Language :: English",
     ],
     test_suite="tests",
-    keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python",
+    keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python, image, decode, decoding, RGB",
     python_requires=">=3.6",
-    install_requires=["lzokay", "polib", "crc", "hashbase"],
+    install_requires=["lzokay", "polib", "crc", "hashbase", "pillow"],
     packages=setuptools.find_packages(),
 )
