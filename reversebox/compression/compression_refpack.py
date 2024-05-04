@@ -12,7 +12,7 @@ class RefpackHandler:
         return input_data  # TODO - fix this
 
     def decompress_data(self, compressed_data: bytes) -> bytes:
-        temp_buffer = (c_char * len(compressed_data) * 10)()
+        temp_buffer = (c_char * len(compressed_data) * 100)()
         refpack_dll_path: str = str(
             Path(__file__).parents[1].resolve().joinpath("libs").joinpath("refpack.dll")
         )
