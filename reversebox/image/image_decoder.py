@@ -181,7 +181,14 @@ class ImageDecoder:
         read_offset = 0
         image_endianess_format: str = self._get_endianess_format(image_endianess)
 
-        if bits_per_pixel == 16:
+        if bits_per_pixel == 8:
+            bytes_per_pixel = 1
+            for i in range(len(image_data) // bytes_per_pixel):
+                image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
+                read_offset += bytes_per_pixel
+                texture_data[i * 4 : (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
+        elif bits_per_pixel == 16:
             bytes_per_pixel = 2
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
