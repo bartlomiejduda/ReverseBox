@@ -6,6 +6,8 @@ from enum import Enum
 
 
 class ImageFormats(Enum):
+    RGBX2222 = "rgbx2222"
+    RGBA2222 = "rgba2222"
     RGB565 = "rgb565"
     RGB888 = "rgb888"
     BGR888 = "bgr888"

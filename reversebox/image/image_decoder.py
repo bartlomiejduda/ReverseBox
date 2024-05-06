@@ -10,6 +10,7 @@ from reversebox.common.logger import get_logger
 from reversebox.image.image_formats import ImageFormats
 from reversebox.io_files.bytes_handler import BytesHandler
 from reversebox.io_files.bytes_helper_functions import (
+    get_uint8,
     get_uint16,
     get_uint24,
     get_uint32,
@@ -24,6 +25,22 @@ logger = get_logger(__name__)
 class ImageDecoder:
     def __init__(self):
         pass
+
+    def _decode_rgbx2222_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int & 3) * 85
+        p[1] = ((pixel_int >> 2) & 3) * 85
+        p[2] = ((pixel_int >> 4) & 3) * 85
+        p[3] = 0xFF
+        return p
+
+    def _decode_rgba2222_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int & 3) * 85
+        p[1] = ((pixel_int >> 2) & 3) * 85
+        p[2] = ((pixel_int >> 4) & 3) * 85
+        p[3] = ((pixel_int >> 6) & 3) * 85
+        return p
 
     def _decode_rgbx5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
@@ -138,6 +155,8 @@ class ImageDecoder:
 
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
+        ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
+        ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
         ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
