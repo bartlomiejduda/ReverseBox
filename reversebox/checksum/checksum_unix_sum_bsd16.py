@@ -4,11 +4,11 @@ License: GPL-3.0 License
 """
 
 
-class BSD16Handler:
+class UnixSumBSD16Handler:
     def __init__(self):
         pass
 
-    def calculate_bsd16(self, input_data: bytes) -> int:
+    def calculate_unix_sum_bsd16(self, input_data: bytes) -> int:
         checksum = 0
         for byte in input_data:
             checksum = (checksum >> 1) + ((checksum & 1) << 15)

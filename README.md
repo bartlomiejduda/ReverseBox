@@ -23,9 +23,11 @@ or software researchers).
 
 * Checksum
   - Adler-32 ✔️
-  - BSD-16 ✔️
   - Fletcher-16 ✔️
   - Fletcher-32 ✔️
+  - Sum8 ✔️
+  - Unix Sum BSD-16 ✔️
+  - Unix Sum SYSV ✔️
 
 * CRC
   - CRC-8 ✔️
@@ -84,6 +86,8 @@ or software researchers).
 
 * Image
   - Image Finder  (IN PROGRESS) ❌
+  - Decode RGBA2222 ✔️
+  - Decode RGBX2222 ✔️
   - Decode RGB565 ✔️
   - Decode RGB888 ✔️
   - Decode ARGB4444 ✔️

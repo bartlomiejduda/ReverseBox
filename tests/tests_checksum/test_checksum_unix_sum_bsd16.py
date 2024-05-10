@@ -6,11 +6,11 @@ License: GPL-3.0 License
 import pytest
 from faker import Faker
 
-from reversebox.checksum.checksum_bsd16 import BSD16Handler
+from reversebox.checksum.checksum_unix_sum_bsd16 import UnixSumBSD16Handler
 from reversebox.common.common import convert_int_to_hex_string
 from tests.common import CRCTestEntry
 
-bsd16_handler = BSD16Handler()
+bsd16_handler = UnixSumBSD16Handler()
 fake = Faker()
 
 # fmt: off
@@ -19,6 +19,7 @@ fake = Faker()
 @pytest.mark.unittest
 def test_checksum_calculate_bsd16_to_match_expected_result():
     crc_data_list = [
+        CRCTestEntry(test_data=b"Hello", expected_int=8401, expected_str="0x20D1"),
         CRCTestEntry(test_data=b"abcd", expected_int=8378, expected_str="0x20BA"),
         CRCTestEntry(test_data=b"123456789", expected_int=53615, expected_str="0xD16F"),
         CRCTestEntry(test_data=b"123", expected_int=16472, expected_str="0x4058"),
@@ -32,13 +33,13 @@ def test_checksum_calculate_bsd16_to_match_expected_result():
 
     for crc_entry in crc_data_list:
         # check expected result from first execution
-        test_result = bsd16_handler.calculate_bsd16(crc_entry.test_data)
+        test_result = bsd16_handler.calculate_unix_sum_bsd16(crc_entry.test_data)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == crc_entry.expected_int
         assert test_result_str == crc_entry.expected_str
 
         # check if result is the same after second execution
-        test_result = bsd16_handler.calculate_bsd16(crc_entry.test_data)
+        test_result = bsd16_handler.calculate_unix_sum_bsd16(crc_entry.test_data)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == crc_entry.expected_int
         assert test_result_str == crc_entry.expected_str
