@@ -30,21 +30,22 @@ or software researchers).
   - Unix Sum SYSV ✔️
 
 * CRC
-  - CRC8 ✔️
-  - CRC8/CDMA2000 ✔️
-  - CRC8/DARC ✔️ <span style="color:yellow">(wrapper only)</span>
-  - CRC16 (ARC) ✔️
-  - CRC16 (Modbus) ✔️
-  - CRC16 (Sick) ✔️
-  - CRC16 (DNP) ✔️
-  - CRC16-CCITT (XModem) ✔️
-  - CRC16-CCITT (0xFFFF) ✔️
-  - CRC16-CCITT (0x1D0F) ✔️
-  - CRC16-CCITT (Kermit) ✔️
-  - CRC32/CKSUM (Unix cksum) ✔️
-  - CRC32 (ISO/HDLC) ✔️
-  - CRC32 (Asobo) ✔️
-  - CRC64 (Asobo) ✔️
+  - CRC-8 ✔️
+  - CRC-8/CDMA2000 ✔️
+  - CRC-8/DARC ✔️ <span style="color:yellow">(wrapper only)</span>
+  - CRC-16 (ARC) ✔️
+  - CRC-16 (Modbus) ✔️
+  - CRC-16 (Sick) ✔️
+  - CRC-16 (DNP) ✔️
+  - CRC-16-CCITT (XModem) ✔️
+  - CRC-16-CCITT (0xFFFF) ✔️
+  - CRC-16-CCITT (0x1D0F) ✔️
+  - CRC-16-CCITT (Kermit) ✔️
+  - CRC-32/CKSUM (Unix cksum) ✔️
+  - CRC-32 (ISO/HDLC) ✔️
+  - CRC-32 (Asobo) ✔️
+  - CRC-64 (Asobo) ✔️
+  - CRC-64/GO-ISO ✔️ <span style="color:yellow">(wrapper only)</span>
 
 * Compression
   - Asobo (TODO) ❌
