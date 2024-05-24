@@ -25,6 +25,7 @@ or software researchers).
   - Adler32 ✔️
   - Fletcher16 ✔️
   - Fletcher32 ✔️
+  - Internet Checksum / IPv4 header checksum ✔️
   - Sum8 ✔️
   - Sum8 2s Complement ✔️
   - Unix Sum BSD16 ✔️
