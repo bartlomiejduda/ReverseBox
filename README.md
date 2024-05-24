@@ -26,8 +26,10 @@ or software researchers).
   - Fletcher16 ✔️
   - Fletcher32 ✔️
   - Sum8 ✔️
+  - Sum8 2s Complement ✔️
   - Unix Sum BSD16 ✔️
   - Unix Sum SYSV ✔️
+  - Xor8 ✔️
 
 * CRC
   - CRC-8 ✔️
