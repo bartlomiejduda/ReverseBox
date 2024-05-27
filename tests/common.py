@@ -49,6 +49,20 @@ class HashTestEntry:
 
 
 @dataclass
+class TextHashTestEntry:
+    test_string: str
+    expected_int: int
+    expected_str: str
+
+
+@dataclass
+class BytesHashTestEntry:
+    test_bytes: bytes
+    expected_int: int
+    expected_str: str
+
+
+@dataclass
 class PaddingTestEntry:
     test_offset: int
     test_div: int

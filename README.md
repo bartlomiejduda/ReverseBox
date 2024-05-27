@@ -76,6 +76,7 @@ or software researchers).
   - (game-specific) XOR Cipher (Giana’s Return ZDA) ✔️
 
 * Hash
+  - DJB2 ✔️
   - FNV0-32 ✔️
   - FNV0-64 ✔️
   - FNV1-32 ✔️
