@@ -8,6 +8,7 @@ class DJB2Handler:
     def __init__(self):
         pass
 
+    # used in EA BIG VIV EB archives to calculate hash from file paths
     @staticmethod
     def calculate_djb2_hash_from_string(input_string: str) -> int:
         h = 5381

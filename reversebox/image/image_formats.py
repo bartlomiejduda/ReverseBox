@@ -27,3 +27,5 @@ class ImageFormats(Enum):
 
     DXT1 = "dxt1"
     DXT3 = "dxt3"
+
+    GST422 = "gst422"

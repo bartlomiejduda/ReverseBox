@@ -40,6 +40,7 @@ or software researchers).
   - CRC-16 (Modbus) ✔️
   - CRC-16 (Sick) ✔️
   - CRC-16 (DNP) ✔️
+  - CRC-16 (EA CRCF) ✔️
   - CRC-16-CCITT (XModem) ✔️
   - CRC-16-CCITT (0xFFFF) ✔️
   - CRC-16-CCITT (0x1D0F) ✔️
@@ -110,6 +111,7 @@ or software researchers).
   - Decode PAL8_RGBA8888 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
+  - Decode GST422 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
