@@ -111,7 +111,14 @@ or software researchers).
   - Decode PAL8_RGBA8888 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
+  - Decode GST121 ✔️
+  - Decode GST221 ✔️
+  - Decode GST421 ✔️
+  - Decode GST821 ✔️
+  - Decode GST122 ✔️
+  - Decode GST222 ✔️
   - Decode GST422 ✔️
+  - Decode GST822 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
@@ -119,6 +126,8 @@ or software researchers).
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
   - XBOX Swizzling/Twiddling (Morton Order) ❌
+  - PS2 GS Texture Swizzling/Twiddling ✔️
+  - PS2 GS Texture Compression ✔️
 
 * IO
   - File Reader ✔️

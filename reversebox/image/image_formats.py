@@ -28,4 +28,11 @@ class ImageFormats(Enum):
     DXT1 = "dxt1"
     DXT3 = "dxt3"
 
+    GST121 = "gst121"
+    GST221 = "gst221"
+    GST421 = "gst421"
+    GST821 = "gst821"
+    GST122 = "gst122"
+    GST222 = "gst222"
     GST422 = "gst422"
+    GST822 = "gst822"
