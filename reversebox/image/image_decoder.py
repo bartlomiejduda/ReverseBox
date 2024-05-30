@@ -8,6 +8,7 @@ from PIL import Image
 
 from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
+from reversebox.image.compression.compression_gst import decompress_gst_image
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.swizzling.swizzle_gst import unswizzle_detail2, unswizzle_gst_base
 from reversebox.io_files.bytes_handler import BytesHandler
@@ -292,10 +293,8 @@ class ImageDecoder:
         )
         return pil_img.tobytes()
 
-    def _decode_gst(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple, is_swizzled: bool) -> bytes:
+    def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, is_swizzled: bool) -> bytes:
         block_width, block_height, detail_bpp = image_format
-        decoded_texture_data = bytearray(img_width * img_height)
-        output_texture_data = bytearray(img_width * img_height * 4)
 
         size_of_base: int = (img_width // block_width) * (img_height // block_height)
         detail_offset: int = size_of_base + calculate_padding_length(size_of_base, 16)
@@ -303,6 +302,7 @@ class ImageDecoder:
         base_data: bytes = image_data[:size_of_base]
         detail_data: bytes = image_data[detail_offset:]
 
+        # unswizzle GST data
         if is_swizzled:
             base_data = unswizzle_gst_base(base_data, img_width, img_height, block_width, block_height)
             if detail_bpp == 2:
@@ -310,30 +310,19 @@ class ImageDecoder:
             else:
                 pass  # TODO - unswizzle_detail1
 
-        # decode logic start
-        detail_current_offset: int = 0
-        output_current_offset: int = 0
-        if block_width == 4 and detail_bpp == 2:
-            for y in range(img_height):
-                base_current_offset = (img_width // 4) * (y // block_height)
-                for x in range(0, img_width, 4):
-                    detail_bits = detail_data[detail_current_offset]
-                    detail_current_offset += 1
-                    base_value = base_data[base_current_offset]
-                    base_current_offset += 1
-                    decoded_texture_data[output_current_offset] = base_value + ((detail_bits >> 0) & 3)
-                    decoded_texture_data[output_current_offset + 1] = base_value + ((detail_bits >> 2) & 3)
-                    decoded_texture_data[output_current_offset + 2] = base_value + ((detail_bits >> 4) & 3)
-                    decoded_texture_data[output_current_offset + 3] = base_value + ((detail_bits >> 6) & 3)
-                    output_current_offset += 4
+        # decompress GST data
+        decompressed_texture_data: bytes = decompress_gst_image(base_data, detail_data, img_width, img_height, block_width, block_height, detail_bpp)
 
-        elif block_width == 2 and detail_bpp == 2:
-            pass  # TODO
+        # convert indexed image to RGBA to get final result
+        output_texture_data = self.decode_indexed_image(
+            decompressed_texture_data,
+            palette_data,
+            img_width,
+            img_height,
+            ImageFormats.PAL8_RGBA8888,
+        )
 
-        else:
-            pass  # TODO
-
-        return output_texture_data  # TODO
+        return output_texture_data
 
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
@@ -344,5 +333,5 @@ class ImageDecoder:
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return self._decode_compressed(image_data, img_width, img_height, self.compressed_data_formats[image_format])
 
-    def decode_gst_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, is_swizzled: bool = False) -> bytes:
-        return self._decode_gst(image_data, img_width, img_height, self.gst_data_formats[image_format], is_swizzled)
+    def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, is_swizzled: bool = False) -> bytes:
+        return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], is_swizzled)
