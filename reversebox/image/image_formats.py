@@ -24,9 +24,11 @@ class ImageFormats(Enum):
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_RGB888 = "pal8_rgb888"
     PAL8_RGBA8888 = "pal8_rgba8888"
+    PAL8_BGRA8888 = "pal8_bgra8888"
 
     DXT1 = "dxt1"
     DXT3 = "dxt3"
+    DXT5 = "dxt5"
 
     GST121 = "gst121"
     GST221 = "gst221"

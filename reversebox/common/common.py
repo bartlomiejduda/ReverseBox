@@ -18,3 +18,7 @@ def calculate_padding_length(input_length: int, div: int) -> int:
 
 def convert_bits_str_to_int(input_bits_str: str) -> int:
     return int(input_bits_str, 2)
+
+
+def convert_int_to_bool(input_number: int) -> bool:
+    return bool(input_number)

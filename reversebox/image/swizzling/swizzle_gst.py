@@ -5,6 +5,8 @@ License: GPL-3.0 License
 
 import struct
 
+# PS2 GS texture swizzling
+
 
 def get_base_offset(
     x: int, y: int, width: int, block_width: int, block_height: int

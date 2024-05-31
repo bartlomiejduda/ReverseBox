@@ -109,8 +109,10 @@ or software researchers).
   - Decode PAL8_RGBX5551 ✔️
   - Decode PAL8_RGB888 ✔️
   - Decode PAL8_RGBA8888 ✔️
+  - Decode PAL8_BGRA8888 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
+  - Decode DXT5 ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

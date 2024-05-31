@@ -56,9 +56,10 @@ def decompress_gst_image(
                 for block_x in range(0, img_width, 4):
                     for x in range(4):
                         base_current_offset = (img_width // block_width) * (y // block_height) + ((block_x + x) // block_width)
-                        base_value = base_data[base_current_offset]
                         detail_value = detail_data[detail_current_offset]
-                        decompressed_texture_data[output_current_offset] = base_value + (detail_value >> (x * 2)) & 3
+                        base_value = base_data[base_current_offset]
+                        calc_value = (detail_value >> (x * 2)) & 3
+                        decompressed_texture_data[output_current_offset] = base_value + calc_value
                         output_current_offset += 1
                     detail_current_offset += 1
 
@@ -66,9 +67,10 @@ def decompress_gst_image(
                 for block_x in range(0, img_width, 8):
                     for x in range(8):
                         base_current_offset = (img_width // block_width) * (y // block_height) + ((block_x + x) // block_width)
-                        base_value = base_data[base_current_offset]
                         detail_value = detail_data[detail_current_offset]
-                        decompressed_texture_data[output_current_offset] = base_value + (detail_value >> x) & 1
+                        base_value = base_data[base_current_offset]
+                        calc_value = (detail_value >> x) & 1
+                        decompressed_texture_data[output_current_offset] = base_value + calc_value
                         output_current_offset += 1
                     detail_current_offset += 1
 

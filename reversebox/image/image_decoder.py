@@ -126,6 +126,14 @@ class ImageDecoder:
         p[3] = (pixel_int >> 24) & 0xff
         return p
 
+    def _decode_bgra8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[2] = (pixel_int >> 0) & 0xff
+        p[1] = (pixel_int >> 8) & 0xff
+        p[0] = (pixel_int >> 16) & 0xff
+        p[3] = (pixel_int >> 24) & 0xff
+        return p
+
     def _decode_argb8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[2] = (pixel_int >> 0) & 0xff
@@ -183,12 +191,14 @@ class ImageDecoder:
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
+        ImageFormats.PAL8_BGRA8888: (_decode_bgra8888_pixel, 8, 4, get_uint32),
     }
 
     compressed_data_formats = {
         # image format: (decoder_name, decoder_arg)
         ImageFormats.DXT1: ("bcn", 1),
-        ImageFormats.DXT3: ("bcn", 2)
+        ImageFormats.DXT3: ("bcn", 2),
+        ImageFormats.DXT5: ("bcn", 3)
     }
 
     gst_data_formats = {
@@ -304,7 +314,7 @@ class ImageDecoder:
         )
         return pil_img.tobytes()
 
-    def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, is_swizzled: bool) -> bytes:
+    def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, convert_format: ImageFormats, is_swizzled: bool) -> bytes:
         block_width, block_height, detail_bpp = image_format
 
         size_of_base: int = (img_width // block_width) * (img_height // block_height)
@@ -330,7 +340,7 @@ class ImageDecoder:
             palette_data,
             img_width,
             img_height,
-            ImageFormats.PAL8_RGBA8888,
+            convert_format
         )
 
         return output_texture_data
@@ -344,5 +354,5 @@ class ImageDecoder:
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return self._decode_compressed(image_data, img_width, img_height, self.compressed_data_formats[image_format])
 
-    def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, is_swizzled: bool = True) -> bytes:
-        return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], is_swizzled)
+    def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
+        return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)
