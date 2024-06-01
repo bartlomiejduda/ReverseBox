@@ -168,6 +168,31 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
+    def _decode_yuy2_pixel(self, Y: float, U: float, V: float) -> bytes:
+        p = bytearray(4)
+
+        def _round_clamp_int(f: float) -> int:
+            i: int = int(f+0.5)
+            if i < 0:
+                i = 0
+            if i > 255:
+                i = 255
+            return i
+
+        C: float = Y - 16.0
+        D: float = U - 128.0
+        E: float = V - 128.0
+
+        R: float = 1.164383 * C + 1.596027 * E
+        G: float = 1.164383 * C - (0.391762 * D) - (0.812968 * E)
+        B: float = 1.164383 * C + 2.017232 * D
+
+        p[0] = _round_clamp_int(R)
+        p[1] = _round_clamp_int(G)
+        p[2] = _round_clamp_int(B)
+        p[3] = 0xFF
+        return p
+
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
@@ -211,6 +236,11 @@ class ImageDecoder:
         ImageFormats.GST222: (2, 2, 2),
         ImageFormats.GST422: (4, 2, 2),
         ImageFormats.GST822: (8, 2, 2),
+    }
+
+    yuv_data_formats = {
+        # image_format: (decode_function, bpp)
+        ImageFormats.YUY2: (_decode_yuy2_pixel, 32),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -345,6 +375,37 @@ class ImageDecoder:
 
         return output_texture_data
 
+    def _decode_yuv(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple):
+        decode_function, bpp = image_format
+        rowbytes: int = img_width * (bpp // 8)  # noqa: F841
+        is_odd: bool = True if (img_width & 1) else False
+        current_yuv_offset: int = 0
+        current_output_offset: int = 0
+        output_texture_data: bytes = b''
+
+        for y in range(img_height):
+            for x in range(0, img_width, 2):
+
+                Y0: float = float(image_data[current_yuv_offset])
+                U: float = float(image_data[current_yuv_offset + 1])
+                Y1: float = float(image_data[current_yuv_offset + 2])
+                V: float = float(image_data[current_yuv_offset + 3])
+
+                pixel1 = decode_function(self, Y0, U, V)
+                pixel2 = decode_function(self, Y1, U, V)
+                output_texture_data += pixel1
+                output_texture_data += pixel2
+
+                if is_odd and x == img_width - 1:
+                    current_yuv_offset += 4
+                    current_output_offset += 4
+                else:
+                    current_yuv_offset += 4
+                    current_output_offset += 8
+
+        return output_texture_data
+
+
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
@@ -356,3 +417,6 @@ class ImageDecoder:
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)
+
+    def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
+        return self._decode_yuv(image_data, img_width, img_height, self.yuv_data_formats[image_format])

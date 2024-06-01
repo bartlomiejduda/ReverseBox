@@ -6,6 +6,7 @@ from enum import Enum
 
 
 class ImageFormats(Enum):
+    # Generic Formats
     RGBX2222 = "rgbx2222"
     RGBA2222 = "rgba2222"
     RGB565 = "rgb565"
@@ -18,6 +19,7 @@ class ImageFormats(Enum):
     XBGR1555 = "xbgr1555"
     ARGB8888 = "argb8888"
 
+    # Indexed Formats
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
     PAL4_RGBA8888 = "pal4_rgba8888"
@@ -26,10 +28,12 @@ class ImageFormats(Enum):
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
 
+    # DXT Formats
     DXT1 = "dxt1"
     DXT3 = "dxt3"
     DXT5 = "dxt5"
 
+    # PS2 GS Texture Formats
     GST121 = "gst121"
     GST221 = "gst221"
     GST421 = "gst421"
@@ -38,3 +42,8 @@ class ImageFormats(Enum):
     GST222 = "gst222"
     GST422 = "gst422"
     GST822 = "gst822"
+
+    # YUV Formats
+    # https://gstreamer.freedesktop.org/documentation/additional/design/mediatype-video-raw.html
+    YUY2 = "yuy2"  # packed 4:2:2 YUV  /  |Y0|U0|Y1|V0|
+    MADYUV = "madyuv"  # TODO
