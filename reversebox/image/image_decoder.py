@@ -380,8 +380,8 @@ class ImageDecoder:
         rowbytes: int = img_width * (bpp // 8)  # noqa: F841
         is_odd: bool = True if (img_width & 1) else False
         current_yuv_offset: int = 0
-        current_output_offset: int = 0
-        output_texture_data: bytes = b''
+        current_pixel_number: int = 0
+        output_texture_data = bytearray(img_width * img_height * 4)
 
         for y in range(img_height):
             for x in range(0, img_width, 2):
@@ -393,18 +393,17 @@ class ImageDecoder:
 
                 pixel1 = decode_function(self, Y0, U, V)
                 pixel2 = decode_function(self, Y1, U, V)
-                output_texture_data += pixel1
-                output_texture_data += pixel2
+                output_texture_data[current_pixel_number * 4:(current_pixel_number + 1) * 4] = pixel1
+                output_texture_data[(current_pixel_number + 1) * 4:(current_pixel_number + 2) * 4] = pixel2
 
                 if is_odd and x == img_width - 1:
                     current_yuv_offset += 4
-                    current_output_offset += 4
+                    current_pixel_number += 1
                 else:
                     current_yuv_offset += 4
-                    current_output_offset += 8
+                    current_pixel_number += 2
 
         return output_texture_data
-
 
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
