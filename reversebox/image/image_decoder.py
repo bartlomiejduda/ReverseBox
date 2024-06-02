@@ -213,6 +213,7 @@ class ImageDecoder:
         ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
         ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
+        ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
@@ -298,8 +299,8 @@ class ImageDecoder:
         image_handler = BytesHandler(image_data)
         palette_handler = BytesHandler(palette_data)
         texture_data = bytearray(img_width * img_height * 4)
-        image_offset = 0
-        palette_offset = 0
+        image_offset: int = 0
+        palette_offset: int = 0
         image_endianess_format: str = self._get_endianess_format(image_endianess)
         palette_endianess_format: str = self._get_endianess_format(palette_endianess)
 
@@ -326,8 +327,8 @@ class ImageDecoder:
             for i in range(0, img_width * img_height, 2):
                 palette_index = image_handler.get_bytes(image_offset, 1)
                 palette_index_int = struct.unpack(image_endianess_format + "B", palette_index)[0]
-                texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[(palette_index_int >> 4) & 0xf])  # noqa
-                texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, palette_data_ints[palette_index_int & 0xf])  # noqa
+                texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int & 0xf])  # noqa
+                texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, palette_data_ints[(palette_index_int >> 4) & 0xf])  # noqa
                 image_offset += 1
 
         return texture_data

@@ -23,15 +23,16 @@ class ImageFormats(Enum):
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
     PAL4_RGBA8888 = "pal4_rgba8888"
+    PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_RGB888 = "pal8_rgb888"
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
 
     # DXT Formats
-    DXT1 = "dxt1"
-    DXT3 = "dxt3"
-    DXT5 = "dxt5"
+    DXT1 = "dxt1"  # BC1
+    DXT3 = "dxt3"  # BC2
+    DXT5 = "dxt5"  # BC3
 
     # PS2 GS Texture Formats
     GST121 = "gst121"
@@ -44,6 +45,9 @@ class ImageFormats(Enum):
     GST822 = "gst822"
 
     # YUV Formats
+    # https://wiki.videolan.org/YUV
     # https://gstreamer.freedesktop.org/documentation/additional/design/mediatype-video-raw.html
+    # https://web.archive.org/web/20190220164028/http://www.sunrayimage.com/examples.html
+    # Example: ffmpeg -i <input file path> -vf format=yuv240p -frames:v 1 output_image.yuv
     YUY2 = "yuy2"  # packed 4:2:2 YUV  /  |Y0|U0|Y1|V0|
-    MADYUV = "madyuv"  # TODO
+    MADYUV = "madyuv"  # TODO - same as YUY2? Needs more research...
