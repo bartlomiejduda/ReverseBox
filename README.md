@@ -92,7 +92,6 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
 
 * Image
-  - Image Finder  (IN PROGRESS) ❌
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
   - Decode RGB565 ✔️
@@ -129,7 +128,7 @@ or software researchers).
   - PSP Swizzling/Twiddling ✔️
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
-  - XBOX Swizzling/Twiddling (Morton Order) ❌
+  - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
   - PS2 GS Texture Swizzling/Twiddling ✔️
   - PS2 GS Texture Compression ✔️
 

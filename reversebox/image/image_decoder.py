@@ -378,7 +378,6 @@ class ImageDecoder:
 
     def _decode_yuv(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple):
         decode_function, bpp = image_format
-        rowbytes: int = img_width * (bpp // 8)  # noqa: F841
         is_odd: bool = True if (img_width & 1) else False
         current_yuv_offset: int = 0
         current_pixel_number: int = 0
