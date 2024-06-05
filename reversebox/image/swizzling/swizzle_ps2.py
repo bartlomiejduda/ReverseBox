@@ -1,3 +1,7 @@
+"""
+Copyright © 2024  Bartłomiej Duda
+License: GPL-3.0 License
+"""
 from reversebox.io_files.bytes_handler import BytesHandler
 
 
@@ -31,33 +35,31 @@ def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
     return converted_raw_palette_data
 
 
-# TODO - refactor this
-def unswizzle_ps2_8bit(buffer, width, height):
-    unswizzled_data = bytearray(width * height)
-    for y in range(height):
-        for x in range(width):
-            block_location = (y & (~0xF)) * width + (x & (~0xF)) * 2
+def unswizzle_ps2_8bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
+    unswizzled_data: bytes = bytearray(img_width * img_height)
+    for y in range(img_height):
+        for x in range(img_width):
+            block_location = (y & (~0xF)) * img_width + (x & (~0xF)) * 2
             swap_selector = (((y + 2) >> 2) & 0x1) * 4
             pos_y = (((y & (~3)) >> 1) + (y & 1)) & 0x7
-            column_location = pos_y * width * 2 + ((x + swap_selector) & 0x7) * 4
+            column_location = pos_y * img_width * 2 + ((x + swap_selector) & 0x7) * 4
             byte_num = ((y >> 1) & 1) + ((x >> 2) & 2)
             swizzle_id = block_location + column_location + byte_num
-            unswizzled_data[y * width + x] = buffer[swizzle_id]
+            unswizzled_data[y * img_width + x] = image_data[swizzle_id]  # type: ignore
     return unswizzled_data
 
 
-# TODO - refactor this
-def unswizzle_ps2_4bit(buffer, width, height):
-    pixels = bytearray(width * height)
-    for i in range(width * height // 2):
-        index = buffer[i]
+def unswizzle_ps2_4bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
+    pixels: bytes = bytearray(img_width * img_height)
+    for i in range(img_width * img_height // 2):
+        index = image_data[i]
         id2 = (index >> 4) & 0xF
         id1 = index & 0xF
-        pixels[i * 2] = id1
-        pixels[i * 2 + 1] = id2
-    new_pixels = unswizzle_ps2_8bit(pixels, width, height)
-    unswizzled_data = bytearray(width * height)
-    for i in range(width * height // 2):
+        pixels[i * 2] = id1  # type: ignore
+        pixels[i * 2 + 1] = id2  # type: ignore
+    new_pixels: bytes = unswizzle_ps2_8bit(pixels, img_width, img_height)
+    unswizzled_data = bytearray(img_width * img_height)
+    for i in range(img_width * img_height // 2):
         idx1 = new_pixels[i * 2 + 0]
         idx2 = new_pixels[i * 2 + 1]
         idx = ((idx2 << 4) | idx1) & 0xFF

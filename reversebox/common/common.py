@@ -16,6 +16,11 @@ def calculate_padding_length(input_length: int, div: int) -> int:
     return (div - (input_length % div)) % div
 
 
+def get_length_with_padding(input_length: int, div: int):
+    padding_length: int = calculate_padding_length(input_length, div)
+    return input_length + padding_length
+
+
 def convert_bits_str_to_int(input_bits_str: str) -> int:
     return int(input_bits_str, 2)
 
