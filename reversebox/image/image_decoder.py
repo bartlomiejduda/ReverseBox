@@ -240,6 +240,7 @@ class ImageDecoder:
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
+        ImageFormats.PAL8_BGR888: (_decode_bgr888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGB565: (_decode_rgb565_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
