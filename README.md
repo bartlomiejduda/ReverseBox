@@ -110,6 +110,7 @@ or software researchers).
   - Decode PAL8_RGBX2222 ✔️
   - Decode PAL8_RGBX5551 ✔️
   - Decode PAL8_RGB888 ✔️
+  - Decode PAL8_BGR888 ✔️
   - Decode PAL8_RGB565 ✔️
   - Decode PAL8_RGB5A3 ✔️
   - Decode PAL8_RGBA8888 ✔️
