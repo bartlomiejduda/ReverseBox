@@ -18,14 +18,18 @@ class ImageFormats(Enum):
     ABGR1555 = "abgr1555"
     XBGR1555 = "xbgr1555"
     ARGB8888 = "argb8888"
+    ABGR8888 = "abgr8888"
 
     # Indexed Formats
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
+    PAL4_RGB565 = "pal4_rgb565"
     PAL4_RGBA8888 = "pal4_rgba8888"
     PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_RGB888 = "pal8_rgb888"
+    PAL8_RGB565 = "pal8_rgb565"
+    PAL8_RGB5A3 = "pal8_rgb5a3"
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
 
