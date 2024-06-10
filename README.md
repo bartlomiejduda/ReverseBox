@@ -131,6 +131,7 @@ or software researchers).
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
   - PSP Swizzling/Twiddling ✔️
+  - GameCube/WII Swizzling/Twiddling ✔️
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
   - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
