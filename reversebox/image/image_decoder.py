@@ -60,6 +60,17 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_bgrx5551_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        b = pixel_int & 0x1F
+        g = (pixel_int >> 5) & 0x1F
+        r = (pixel_int >> 10) & 0x1F
+        p[0] = (r << 3) | (r >> 2)
+        p[1] = (g << 3) | (g >> 2)
+        p[2] = (b << 3) | (b >> 2)
+        p[3] = 0xFF
+        return p
+
     def _decode_xrgb1555_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -190,6 +201,14 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
+    def _decode_rgbx6666_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (((pixel_int >> 0) & 63) * 255 + 32) // 63
+        p[1] = (((pixel_int >> 8) & 63) * 255 + 32) // 63
+        p[2] = (((pixel_int >> 16) & 63) * 255 + 32) // 63
+        p[3] = 0xFF
+        return p
+
     def _decode_yuy2_pixel(self, Y: float, U: float, V: float) -> bytes:
         p = bytearray(4)
 
@@ -239,8 +258,10 @@ class ImageDecoder:
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
+        ImageFormats.PAL8_BGRX5551: (_decode_bgrx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_BGR888: (_decode_bgr888_pixel, 8, 3, get_uint24),
+        ImageFormats.PAL8_RGBX6666: (_decode_rgbx6666_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGB565: (_decode_rgb565_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),

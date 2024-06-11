@@ -28,10 +28,10 @@ def decompress_gst_image(
                 detail_current_offset += 1
                 base_value = base_data[base_current_offset]
                 base_current_offset += 1
-                decompressed_texture_data[output_current_offset] = base_value + ((detail_bits >> 0) & 3)
-                decompressed_texture_data[output_current_offset + 1] = base_value + ((detail_bits >> 2) & 3)
-                decompressed_texture_data[output_current_offset + 2] = base_value + ((detail_bits >> 4) & 3)
-                decompressed_texture_data[output_current_offset + 3] = base_value + ((detail_bits >> 6) & 3)
+                decompressed_texture_data[output_current_offset] = (base_value + ((detail_bits >> 0) & 3)) & 0xFF
+                decompressed_texture_data[output_current_offset + 1] = (base_value + ((detail_bits >> 2) & 3)) & 0xFF
+                decompressed_texture_data[output_current_offset + 2] = (base_value + ((detail_bits >> 4) & 3)) & 0xFF
+                decompressed_texture_data[output_current_offset + 3] = (base_value + ((detail_bits >> 6) & 3)) & 0xFF
                 output_current_offset += 4
 
     elif block_width == 2 and detail_bpp == 2:  # decompress GST 222
@@ -42,12 +42,12 @@ def decompress_gst_image(
                 detail_current_offset += 1
                 base_value = base_data[base_current_offset]
                 base_current_offset += 1
-                decompressed_texture_data[output_current_offset] = base_value + ((detail_bits >> 0) & 3)
-                decompressed_texture_data[output_current_offset + 1] = base_value + ((detail_bits >> 2) & 3)
+                decompressed_texture_data[output_current_offset] = (base_value + ((detail_bits >> 0) & 3)) & 0xFF
+                decompressed_texture_data[output_current_offset + 1] = (base_value + ((detail_bits >> 2) & 3)) & 0xFF
                 base_value = base_data[base_current_offset]
                 base_current_offset += 1
-                decompressed_texture_data[output_current_offset + 2] = base_value + ((detail_bits >> 4) & 3)
-                decompressed_texture_data[output_current_offset + 3] = base_value + ((detail_bits >> 6) & 3)
+                decompressed_texture_data[output_current_offset + 2] = (base_value + ((detail_bits >> 4) & 3)) & 0xFF
+                decompressed_texture_data[output_current_offset + 3] = (base_value + ((detail_bits >> 6) & 3)) & 0xFF
                 output_current_offset += 4
 
     else:  # decompress other GST textures
@@ -59,7 +59,7 @@ def decompress_gst_image(
                         detail_value = detail_data[detail_current_offset]
                         base_value = base_data[base_current_offset]
                         calc_value = (detail_value >> (x * 2)) & 3
-                        decompressed_texture_data[output_current_offset] = base_value + calc_value
+                        decompressed_texture_data[output_current_offset] = (base_value + calc_value) & 0xFF
                         output_current_offset += 1
                     detail_current_offset += 1
 
@@ -70,7 +70,7 @@ def decompress_gst_image(
                         detail_value = detail_data[detail_current_offset]
                         base_value = base_data[base_current_offset]
                         calc_value = (detail_value >> x) & 1
-                        decompressed_texture_data[output_current_offset] = base_value + calc_value
+                        decompressed_texture_data[output_current_offset] = (base_value + calc_value) & 0xFF
                         output_current_offset += 1
                     detail_current_offset += 1
 
