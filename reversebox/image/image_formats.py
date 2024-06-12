@@ -25,6 +25,7 @@ class ImageFormats(Enum):
     PAL4_RGB888 = "pal4_rgb888"
     PAL4_RGB565 = "pal4_rgb565"
     PAL4_RGBA8888 = "pal4_rgba8888"
+    PAL4_RGB5A3 = "pal4_rgb5a3"
     PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_BGRX5551 = "pal8_bgrx5551"

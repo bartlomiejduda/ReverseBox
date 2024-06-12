@@ -115,12 +115,12 @@ class ImageDecoder:
 
     def _decode_rgb5A3_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        if pixel_int & 0x8000 != 0:  # r5g5b5
+        if pixel_int & 0x8000:  # rgb555
             p[0] = (((pixel_int >> 10) & 0x1F) * 0xFF // 0x1F)
             p[1] = (((pixel_int >> 5) & 0x1F) * 0xFF // 0x1F)
             p[2] = (((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F)
             p[3] = 0xFF
-        else:  # r4g4b4a3
+        else:  # argb3444
             p[0] = (((pixel_int >> 8) & 0x0F) * 0xFF // 0x0F)
             p[1] = (((pixel_int >> 4) & 0x0F) * 0xFF // 0x0F)
             p[2] = (((pixel_int >> 0) & 0x0F) * 0xFF // 0x0F)
@@ -256,6 +256,7 @@ class ImageDecoder:
         ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
         ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
+        ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_BGRX5551: (_decode_bgrx5551_pixel, 8, 2, get_uint16),
