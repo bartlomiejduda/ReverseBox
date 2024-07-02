@@ -2,6 +2,7 @@
 Copyright © 2022-2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+import os.path
 
 
 def convert_int_to_hex_string(input_value: int) -> str:
@@ -27,3 +28,8 @@ def convert_bits_str_to_int(input_bits_str: str) -> int:
 
 def convert_int_to_bool(input_number: int) -> bool:
     return bool(input_number)
+
+
+# e.g. "file.dds" --> DDS
+def get_file_extension(input_filename: str) -> str:
+    return os.path.splitext(input_filename)[-1].strip(".").upper()

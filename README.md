@@ -236,4 +236,5 @@ Check out list of tools written using ReverseBox:
 - [ObsCure 2 HVP Extractor](https://github.com/bartlomiejduda/Tools/blob/master/NEW%20Tools/ObsCure%202/ObsCure%202%20HVP%20Tools/Obscure_2_hvp_extractor.py)
 - [Tail Concerto Translation Tools](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Tail%20Concerto/Tail%20Concerto%20Tools)
 - [EA Graphics Manager](https://github.com/bartlomiejduda/EA-Graphics-Manager)
+- [Acclaim TRE Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Acclaim/Acclaim_TRE_Tool)
 - and more...
