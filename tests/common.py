@@ -67,3 +67,9 @@ class PaddingTestEntry:
     test_offset: int
     test_div: int
     expected_padding: int
+
+
+@dataclass
+class FileExtensionTestEntry:
+    file_name: str
+    expected_file_extension: str
