@@ -228,6 +228,34 @@ print("SHA-1 hash: ", sha1)
 SHA-1 hash:  b'\x81\xfe\x8b\xfe\x87Wl>\xcb"Bo\x8eW\x84s\x82\x91z\xcf'
 ```
 
+# Image decoding - example
+
+// DXT1 compressed image decoding
+
+```
+from reversebox.image.image_decoder import ImageDecoder
+from reversebox.image.image_formats import ImageFormats
+from reversebox.image.pillow_wrapper import PillowWrapper
+
+
+def show_img():
+    with open("image_data.bin", "rb") as f:
+        image_data = f.read()
+
+    img_width: int = 64
+    img_height: int = 64
+    decoder = ImageDecoder()
+    wrapper = PillowWrapper()
+    converted_data: bytes = decoder.decode_compressed_image(image_data, img_width, img_height, ImageFormats.DXT1)
+    pil_image = wrapper.get_pillow_image_from_rgba8888_data(converted_data, img_width, img_height)
+    pil_image.show()
+
+
+if __name__ == '__main__':
+    show_img()
+```
+
+
 # More Examples
 
 Need more examples? <br>
