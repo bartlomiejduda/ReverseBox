@@ -10,6 +10,7 @@ from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
 from reversebox.image.compression.compression_gst import decompress_gst_image
 from reversebox.image.image_formats import ImageFormats
+from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.image.swizzling.swizzle_gst import (
     unswizzle_detail1,
     unswizzle_detail2,
@@ -30,6 +31,9 @@ logger = get_logger(__name__)
 
 
 class ImageDecoder:
+
+    pillow_wrapper = PillowWrapper()
+
     def __init__(self):
         pass
 
@@ -383,16 +387,11 @@ class ImageDecoder:
         return texture_data
 
     def _decode_compressed(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple) -> bytes:
+        # TODO - replace this wrapper
         decoder_name, decoder_arg = image_format
-        pil_img = Image.frombuffer(
-            "RGBA",
-            (img_width, img_height),
-            image_data,
-            decoder_name,
-            decoder_arg,
-            "",
-        )
-        return pil_img.tobytes()
+        pillow_image: Image = self.pillow_wrapper.get_pillow_image_from_dxt_data(image_data, img_width, img_height, decoder_name, decoder_arg)
+        decoded_data: bytes = self.pillow_wrapper.get_image_data_from_pillow_image(pillow_image)
+        return decoded_data
 
     def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, convert_format: ImageFormats, is_swizzled: bool) -> bytes:
         block_width, block_height, detail_bpp = image_format
