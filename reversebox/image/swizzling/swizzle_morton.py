@@ -7,7 +7,7 @@ from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # Morton Order Texture Swizzling
 # https://en.wikipedia.org/wiki/Z-order_curve
-# Used in XBOX and PS3 games
+# Used in XBOX CLASSIC and PS3 games
 
 # fmt: off
 

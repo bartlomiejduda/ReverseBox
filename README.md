@@ -60,6 +60,7 @@ or software researchers).
   - LZMA (TODO) ❌
   - LZO / LZO1X ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZSS (TODO) ❌
+  - MIO0 ✔️
   - NitroSDK (TODO) ❌
   - Oodle (TODO) ❌
   - Refpack (EA Games) ✔️ <span style="color:yellow">(wrapper only)</span>
@@ -95,14 +96,18 @@ or software researchers).
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
   - Decode RGB565 ✔️
+  - Decode BGR565 ✔️
+  - Decode RGBX5551 ✔️
   - Decode RGB888 ✔️
   - Decode ARGB4444 ✔️
   - Decode RGBA4444 ✔️
+  - Decode RGBX4444 ✔️
   - Decode XRGB1555 ✔️
   - Decode ABGR1555 ✔️
   - Decode XBGR1555 ✔️
   - Decode ARGB8888 ✔️
   - Decode ABGR8888 ✔️
+  - Decode RGBA8888 ✔️
   - Decode PAL4_RGBX5551 ✔️
   - Decode PAL4_RGB888 ✔️
   - Decode PAL4_RGB565 ✔️
@@ -265,4 +270,5 @@ Check out list of tools written using ReverseBox:
 - [Tail Concerto Translation Tools](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Tail%20Concerto/Tail%20Concerto%20Tools)
 - [EA Graphics Manager](https://github.com/bartlomiejduda/EA-Graphics-Manager)
 - [Acclaim TRE Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Acclaim/Acclaim_TRE_Tool)
+- [F-Zero X TEX Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/F-Zero%20X/TEX%20Tool)
 - and more...
