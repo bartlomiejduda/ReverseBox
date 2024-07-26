@@ -61,6 +61,14 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_rgba5551_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (((pixel_int >> 11) & 0x1F) * 0xFF // 0x1F)
+        p[1] = (((pixel_int >> 6) & 0x1F) * 0xFF // 0x1F)
+        p[2] = (((pixel_int >> 1) & 0x1F) * 0xFF // 0x1F)
+        p[3] = (((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F)
+        return p
+
     def _decode_bgrx5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         b = pixel_int & 0x1F
@@ -262,6 +270,7 @@ class ImageDecoder:
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),
+        ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
         ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
         ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
         ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),

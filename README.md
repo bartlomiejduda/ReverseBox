@@ -98,6 +98,7 @@ or software researchers).
   - Decode RGB565 ✔️
   - Decode BGR565 ✔️
   - Decode RGBX5551 ✔️
+  - Decode RGBA5551 ✔️
   - Decode RGB888 ✔️
   - Decode ARGB4444 ✔️
   - Decode RGBA4444 ✔️

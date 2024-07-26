@@ -12,6 +12,7 @@ class ImageFormats(Enum):
     RGB565 = "rgb565"
     BGR565 = "bgr565"
     RGBX5551 = "rgbx5551"
+    RGBA5551 = "rgba5551"
     RGB888 = "rgb888"
     BGR888 = "bgr888"
     ARGB4444 = "argb4444"
