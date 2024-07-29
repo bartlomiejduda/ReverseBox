@@ -282,6 +282,7 @@ class ImageDecoder:
         ImageFormats.ARGB8888: (_decode_argb8888_pixel, 32, get_uint32),
         ImageFormats.ABGR8888: (_decode_abgr8888_pixel, 32, get_uint32),
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
+        ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
     }
 
     indexed_data_formats = {

@@ -6,6 +6,7 @@ License: GPL-3.0 License
 import struct
 
 # PS2 GS texture swizzling
+# Used in some EA games like "Cricket 2007" (PS2) and "FIFA Street" (PS2)
 
 
 def get_base_offset(

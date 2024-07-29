@@ -42,6 +42,9 @@ class ImageFormats(Enum):
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
 
+    # N64 / WII formats
+    N64_RGB5A3 = "n64_rgb5a3"
+
     # DXT Formats
     DXT1 = "dxt1"  # BC1
     DXT3 = "dxt3"  # BC2

@@ -124,6 +124,7 @@ or software researchers).
   - Decode PAL8_RGB5A3 ✔️
   - Decode PAL8_RGBA8888 ✔️
   - Decode PAL8_BGRA8888 ✔️
+  - Decode N64_RGB5A3 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
   - Decode DXT5 ✔️
@@ -144,6 +145,7 @@ or software researchers).
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
   - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
+  - BC Swizzling/Twiddling ✔️
   - PS2 GS Texture Swizzling/Twiddling ✔️
   - PS2 GS Texture Compression ✔️
 
