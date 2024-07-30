@@ -44,6 +44,8 @@ class ImageFormats(Enum):
 
     # N64 / WII formats
     N64_RGB5A3 = "n64_rgb5a3"
+    N64_I4 = "n64_i4"
+    N64_I8 = "n64_i8"
 
     # DXT Formats
     DXT1 = "dxt1"  # BC1

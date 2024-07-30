@@ -238,6 +238,22 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_i4_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = pixel_int * 0x11
+        p[1] = pixel_int * 0x11
+        p[2] = pixel_int * 0x11
+        p[3] = 0xFF
+        return p
+
+    def _decode_i8_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = pixel_int
+        p[1] = pixel_int
+        p[2] = pixel_int
+        p[3] = 0xFF
+        return p
+
     def _decode_yuy2_pixel(self, Y: float, U: float, V: float) -> bytes:
         p = bytearray(4)
 
@@ -283,6 +299,8 @@ class ImageDecoder:
         ImageFormats.ABGR8888: (_decode_abgr8888_pixel, 32, get_uint32),
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
+        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),
+        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),
     }
 
     indexed_data_formats = {
@@ -344,7 +362,20 @@ class ImageDecoder:
         read_offset = 0
         image_endianess_format: str = self._get_endianess_format(image_endianess)
 
-        if bits_per_pixel == 8:
+        if bits_per_pixel == 4:
+            for i in range(0, img_width * img_height, 2):
+                image_pixel: bytes = image_handler.get_bytes(read_offset, 1)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
+                if image_endianess == "little":
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, pixel_int & 0xf)  # noqa
+                    texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, (pixel_int >> 4) & 0xf)  # noqa
+                elif image_endianess == "big":
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, (pixel_int >> 4) & 0xf)  # noqa
+                    texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, pixel_int & 0xf)  # noqa
+                else:
+                    raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
+                read_offset += 1
+        elif bits_per_pixel == 8:
             bytes_per_pixel = 1
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
@@ -411,8 +442,14 @@ class ImageDecoder:
             for i in range(0, img_width * img_height, 2):
                 palette_index = image_handler.get_bytes(image_offset, 1)
                 palette_index_int = struct.unpack(image_endianess_format + "B", palette_index)[0]
-                texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int & 0xf])  # noqa
-                texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, palette_data_ints[(palette_index_int >> 4) & 0xf])  # noqa
+                if image_endianess == "little":
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int & 0xf])  # noqa
+                    texture_data[(i + 1) * 4:(i + 2) * 4] = decode_function(self, palette_data_ints[(palette_index_int >> 4) & 0xf])  # noqa
+                elif image_endianess == "big":
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[(palette_index_int >> 4) & 0xf])  # noqa
+                    texture_data[(i + 1) * 4:(i + 2) * 4] =decode_function(self, palette_data_ints[palette_index_int & 0xf])  # noqa
+                else:
+                    raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                 image_offset += 1
 
         return texture_data

@@ -125,6 +125,8 @@ or software researchers).
   - Decode PAL8_RGBA8888 ✔️
   - Decode PAL8_BGRA8888 ✔️
   - Decode N64_RGB5A3 ✔️
+  - Decode N64_I4 ✔️
+  - Decode N64_I8 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
   - Decode DXT5 ✔️
