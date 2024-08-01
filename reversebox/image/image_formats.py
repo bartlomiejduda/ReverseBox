@@ -28,24 +28,31 @@ class ImageFormats(Enum):
     # Indexed Formats
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
-    PAL4_RGB565 = "pal4_rgb565"
     PAL4_RGBA8888 = "pal4_rgba8888"
-    PAL4_RGB5A3 = "pal4_rgb5a3"
+    PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
+    PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)
+    PAL4_RGB5A3 = "pal4_rgb5a3"  # N64_C4 (type 2)
     PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_BGRX5551 = "pal8_bgrx5551"
     PAL8_RGB888 = "pal8_rgb888"
     PAL8_BGR888 = "pal8_bgr888"
-    PAL8_RGB565 = "pal8_rgb565"
     PAL8_RGBX6666 = "pal8_rgbx6666"
-    PAL8_RGB5A3 = "pal8_rgb5a3"
+    PAL8_IA8 = "pal8_ia8"  # N64_C8 (type 0)
+    PAL8_RGB565 = "pal8_rgb565"  # N64_C8 (type 1)
+    PAL8_RGB5A3 = "pal8_rgb5a3"  # N64_C8 (type 2)
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
+    PAL16_IA8 = "pal16_ia8"  # N64_C14X2 (type 0)
+    PAL16_RGB565 = "pal16_rgb565"  # N64_C14X2 (type 1)
+    PAL16_RGB5A3 = "pal16_rgb5a3"  # N64_C14X2 (type 2)
 
     # N64 / WII formats
     N64_RGB5A3 = "n64_rgb5a3"
     N64_I4 = "n64_i4"
     N64_I8 = "n64_i8"
+    N64_IA4 = "n64_ia4"
+    N64_IA8 = "n64_ia8"
 
     # DXT Formats
     DXT1 = "dxt1"  # BC1

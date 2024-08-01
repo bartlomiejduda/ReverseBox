@@ -254,6 +254,22 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_ia4_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int & 0xF) * 0x11
+        p[1] = (pixel_int & 0xF) * 0x11
+        p[2] = (pixel_int & 0xF) * 0x11
+        p[3] = (pixel_int >> 4) * 0x11
+        return p
+
+    def _decode_ia8_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = pixel_int & 0xFF
+        p[1] = pixel_int & 0xFF
+        p[2] = pixel_int & 0xFF
+        p[3] = pixel_int >> 8
+        return p
+
     def _decode_yuy2_pixel(self, Y: float, U: float, V: float) -> bytes:
         p = bytearray(4)
 
@@ -301,25 +317,34 @@ class ImageDecoder:
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
         ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),
         ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),
+        ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),
+        ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),
     }
 
     indexed_data_formats = {
         # image_format: (decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
         ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
         ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
-        ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
-        ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),
+        ImageFormats.PAL4_IA8: (_decode_ia8_pixel, 4, 2, get_uint16),  # N64_C4 (type 0)
+        ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),  # N64_C4 (type 1)
+        ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),  # N64_C4 (type 2)
+
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_BGRX5551: (_decode_bgrx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_BGR888: (_decode_bgr888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGBX6666: (_decode_rgbx6666_pixel, 8, 3, get_uint24),
-        ImageFormats.PAL8_RGB565: (_decode_rgb565_pixel, 8, 2, get_uint16),
-        ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),
+        ImageFormats.PAL8_IA8: (_decode_ia8_pixel, 8, 2, get_uint16),  # N64_C8 (type 0)
+        ImageFormats.PAL8_RGB565: (_decode_rgb565_pixel, 8, 2, get_uint16),  # N64_C8 (type 1)
+        ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),  # N64_C8 (type 2)
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
         ImageFormats.PAL8_BGRA8888: (_decode_bgra8888_pixel, 8, 4, get_uint32),
+
+        ImageFormats.PAL16_IA8: (_decode_ia8_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 0)
+        ImageFormats.PAL16_RGB565: (_decode_rgb565_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 1)
+        ImageFormats.PAL16_RGB5A3: (_decode_rgb5A3_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 2)
     }
 
     compressed_data_formats = {

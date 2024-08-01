@@ -111,7 +111,9 @@ or software researchers).
   - Decode RGBA8888 ✔️
   - Decode PAL4_RGBX5551 ✔️
   - Decode PAL4_RGB888 ✔️
+  - Decode PAL4_IA8 ✔️
   - Decode PAL4_RGB565 ✔️
+  - Decode PAL4_RGB5A3 ✔️
   - Decode PAL4_RGBA8888 ✔️
   - Decode PAL4_RGB5A3 ✔️
   - Decode PAL8_RGBX2222 ✔️
@@ -119,14 +121,20 @@ or software researchers).
   - Decode PAL8_BGRX5551 ✔️
   - Decode PAL8_RGB888 ✔️
   - Decode PAL8_BGR888 ✔️
-  - Decode PAL8_RGB565 ✔️
   - Decode PAL8_RGBX6666 ✔️
+  - Decode PAL8_IA8 ✔️
+  - Decode PAL8_RGB565 ✔️
   - Decode PAL8_RGB5A3 ✔️
   - Decode PAL8_RGBA8888 ✔️
   - Decode PAL8_BGRA8888 ✔️
+  - Decode PAL16_IA8 ✔️
+  - Decode PAL16_RGB565 ✔️
+  - Decode PAL16_RGB5A3 ✔️
   - Decode N64_RGB5A3 ✔️
   - Decode N64_I4 ✔️
   - Decode N64_I8 ✔️
+  - Decode N64_IA4 ✔️
+  - Decode N64_IA8 ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
   - Decode DXT5 ✔️
@@ -276,4 +284,5 @@ Check out list of tools written using ReverseBox:
 - [EA Graphics Manager](https://github.com/bartlomiejduda/EA-Graphics-Manager)
 - [Acclaim TRE Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Acclaim/Acclaim_TRE_Tool)
 - [F-Zero X TEX Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/F-Zero%20X/TEX%20Tool)
+- [TPL Parser](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Mario%20Kart%20WII/TPL%20Parser)
 - and more...
