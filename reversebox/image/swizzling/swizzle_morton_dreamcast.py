@@ -19,8 +19,8 @@ def calculate_morton_index_dreamcast(p: int, w: int, h: int) -> int:
     q = 0
 
     for i in range(16):
-        if h >> 1:
-            h >>= 1
+        h >>= 1
+        if h:
             if p & 1:
                 q |= ddy
             p >>= 1
