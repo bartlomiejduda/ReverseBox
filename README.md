@@ -155,6 +155,7 @@ or software researchers).
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
   - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
+  - Dreamcast Swizzling/Twiddling (Morton Order) ✔️
   - BC Swizzling/Twiddling ✔️
   - PS2 GS Texture Swizzling/Twiddling ✔️
   - PS2 GS Texture Compression ✔️
