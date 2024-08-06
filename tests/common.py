@@ -81,3 +81,10 @@ class GetBitsTestEntry:
     number_of_bits: int
     position: int
     expected_result: int
+
+
+@dataclass
+class GetBitsStringTestEntry:
+    value_to_test: int
+    bits_to_fill: int
+    expected_string: str
