@@ -73,3 +73,11 @@ class PaddingTestEntry:
 class FileExtensionTestEntry:
     file_name: str
     expected_file_extension: str
+
+
+@dataclass
+class GetBitsTestEntry:
+    value_to_test: int
+    number_of_bits: int
+    position: int
+    expected_result: int
