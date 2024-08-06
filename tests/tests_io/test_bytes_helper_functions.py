@@ -38,6 +38,7 @@ def test_bytes_helper_functions_get_bits_string():
     get_bits_string_data_list = [
         GetBitsStringTestEntry(value_to_test=528391, bits_to_fill=32, expected_string="00000000000010000001000000000111"),  # DDS flags value
         GetBitsStringTestEntry(value_to_test=171, bits_to_fill=16, expected_string="0000000010101011"),
+        GetBitsStringTestEntry(value_to_test=2273, bits_to_fill=16, expected_string="0000100011100001"),
         ]
 
     for test_entry in get_bits_string_data_list:
