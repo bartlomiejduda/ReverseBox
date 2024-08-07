@@ -1,14 +1,34 @@
 """
-Copyright © 2023  Bartłomiej Duda
+Copyright © 2023-2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
+# mypy: ignore-errors
+# fmt: off
+
 import os
-import struct
 from io import BufferedReader
 from typing import Optional
 
-# mypy: ignore-errors
 from reversebox.common.logger import get_logger
+from reversebox.io_files.bytes_helper_functions import (
+    get_int8,
+    get_int16,
+    get_int24,
+    get_int32,
+    get_uint8,
+    get_uint16,
+    get_uint24,
+    get_uint32,
+    set_int8,
+    set_int16,
+    set_int24,
+    set_int32,
+    set_uint8,
+    set_uint16,
+    set_uint24,
+    set_uint32,
+)
 
 logger = get_logger(__name__)
 
@@ -20,6 +40,7 @@ class FileHandler:
         self.endianess = self._get_endianess(endianess_str)
 
         self.file: Optional[BufferedReader] = None
+        self.open()
 
     def open(self) -> bool:
         error_message = "File can't be opened!"
@@ -119,6 +140,9 @@ class FileHandler:
         self._check_file()
         return self.file.tell()
 
+    def savepos(self) -> int:  # alias for quickbms compatibility
+        return self.get_position()
+
     def get_file_size(self) -> int:
         current_position = self.get_position()
         self.seek(0, 2)
@@ -147,40 +171,56 @@ class FileHandler:
         self.seek(current_position)
         return data
 
-    def read_uint32(self) -> int:
+    def read_int8(self) -> int:
         self._check_file()
-        self._check_read_mode()
-        data = self.file.read(4)
-        return struct.unpack(self.endianess + "L", data)[0]
-
-    def read_int32(self) -> int:
-        self._check_file()
-        self._check_read_mode()
-        data = self.file.read(4)
-        return struct.unpack(self.endianess + "l", data)[0]
-
-    def read_uint16(self) -> int:
-        self._check_file()
-        self._check_read_mode()
-        data = self.file.read(2)
-        return struct.unpack(self.endianess + "H", data)[0]
-
-    def read_int16(self) -> int:
-        self._check_file()
-        self._check_read_mode()
-        data = self.file.read(2)
-        return struct.unpack(self.endianess + "h", data)[0]
+        data = self.file.read(1)
+        return get_int8(data, self.endianess)
 
     def read_uint8(self) -> int:
         self._check_file()
         self._check_read_mode()
         data = self.file.read(1)
-        return struct.unpack(self.endianess + "B", data)[0]
+        return get_uint8(data, self.endianess)
 
-    def read_int8(self) -> int:
+    def read_int16(self) -> int:
         self._check_file()
-        data = self.file.read(1)
-        return struct.unpack(self.endianess + "b", data)[0]
+        self._check_read_mode()
+        data = self.file.read(2)
+        return get_int16(data, self.endianess)
+
+    def read_uint16(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(2)
+        return get_uint16(data, self.endianess)
+
+    def read_int24(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(4)
+        return get_int24(data, self.endianess)
+
+    def read_uint24(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(4)
+        return get_uint24(data, self.endianess)
+
+    def read_int32(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(4)
+        return get_int32(data, self.endianess)
+
+    def read_uint32(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(4)
+        return get_uint32(data, self.endianess)
+
+    ###
+    ###
+    ###
 
     def write_str(self, input_str: str, encoding: str = "utf8") -> bool:
         self._check_file()
@@ -201,44 +241,50 @@ class FileHandler:
         self.file.write(data_to_write)
         return True
 
-    def write_uint32(self, value: int) -> bool:
+    def write_int8(self, value: int) -> bool:
         self._check_file()
         self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "L", value)
-        self.file.write(data_to_write)
-        return True
-
-    def write_int32(self, value: int) -> bool:
-        self._check_file()
-        self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "l", value)
-        self.file.write(data_to_write)
-        return True
-
-    def write_uint16(self, value: int) -> bool:
-        self._check_file()
-        self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "H", value)
-        self.file.write(data_to_write)
-        return True
-
-    def write_int16(self, value: int) -> bool:
-        self._check_file()
-        self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "h", value)
-        self.file.write(data_to_write)
+        self.file.write(set_int8(value, self.endianess))
         return True
 
     def write_uint8(self, value: int) -> bool:
         self._check_file()
         self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "B", value)
-        self.file.write(data_to_write)
+        self.file.write(set_uint8(value, self.endianess))
         return True
 
-    def write_int8(self, value: int) -> bool:
+    def write_int16(self, value: int) -> bool:
         self._check_file()
         self._check_write_mode()
-        data_to_write = struct.pack(self.endianess + "b", value)
-        self.file.write(data_to_write)
+        self.file.write(set_int16(value, self.endianess))
+        return True
+
+    def write_uint16(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_uint16(value, self.endianess))
+        return True
+
+    def write_int24(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_int24(value, self.endianess))
+        return True
+
+    def write_uint24(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_uint24(value, self.endianess))
+        return True
+
+    def write_int32(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_int32(value, self.endianess))
+        return True
+
+    def write_uint32(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_uint32(value, self.endianess))
         return True
