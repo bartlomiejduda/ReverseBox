@@ -93,6 +93,8 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
 
 * Image
+  - Decode RGB121 ✔️
+  - Decode RGB121_BYTE ✔️
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
   - Decode RGBX332 (RGB8) ✔️
@@ -112,6 +114,7 @@ or software researchers).
   - Decode ARGB8888 ✔️
   - Decode ABGR8888 ✔️
   - Decode RGBA8888 ✔️
+  - Decode BGRA8888 ✔️
   - Decode PAL4_RGBX5551 ✔️
   - Decode PAL4_RGB888 ✔️
   - Decode PAL4_IA8 ✔️

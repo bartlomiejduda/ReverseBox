@@ -4,12 +4,18 @@ License: GPL-3.0 License
 """
 from enum import Enum
 
+# fmt: off
+
 
 class ImageFormats(Enum):
     # Generic Formats
+    # 4-bit
+    RGB121 = "rgb121"  # PIX_FMT_RGB4 / packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb)
+
     # 8-bit
     RGBX2222 = "rgbx2222"
     RGBA2222 = "rgba2222"
+    RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
 
@@ -30,9 +36,10 @@ class ImageFormats(Enum):
     BGR888 = "bgr888"  # PIX_FMT_BGR24  / packed RGB 8:8:8, 24bpp, BGRBGR
 
     # 32-bit
-    RGBA8888 = "rgba8888"
-    ARGB8888 = "argb8888"
-    ABGR8888 = "abgr8888"
+    RGBA8888 = "rgba8888"  # PIX_FMT_RGBA / packed RGBA 8:8:8:8, 32bpp, RGBARGBA
+    BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA
+    ARGB8888 = "argb8888"  # PIX_FMT_ARGB / packed ARGB 8:8:8:8, 32bpp, ARGBARGB
+    ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
 
     # Indexed Formats
     # 4-bit
