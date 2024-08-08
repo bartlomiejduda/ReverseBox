@@ -61,6 +61,14 @@ class ImageDecoder:
         p[3] = ((pixel_int >> 6) & 3) * 85
         return p
 
+    def _decode_gray8_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = pixel_int & 255
+        p[1] = pixel_int & 255
+        p[2] = pixel_int & 255
+        p[3] = 0xFF
+        return p
+
     def _decode_rgb332_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = (pixel_int >> 5) * 36
@@ -323,6 +331,7 @@ class ImageDecoder:
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
+        ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB332: (_decode_rgb332_pixel, 8, get_uint8),

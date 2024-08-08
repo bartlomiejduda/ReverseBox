@@ -18,6 +18,7 @@ class ImageFormats(Enum):
     RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
+    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp
 
     # 16-bit
     RGB565 = "rgb565"

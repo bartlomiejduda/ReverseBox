@@ -97,6 +97,7 @@ or software researchers).
   - Decode RGB121_BYTE ✔️
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
+  - Decode GRAY8 ✔️
   - Decode RGBX332 (RGB8) ✔️
   - Decode BGRX332 (BGR8) ✔️
   - Decode RGB565 ✔️
