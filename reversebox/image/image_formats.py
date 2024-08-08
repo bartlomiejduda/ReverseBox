@@ -7,31 +7,43 @@ from enum import Enum
 
 class ImageFormats(Enum):
     # Generic Formats
+    # 8-bit
     RGBX2222 = "rgbx2222"
     RGBA2222 = "rgba2222"
+    RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
+    BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
+
+    # 16-bit
     RGB565 = "rgb565"
     BGR565 = "bgr565"
     RGBX5551 = "rgbx5551"
     RGBA5551 = "rgba5551"
-    RGB888 = "rgb888"
-    BGR888 = "bgr888"
     ARGB4444 = "argb4444"
     RGBA4444 = "rgba4444"
     RGBX4444 = "rgbx4444"
     XRGB1555 = "xrgb1555"
     ABGR1555 = "abgr1555"
     XBGR1555 = "xbgr1555"
+
+    # 24-bit
+    RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB
+    BGR888 = "bgr888"  # PIX_FMT_BGR24  / packed RGB 8:8:8, 24bpp, BGRBGR
+
+    # 32-bit
+    RGBA8888 = "rgba8888"
     ARGB8888 = "argb8888"
     ABGR8888 = "abgr8888"
-    RGBA8888 = "rgba8888"
 
     # Indexed Formats
+    # 4-bit
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
     PAL4_RGBA8888 = "pal4_rgba8888"
     PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
     PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)
     PAL4_RGB5A3 = "pal4_rgb5a3"  # N64_C4 (type 2)
+
+    # 8-bit
     PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_BGRX5551 = "pal8_bgrx5551"
@@ -43,6 +55,8 @@ class ImageFormats(Enum):
     PAL8_RGB5A3 = "pal8_rgb5a3"  # N64_C8 (type 2)
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"
+
+    # 16-bit
     PAL16_IA8 = "pal16_ia8"  # N64_C14X2 (type 0)
     PAL16_RGB565 = "pal16_rgb565"  # N64_C14X2 (type 1)
     PAL16_RGB5A3 = "pal16_rgb5a3"  # N64_C14X2 (type 2)
@@ -75,4 +89,5 @@ class ImageFormats(Enum):
     # https://web.archive.org/web/20190220164028/http://www.sunrayimage.com/examples.html
     # Example: ffmpeg -i <input file path> -vf format=yuv240p -frames:v 1 output_image.yuv
     YUY2 = "yuy2"  # packed 4:2:2 YUV  /  |Y0|U0|Y1|V0|
+    YUV422 = "yuv422"
     MADYUV = "madyuv"  # TODO - same as YUY2? Needs more research...

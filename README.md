@@ -95,11 +95,14 @@ or software researchers).
 * Image
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
+  - Decode RGBX332 (RGB8) ✔️
+  - Decode BGRX332 (BGR8) ✔️
   - Decode RGB565 ✔️
   - Decode BGR565 ✔️
   - Decode RGBX5551 ✔️
   - Decode RGBA5551 ✔️
-  - Decode RGB888 ✔️
+  - Decode RGB888 (RGB24) ✔️
+  - Decode BGR888 (BGR24) ✔️
   - Decode ARGB4444 ✔️
   - Decode RGBA4444 ✔️
   - Decode RGBX4444 ✔️
