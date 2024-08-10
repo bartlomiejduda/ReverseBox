@@ -95,7 +95,6 @@ class ImageFormats(Enum):
     # https://wiki.videolan.org/YUV
     # https://gstreamer.freedesktop.org/documentation/additional/design/mediatype-video-raw.html
     # https://web.archive.org/web/20190220164028/http://www.sunrayimage.com/examples.html
-    # Example: ffmpeg -i <input file path> -vf format=yuv240p -frames:v 1 output_image.yuv
-    YUY2 = "yuy2"  # packed 4:2:2 YUV  /  |Y0|U0|Y1|V0|
+    YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
     YUV422 = "yuv422"
     MADYUV = "madyuv"  # TODO - same as YUY2? Needs more research...

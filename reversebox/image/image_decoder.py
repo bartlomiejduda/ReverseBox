@@ -9,6 +9,7 @@ from PIL import Image
 from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
 from reversebox.image.compression.compression_gst import decompress_gst_image
+from reversebox.image.decoders.yuv_decoder import YUVDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.image.swizzling.swizzle_gst import (
@@ -302,31 +303,6 @@ class ImageDecoder:
         p[3] = pixel_int >> 8
         return p
 
-    def _decode_yuy2_pixel(self, Y: float, U: float, V: float) -> bytes:
-        p = bytearray(4)
-
-        def _round_clamp_int(f: float) -> int:
-            i: int = int(f+0.5)
-            if i < 0:
-                i = 0
-            if i > 255:
-                i = 255
-            return i
-
-        C: float = Y - 16.0
-        D: float = U - 128.0
-        E: float = V - 128.0
-
-        R: float = 1.164383 * C + 1.596027 * E
-        G: float = 1.164383 * C - (0.391762 * D) - (0.812968 * E)
-        B: float = 1.164383 * C + 2.017232 * D
-
-        p[0] = _round_clamp_int(R)
-        p[1] = _round_clamp_int(G)
-        p[2] = _round_clamp_int(B)
-        p[3] = 0xFF
-        return p
-
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
@@ -402,11 +378,6 @@ class ImageDecoder:
         ImageFormats.GST222: (2, 2, 2),
         ImageFormats.GST422: (4, 2, 2),
         ImageFormats.GST822: (8, 2, 2),
-    }
-
-    yuv_data_formats = {
-        # image_format: (decode_function, bpp)
-        ImageFormats.YUY2: (_decode_yuy2_pixel, 32),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -555,35 +526,6 @@ class ImageDecoder:
 
         return output_texture_data
 
-    def _decode_yuv(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple):
-        decode_function, bpp = image_format
-        is_odd: bool = True if (img_width & 1) else False
-        current_yuv_offset: int = 0
-        current_pixel_number: int = 0
-        output_texture_data = bytearray(img_width * img_height * 4)
-
-        for y in range(img_height):
-            for x in range(0, img_width, 2):
-
-                Y0: float = float(image_data[current_yuv_offset])
-                U: float = float(image_data[current_yuv_offset + 1])
-                Y1: float = float(image_data[current_yuv_offset + 2])
-                V: float = float(image_data[current_yuv_offset + 3])
-
-                pixel1 = decode_function(self, Y0, U, V)
-                pixel2 = decode_function(self, Y1, U, V)
-                output_texture_data[current_pixel_number * 4:(current_pixel_number + 1) * 4] = pixel1
-                output_texture_data[(current_pixel_number + 1) * 4:(current_pixel_number + 2) * 4] = pixel2
-
-                if is_odd and x == img_width - 1:
-                    current_yuv_offset += 4
-                    current_pixel_number += 1
-                else:
-                    current_yuv_offset += 4
-                    current_pixel_number += 2
-
-        return output_texture_data
-
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
@@ -597,4 +539,5 @@ class ImageDecoder:
         return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)
 
     def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
-        return self._decode_yuv(image_data, img_width, img_height, self.yuv_data_formats[image_format])
+        yuv_decoder = YUVDecoder()
+        return yuv_decoder.decode_yuv_image_main(image_data, img_width, img_height, image_format)
