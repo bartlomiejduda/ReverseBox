@@ -34,7 +34,7 @@ class YUVDecoder:
             i = 255
         return i
 
-    def _yuv_to_rgb(self, Y, U, V):
+    def _yuv_to_rgb(self, Y, U, V) -> tuple:
         R = Y + 1.140 * (V - 128)
         G = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
         B = Y + 2.032 * (U - 128)
@@ -62,7 +62,7 @@ class YUVDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_yuy2_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuy2_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         is_width_odd: bool = True if (img_width & 1) else False
         current_yuv_offset: int = 0
         current_pixel_number: int = 0
@@ -90,7 +90,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_nv12_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_nv12_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         p: int = img_height
@@ -139,7 +139,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_nv21_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_nv21_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         p: int = img_height
@@ -188,10 +188,10 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_uyvy_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_uyvy_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
-        j = 0
+        j: int = 0
         for i in range(0, len(image_data), 4):
             U = float(image_data[i])
             Y0 = float(image_data[i + 1])
@@ -220,13 +220,13 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv444p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv444p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
-        num_pixels = img_width * img_height
-        y_plane_start = 0
-        u_plane_start = num_pixels
-        v_plane_start = num_pixels * 2
+        num_pixels: int = img_width * img_height
+        y_plane_start: int = 0
+        u_plane_start: int = num_pixels
+        v_plane_start: int = num_pixels * 2
 
         for i in range(img_height):
             for j in range(img_width):
@@ -254,16 +254,16 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv410p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv410p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        num_pixels = img_width * img_height
-        uv_width = img_width // 4
-        uv_height = img_height // 4
-        uv_size = uv_width * uv_height
+        num_pixels: int = img_width * img_height
+        uv_width: int = img_width // 4
+        uv_height: int = img_height // 4
+        uv_size: int = uv_width * uv_height
 
-        y_plane_start = 0
-        u_plane_start = num_pixels
-        v_plane_start = num_pixels + uv_size
+        y_plane_start: int = 0
+        u_plane_start: int = num_pixels
+        v_plane_start: int = num_pixels + uv_size
 
         for i in range(img_height):
             for j in range(img_width):
@@ -291,16 +291,16 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv420p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv420p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        num_pixels = img_width * img_height
-        uv_width = img_width // 2
-        uv_height = img_height // 2
-        uv_size = uv_width * uv_height
+        num_pixels: int = img_width * img_height
+        uv_width: int = img_width // 2
+        uv_height: int = img_height // 2
+        uv_size: int = uv_width * uv_height
 
-        y_plane_start = 0
-        u_plane_start = num_pixels
-        v_plane_start = num_pixels + uv_size
+        y_plane_start: int = 0
+        u_plane_start: int = num_pixels
+        v_plane_start: int = num_pixels + uv_size
 
         for i in range(img_height):
             for j in range(img_width):
@@ -328,15 +328,15 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv422p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv422p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        num_pixels = img_width * img_height
-        uv_width = img_width // 2
-        uv_size = uv_width * img_height
+        num_pixels: int = img_width * img_height
+        uv_width: int = img_width // 2
+        uv_size: int = uv_width * img_height
 
-        y_plane_start = 0
-        u_plane_start = num_pixels
-        v_plane_start = num_pixels + uv_size
+        y_plane_start: int = 0
+        u_plane_start: int = num_pixels
+        v_plane_start: int = num_pixels + uv_size
 
         for i in range(img_height):
             for j in range(img_width):
@@ -364,15 +364,15 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv411p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv411p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        num_pixels = img_width * img_height
-        uv_width = img_width // 4
-        uv_size = uv_width * img_height
+        num_pixels: int = img_width * img_height
+        uv_width: int = img_width // 4
+        uv_size: int = uv_width * img_height
 
-        y_plane_start = 0
-        u_plane_start = num_pixels
-        v_plane_start = num_pixels + uv_size
+        y_plane_start: int = 0
+        u_plane_start: int = num_pixels
+        v_plane_start: int = num_pixels + uv_size
 
         for i in range(img_height):
             for j in range(img_width):
@@ -400,7 +400,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_uyyvyy411_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_uyyvyy411_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         def set_pixel(out_rgba_array, row, col, R, G, B):
@@ -433,10 +433,10 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuv440p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuv440p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        y_plane_size = img_width * img_height
-        uv_plane_size = img_width * (img_height // 2)
+        y_plane_size: int = img_width * img_height
+        uv_plane_size: int = img_width * (img_height // 2)
 
         def set_pixel(out_rgba_array, row, col, R, G, B):
             out_index = (row * img_width + col) * 4
@@ -460,10 +460,10 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_yuva420p_image(self, image_data: bytes, img_width: int, img_height: int):
+    def _decode_yuva420p_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
-        y_plane_size = img_width * img_height
-        uv_plane_size = (img_width // 2) * (img_height // 2)
+        y_plane_size: int = img_width * img_height
+        uv_plane_size: int = (img_width // 2) * (img_height // 2)
 
         def set_pixel(out_rgba_array, row, col, R, G, B, A):
             out_index = (row * img_width + col) * 4
@@ -488,7 +488,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
+    def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
         if image_format == ImageFormats.YUY2:

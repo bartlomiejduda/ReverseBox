@@ -316,34 +316,38 @@ class ImageDecoder:
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
+        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),
+
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB332: (_decode_rgb332_pixel, 8, get_uint8),
         ImageFormats.BGR332: (_decode_bgr332_pixel, 8, get_uint8),
+        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),
+        ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),
+
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
-        ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
-        ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
         ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
         ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
         ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),
         ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
         ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),
+        ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),
+        ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
+
+        ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
+        ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
+
         ImageFormats.ARGB8888: (_decode_argb8888_pixel, 32, get_uint32),
         ImageFormats.ABGR8888: (_decode_abgr8888_pixel, 32, get_uint32),
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
         ImageFormats.BGRA8888: (_decode_bgra8888_pixel, 32, get_uint32),
-        ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
-        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),
-        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),
-        ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),
-        ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),
     }
 
     indexed_data_formats = {
@@ -549,6 +553,6 @@ class ImageDecoder:
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)
 
-    def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
+    def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         yuv_decoder = YUVDecoder()
         return yuv_decoder.decode_yuv_image_main(image_data, img_width, img_height, image_format)
