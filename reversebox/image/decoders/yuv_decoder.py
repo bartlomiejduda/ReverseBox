@@ -177,6 +177,38 @@ class YUVDecoder:
 
         return output_texture_data
 
+    def _decode_uyvy_image(self, image_data: bytes, img_width: int, img_height: int):
+        output_texture_data = bytearray(img_width * img_height * 4)
+
+        j = 0
+        for i in range(0, len(image_data), 4):
+            U = float(image_data[i])
+            Y0 = float(image_data[i + 1])
+            V = float(image_data[i + 2])
+            Y1 = float(image_data[i + 3])
+
+            R0 = Y0 + 1.140 * (V - 128.0)
+            G0 = Y0 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+            B0 = Y0 + 2.032 * (U - 128.0)
+
+            R1 = Y1 + 1.140 * (V - 128.0)
+            G1 = Y1 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+            B1 = Y1 + 2.032 * (U - 128.0)
+
+            output_texture_data[j] = self._limit_rgb_value(R0)
+            output_texture_data[j + 1] = self._limit_rgb_value(G0)
+            output_texture_data[j + 2] = self._limit_rgb_value(B0)
+            output_texture_data[j + 3] = 0xFF
+
+            output_texture_data[j + 4] = self._limit_rgb_value(R1)
+            output_texture_data[j + 5] = self._limit_rgb_value(G1)
+            output_texture_data[j + 6] = self._limit_rgb_value(B1)
+            output_texture_data[j + 7] = 0xFF
+
+            j += 8
+
+        return output_texture_data
+
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
@@ -186,5 +218,7 @@ class YUVDecoder:
             return self._decode_nv12_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.NV21:
             return self._decode_nv21_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.UYVY:
+            return self._decode_uyvy_image(image_data, img_width, img_height)
         else:
             raise Exception(f"Image format not supported by yuv decoder! Image_format: {image_format}")

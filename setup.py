@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.14.2"
+VERSION_NUM = "0.14.3"
 
 
 def get_long_description() -> str:
@@ -47,7 +47,9 @@ setuptools.setup(
         "Natural Language :: English",
     ],
     test_suite="tests",
-    keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python, image, decode, decoding, RGB, swizzle, swizzling, morton, twiddling, texture",
+    keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python, image, decode, decoding, "
+    "RGB, swizzle, swizzling, morton, twiddle, twiddling, texture, UYVY, YUY2, NV21, NV12, RGBA, RGBA8888, RGBA8, BGR, "
+    "grayscale, graphics, color, pixel, convert, converting, YUV, RAW",
     python_requires=">=3.6",
     install_requires=["lzokay", "polib", "crc", "hashbase", "pillow", "rawutil"],
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
