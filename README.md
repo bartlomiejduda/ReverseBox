@@ -154,6 +154,7 @@ or software researchers).
   - Decode GST422 ✔️
   - Decode GST822 ✔️
   - Decode YUY2 ✔️
+  - Decode NV12 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
