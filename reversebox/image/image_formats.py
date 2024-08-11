@@ -98,3 +98,4 @@ class ImageFormats(Enum):
     NV21 = "nv21"  # PIX_FMT_NV21
     UYVY = "uyvy"  # PIX_FMT_UYVY422 / packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
     YUV444P = "yuv444p"  # PIX_FMT_YUV444P / planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
+    YUV410P = "yuv410p"  # PIX_FMT_YUV410P 	planar YUV 4:1:0, 9bpp, (1 Cr & Cb sample per 4x4 Y samples)

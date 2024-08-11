@@ -243,6 +243,43 @@ class YUVDecoder:
 
         return output_texture_data
 
+    def _decode_yuv410p_image(self, image_data: bytes, img_width: int, img_height: int):
+        output_texture_data = bytearray(img_width * img_height * 4)
+        num_pixels = img_width * img_height
+        uv_width = img_width // 4
+        uv_height = img_height // 4
+        uv_size = uv_width * uv_height
+
+        y_plane_start = 0
+        u_plane_start = num_pixels
+        v_plane_start = num_pixels + uv_size
+
+        for i in range(img_height):
+            for j in range(img_width):
+                y_index = y_plane_start + i * img_width + j
+                u_index = u_plane_start + (i // 4) * uv_width + (j // 4)
+                v_index = v_plane_start + (i // 4) * uv_width + (j // 4)
+
+                Y = image_data[y_index]
+                U = image_data[u_index]
+                V = image_data[v_index]
+
+                R = Y + 1.140 * (V - 128)
+                G = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
+                B = Y + 2.032 * (U - 128)
+
+                R = self._limit_rgb_value(R)
+                G = self._limit_rgb_value(G)
+                B = self._limit_rgb_value(B)
+
+                rgba_index = (i * img_width + j) * 4
+                output_texture_data[rgba_index] = R
+                output_texture_data[rgba_index + 1] = G
+                output_texture_data[rgba_index + 2] = B
+                output_texture_data[rgba_index + 3] = 0xFF
+
+        return output_texture_data
+
 
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
@@ -257,5 +294,7 @@ class YUVDecoder:
             return self._decode_uyvy_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUV444P:
             return self._decode_yuv444p_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV410P:
+            return self._decode_yuv410p_image(image_data, img_width, img_height)
         else:
             raise Exception(f"Image format not supported by yuv decoder! Image_format: {image_format}")
