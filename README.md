@@ -164,6 +164,7 @@ or software researchers).
   - Decode YUV411P ✔️
   - Decode UYYVYY411 ✔️
   - Decode YUV440P ✔️
+  - Decode YUVA420P ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
