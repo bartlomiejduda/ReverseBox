@@ -103,3 +103,4 @@ class ImageFormats(Enum):
     YUV422P = "yuv422p"  # PIX_FMT_YUV422P / planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples)
     YUV411P = "yuv411p"  # PIX_FMT_YUV411P / planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples)
     UYYVYY411 = "uyyvyy411"  # PIX_FMT_UYYVYY411 / packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3
+    YUV440P = "yuv440p"  # PIX_FMT_YUV440P / planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)

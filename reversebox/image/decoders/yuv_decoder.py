@@ -433,6 +433,33 @@ class YUVDecoder:
 
         return output_texture_data
 
+    def _decode_yuv440p_image(self, image_data: bytes, img_width: int, img_height: int):
+        output_texture_data = bytearray(img_width * img_height * 4)
+        y_plane_size = img_width * img_height
+        uv_plane_size = img_width * (img_height // 2)
+
+        def set_pixel(out_rgba_array, row, col, R, G, B):
+            out_index = (row * img_width + col) * 4
+            out_rgba_array[out_index] = R
+            out_rgba_array[out_index + 1] = G
+            out_rgba_array[out_index + 2] = B
+            out_rgba_array[out_index + 3] = 0xFF
+
+        y_plane = image_data[0:y_plane_size]
+        u_plane = image_data[y_plane_size:y_plane_size + uv_plane_size]
+        v_plane = image_data[y_plane_size + uv_plane_size:y_plane_size + 2 * uv_plane_size]
+
+        for i in range(img_height):
+            for j in range(img_width):
+                Y = y_plane[i * img_width + j]
+                U = u_plane[(i // 2) * img_width + j]
+                V = v_plane[(i // 2) * img_width + j]
+
+                R, G, B = self._yuv_to_rgb(Y, U, V)
+                set_pixel(output_texture_data, i, j, R, G, B)
+
+        return output_texture_data
+
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
@@ -456,5 +483,7 @@ class YUVDecoder:
             return self._decode_yuv411p_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.UYYVYY411:
             return self._decode_uyyvyy411_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV440P:
+            return self._decode_yuv440p_image(image_data, img_width, img_height)
         else:
             raise Exception(f"Image format not supported by yuv decoder! Image_format: {image_format}")
