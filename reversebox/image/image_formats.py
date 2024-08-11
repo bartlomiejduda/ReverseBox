@@ -93,8 +93,6 @@ class ImageFormats(Enum):
 
     # YUV Formats
     # https://wiki.videolan.org/YUV
-    # https://gstreamer.freedesktop.org/documentation/additional/design/mediatype-video-raw.html
-    # https://web.archive.org/web/20190220164028/http://www.sunrayimage.com/examples.html
     YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
     NV12 = "nv12"  # PIX_FMT_NV12 / planar YUV 4:2:0
-    MADYUV = "madyuv"  # TODO - same as YUY2? Needs more research...
+    NV21 = "nv21"  # PIX_FMT_NV21
