@@ -158,6 +158,8 @@ or software researchers).
   - Decode NV21 ✔️
   - Decode UYVY ✔️
   - Decode YUV444P ✔️
+  - Decode YUV410P ✔️
+  - Decode YUV420P ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
