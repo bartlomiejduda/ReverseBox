@@ -93,7 +93,7 @@ class ImageFormats(Enum):
 
     # YUV Formats
     # https://wiki.videolan.org/YUV
-    YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
+    YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr / <YUY2, YUNV, V422, YUYV>
     NV12 = "nv12"  # PIX_FMT_NV12 / planar YUV 4:2:0
     NV21 = "nv21"  # PIX_FMT_NV21
     UYVY = "uyvy"  # PIX_FMT_UYVY422 / packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
@@ -102,3 +102,4 @@ class ImageFormats(Enum):
     YUV420P = "yuv420p"  # PIX_FMT_YUV420P / planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
     YUV422P = "yuv422p"  # PIX_FMT_YUV422P / planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples)
     YUV411P = "yuv411p"  # PIX_FMT_YUV411P / planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples)
+    UYYVYY411 = "uyyvyy411"  # PIX_FMT_UYYVYY411 / packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3
