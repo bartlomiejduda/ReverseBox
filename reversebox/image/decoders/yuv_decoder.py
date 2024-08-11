@@ -128,6 +128,55 @@ class YUVDecoder:
 
         return output_texture_data
 
+    def _decode_nv21_image(self, image_data: bytes, img_width: int, img_height: int):
+        output_texture_data = bytearray(img_width * img_height * 4)
+
+        p: int = img_height
+        for i in range(0, img_height, 2):
+            for j in range(0, img_width, 2):
+                Y00 = float(image_data[i * img_width + j])
+                Y01 = float(image_data[i * img_width + j + 1])
+                Y10 = float(image_data[(i + 1) * img_width + j])
+                Y11 = float(image_data[(i + 1) * img_width + j + 1])
+                U = float(image_data[p * img_width + j + 1])
+                V = float(image_data[p * img_width + j])
+
+                R = Y00 + 1.140 * (V - 128.0)
+                G = Y00 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+                B = Y00 + 2.032 * (U - 128.0)
+                output_texture_data[i * img_width * 4 + j * 4] = self._limit_rgb_value(R)
+                output_texture_data[i * img_width * 4 + j * 4 + 1] = self._limit_rgb_value(G)
+                output_texture_data[i * img_width * 4 + j * 4 + 2] = self._limit_rgb_value(B)
+                output_texture_data[i * img_width * 4 + j * 4 + 3] = 0xFF
+
+                R = Y01 + 1.140 * (V - 128.0)
+                G = Y01 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+                B = Y01 + 2.032 * (U - 128.0)
+                output_texture_data[i * img_width * 4 + j * 4 + 4] = self._limit_rgb_value(R)
+                output_texture_data[i * img_width * 4 + j * 4 + 5] = self._limit_rgb_value(G)
+                output_texture_data[i * img_width * 4 + j * 4 + 6] = self._limit_rgb_value(B)
+                output_texture_data[i * img_width * 4 + j * 4 + 7] = 0xFF
+
+                R = Y10 + 1.140 * (V - 128.0)
+                G = Y10 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+                B = Y10 + 2.032 * (U - 128.0)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4] = self._limit_rgb_value(R)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 1] = self._limit_rgb_value(G)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 2] = self._limit_rgb_value(B)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 3] = 0xFF
+
+                R = Y11 + 1.140 * (V - 128.0)
+                G = Y11 - 0.395 * (U - 128.0) - 0.581 * (V - 128.0)
+                B = Y11 + 2.032 * (U - 128.0)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 4] = self._limit_rgb_value(R)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 5] = self._limit_rgb_value(G)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 6] = self._limit_rgb_value(B)
+                output_texture_data[(i + 1) * img_width * 4 + j * 4 + 7] = 0xFF
+
+            p += 1
+
+        return output_texture_data
+
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats):
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
@@ -135,5 +184,7 @@ class YUVDecoder:
             return self._decode_yuy2_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.NV12:
             return self._decode_nv12_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.NV21:
+            return self._decode_nv21_image(image_data, img_width, img_height)
         else:
             raise Exception(f"Image format not supported by yuv decoder! Image_format: {image_format}")

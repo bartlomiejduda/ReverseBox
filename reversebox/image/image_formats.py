@@ -18,7 +18,7 @@ class ImageFormats(Enum):
     RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
-    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp
+    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (same as Y800)
 
     # 16-bit
     RGB565 = "rgb565"
@@ -96,3 +96,4 @@ class ImageFormats(Enum):
     YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
     NV12 = "nv12"  # PIX_FMT_NV12 / planar YUV 4:2:0
     NV21 = "nv21"  # PIX_FMT_NV21
+    UYVY = "uyvy"  # PIX_FMT_UYVY422 / packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
