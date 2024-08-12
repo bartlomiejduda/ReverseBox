@@ -22,6 +22,7 @@ class ImageFormats(Enum):
 
     # 16-bit
     GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
+    GRAY16 = "gray16"  # PIX_FMT_GRAY16LE / PIX_FMT_GRAY16BE / Y, 16bpp
     RGB565 = "rgb565"
     BGR565 = "bgr565"
     RGBX5551 = "rgbx5551"

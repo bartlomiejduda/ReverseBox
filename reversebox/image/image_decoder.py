@@ -80,6 +80,16 @@ class ImageDecoder:
         p[3] = A
         return p
 
+    def _decode_gray16_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        L = pixel_int & 0xFFFF
+        L = L >> 8
+        p[0] = L
+        p[1] = L
+        p[2] = L
+        p[3] = 0xFF
+        return p
+
     def _decode_rgb332_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = (pixel_int >> 5) * 36
@@ -328,6 +338,7 @@ class ImageDecoder:
         ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),
 
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
+        ImageFormats.GRAY16: (_decode_gray16_pixel, 16, get_uint16),
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),

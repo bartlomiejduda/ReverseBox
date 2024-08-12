@@ -166,6 +166,7 @@ or software researchers).
   - Decode YUV440P ✔️
   - Decode YUVA420P ✔️
   - Decode GRAY8A (LA88) ✔️
+  - Decode GRAY16 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
