@@ -43,6 +43,8 @@ class ImageFormats(Enum):
     BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA
     ARGB8888 = "argb8888"  # PIX_FMT_ARGB / packed ARGB 8:8:8:8, 32bpp, ARGBARGB
     ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
+    XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
+    RGBX8888 = "rgbx8888"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
 
     # Indexed Formats
     # 4-bit

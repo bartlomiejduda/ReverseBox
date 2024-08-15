@@ -245,6 +245,31 @@ class ImageDecoder:
         p[3] = (pixel_int >> 0) & 0xff
         return p
 
+    def _decode_xrgb8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        R = (pixel_int >> 16) & 0xFF
+        G = (pixel_int >> 8) & 0xFF
+        B = pixel_int & 0xFF
+
+        p[0] = R
+        p[1] = G
+        p[2] = B
+        p[3] = 0xFF
+        return p
+
+    def _decode_rgbx8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        R = (pixel_int >> 24) & 0xFF
+        G = (pixel_int >> 16) & 0xFF
+        B = (pixel_int >> 8) & 0xFF
+
+        p[0] = R
+        p[1] = G
+        p[2] = B
+        p[3] = 0xFF
+        return p
+
+
     def _decode_argb4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         a = (pixel_int >> 12) & 0xff
@@ -359,6 +384,8 @@ class ImageDecoder:
         ImageFormats.ABGR8888: (_decode_abgr8888_pixel, 32, get_uint32),
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
         ImageFormats.BGRA8888: (_decode_bgra8888_pixel, 32, get_uint32),
+        ImageFormats.XRGB8888: (_decode_xrgb8888_pixel, 32, get_uint32),
+        ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
     }
 
     indexed_data_formats = {
