@@ -6,6 +6,13 @@ from enum import Enum
 
 # fmt: off
 
+# Here you can find all image formats supported by ReverseBox
+
+# Legend:
+# packed - all channels for single pixel written one next to each other
+# planar - each color channel is stored in separate memory block (see "yuv_decoder" for more details")
+# bpp - bits per pixel
+
 
 class ImageFormats(Enum):
     # Generic Formats
@@ -45,6 +52,8 @@ class ImageFormats(Enum):
     ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
     XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
     RGBX8888 = "rgbx8888"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
+    XBGR8888 = "xbgr8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
+    BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...
 
     # Indexed Formats
     # 4-bit

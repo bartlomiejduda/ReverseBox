@@ -169,6 +169,8 @@ or software researchers).
   - Decode GRAY16 ✔️
   - Decode XRGB8888 ✔️
   - Decode RGBX8888 ✔️
+  - Decode XBGR8888 ✔️
+  - Decode BGRX8888 ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
