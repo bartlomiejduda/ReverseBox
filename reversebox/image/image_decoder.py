@@ -326,21 +326,22 @@ class ImageDecoder:
         g = (pixel_int >> 4) & 0x0f
         b = (pixel_int >> 0) & 0x0f
 
-        p[0] = (b << 4) | (b >> 0)
+        p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
-        p[2] = (r << 4) | (r >> 0)
+        p[2] = (b << 4) | (b >> 0)
         p[3] = (a << 4) | (a >> 0)
         return p
 
+    # RGB444
     def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = (pixel_int >> 8) & 0x0f
         g = (pixel_int >> 4) & 0x0f
         b = (pixel_int >> 0) & 0x0f
 
-        p[0] = (b << 4) | (b >> 0)
+        p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
-        p[2] = (r << 4) | (r >> 0)
+        p[2] = (b << 4) | (b >> 0)
         p[3] = 0xFF
         return p
 
@@ -406,7 +407,7 @@ class ImageDecoder:
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
         ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
         ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
-        ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),
+        ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),  # RGB444
         ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),  # RGB555
         ImageFormats.ARGB1555: (_decode_argb1555_pixel, 16, get_uint16),
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
