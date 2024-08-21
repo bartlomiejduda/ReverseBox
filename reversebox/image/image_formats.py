@@ -30,16 +30,17 @@ class ImageFormats(Enum):
     # 16-bit
     GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
     GRAY16 = "gray16"  # PIX_FMT_GRAY16LE / PIX_FMT_GRAY16BE / Y, 16bpp
-    RGB565 = "rgb565"
-    BGR565 = "bgr565"
+    RGB565 = "rgb565"  # PIX_FMT_RGB565LE / PIX_FMT_RGB565BE / packed RGB 5:6:5, 16bpp
+    BGR565 = "bgr565"  # PIX_FMT_BGR565LE / PIX_FMT_BGR565BE / packed BGR 5:6:5, 16bpp
     RGBX5551 = "rgbx5551"
     RGBA5551 = "rgba5551"
     ARGB4444 = "argb4444"
     RGBA4444 = "rgba4444"
     RGBX4444 = "rgbx4444"
-    XRGB1555 = "xrgb1555"
-    ABGR1555 = "abgr1555"
-    XBGR1555 = "xbgr1555"
+    XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
+    ARGB1555 = "argb1555"  # TODO - find samples for this
+    ABGR1555 = "abgr1555"  # TODO - find samples for this
+    XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
 
     # 24-bit
     RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB

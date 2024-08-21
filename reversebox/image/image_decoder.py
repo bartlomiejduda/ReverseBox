@@ -133,6 +133,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    # RGB555
     def _decode_xrgb1555_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -144,7 +145,21 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_argb1555_pixel(self, pixel_int: int) -> bytes:
+        # TODO - find samples for this
+        p = bytearray(4)
+        r = pixel_int & 0x1F
+        g = (pixel_int >> 5) & 0x1F
+        b = (pixel_int >> 10) & 0x1F
+        a = (pixel_int >> 15) & 0x1
+        p[0] = (b << 3) | (b >> 2)
+        p[1] = (g << 3) | (g >> 2)
+        p[2] = (r << 3) | (r >> 2)
+        p[3] = (0x00 if a == 0 else 0xFF)
+        return p
+
     def _decode_abgr1555_pixel(self, pixel_int: int) -> bytes:
+        # TODO - find samples for this
         p = bytearray(4)
         r = pixel_int & 0x1F
         g = (pixel_int >> 5) & 0x1F
@@ -156,6 +171,7 @@ class ImageDecoder:
         p[3] = (0x00 if a == 0 else 0xFF)
         return p
 
+    # BGR555
     def _decode_xbgr1555_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -391,9 +407,10 @@ class ImageDecoder:
         ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
         ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
         ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),
-        ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),
+        ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),  # RGB555
+        ImageFormats.ARGB1555: (_decode_argb1555_pixel, 16, get_uint16),
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
-        ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),
+        ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),  # BGR555
         ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
 
