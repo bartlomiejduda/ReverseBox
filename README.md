@@ -109,6 +109,7 @@ or software researchers).
   - Decode ARGB4444 ✔️
   - Decode RGBA4444 ✔️
   - Decode RGBX4444 ✔️
+  - Decode BGRX4444 ✔️
   - Decode XRGB1555 ✔️
   - Decode ARGB1555 ✔️
   - Decode ABGR1555 ✔️
