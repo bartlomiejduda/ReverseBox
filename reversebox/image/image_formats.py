@@ -59,6 +59,7 @@ class ImageFormats(Enum):
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B
+    BGR48 = "bgr48"  # PIX_FMT_BGR48LE / PIX_FMT_BGR48BE / packed RGB 16:16:16, 48bpp, 16B, 16G, 16R
 
     # Indexed Formats
     # 4-bit

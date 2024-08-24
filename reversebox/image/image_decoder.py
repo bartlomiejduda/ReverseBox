@@ -383,6 +383,22 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_bgr48_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        b = (pixel_int & 0xFFFF)
+        g = (pixel_int >> 16) & 0xFFFF
+        r = (pixel_int >> 32) & 0xFFFF
+
+        r_8bit = (r >> 8) & 0xFF
+        g_8bit = (g >> 8) & 0xFF
+        b_8bit = (b >> 8) & 0xFF
+
+        p[0] = r_8bit
+        p[1] = g_8bit
+        p[2] = b_8bit
+        p[3] = 0xFF
+        return p
+
     def _decode_i4_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = pixel_int * 0x11
@@ -459,6 +475,7 @@ class ImageDecoder:
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
 
         ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
+        ImageFormats.BGR48: (_decode_bgr48_pixel, 48, get_uint48),
     }
 
     indexed_data_formats = {
