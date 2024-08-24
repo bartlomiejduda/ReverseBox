@@ -50,6 +50,34 @@ def get_uint32(input_bytes: bytes, endianess: str) -> int:
     return struct.unpack(endianess + "I", input_bytes)[0]
 
 
+def get_int48(b: bytes, endianess: str) -> int:
+    if len(b) != 6:
+        raise ValueError("Input must be exactly 6 bytes long.")
+
+    if endianess == "<":
+        return int.from_bytes(b, signed=True, byteorder="little")
+    else:
+        return int.from_bytes(b, signed=True, byteorder="big")
+
+
+def get_uint48(b: bytes, endianess: str) -> int:
+    if len(b) != 6:
+        raise ValueError("Input must be exactly 6 bytes long.")
+
+    if endianess == "<":
+        return int.from_bytes(b, signed=False, byteorder="little")
+    else:
+        return int.from_bytes(b, signed=False, byteorder="big")
+
+
+def get_int64(input_bytes: bytes, endianess: str) -> int:
+    return struct.unpack(endianess + "q", input_bytes)[0]
+
+
+def get_uint64(input_bytes: bytes, endianess: str) -> int:
+    return struct.unpack(endianess + "Q", input_bytes)[0]
+
+
 #####
 #####
 #####
@@ -85,3 +113,25 @@ def set_int32(input_value: int, endianess: str) -> bytes:
 
 def set_uint32(input_value: int, endianess: str) -> bytes:
     return struct.pack(endianess + "I", input_value)
+
+
+def set_int48(input_value: int, endianess: str) -> bytes:
+    if endianess == "<":
+        return input_value.to_bytes(6, "little", signed=True)
+    else:
+        return input_value.to_bytes(6, "big", signed=True)
+
+
+def set_uint48(input_value: int, endianess: str) -> bytes:
+    if endianess == "<":
+        return input_value.to_bytes(6, "little", signed=False)
+    else:
+        return input_value.to_bytes(6, "big", signed=False)
+
+
+def set_int64(input_value: int, endianess: str) -> bytes:
+    return struct.pack(endianess + "q", input_value)
+
+
+def set_uint64(input_value: int, endianess: str) -> bytes:
+    return struct.pack(endianess + "Q", input_value)

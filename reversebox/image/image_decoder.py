@@ -23,6 +23,7 @@ from reversebox.io_files.bytes_helper_functions import (
     get_uint16,
     get_uint24,
     get_uint32,
+    get_uint48,
 )
 
 logger = get_logger(__name__)
@@ -366,6 +367,22 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_rgb48_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        r = (pixel_int & 0xFFFF)
+        g = (pixel_int >> 16) & 0xFFFF
+        b = (pixel_int >> 32) & 0xFFFF
+
+        r_8bit = (r >> 8) & 0xFF
+        g_8bit = (g >> 8) & 0xFF
+        b_8bit = (b >> 8) & 0xFF
+
+        p[0] = r_8bit
+        p[1] = g_8bit
+        p[2] = b_8bit
+        p[3] = 0xFF
+        return p
+
     def _decode_i4_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = pixel_int * 0x11
@@ -440,6 +457,8 @@ class ImageDecoder:
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.XBGR8888: (_decode_xbgr8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
+
+        ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
     }
 
     indexed_data_formats = {
@@ -539,6 +558,13 @@ class ImageDecoder:
                 texture_data[i * 4: (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
         elif bits_per_pixel == 32:
             bytes_per_pixel = 4
+            for i in range(len(image_data) // bytes_per_pixel):
+                image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
+                pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)
+                read_offset += bytes_per_pixel
+                texture_data[i * 4: (i + 1) * 4] = decode_function(self, pixel_int)  # noqa
+        elif bits_per_pixel == 48:
+            bytes_per_pixel = 6
             for i in range(len(image_data) // bytes_per_pixel):
                 image_pixel: bytes = image_handler.get_bytes(read_offset, bytes_per_pixel)
                 pixel_int: int = image_entry_read_function(image_pixel, image_endianess_format)

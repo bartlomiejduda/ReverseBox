@@ -57,6 +57,9 @@ class ImageFormats(Enum):
     XBGR8888 = "xbgr8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
     BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...
 
+    # 48-bit
+    RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B
+
     # Indexed Formats
     # 4-bit
     PAL4_RGBX5551 = "pal4_rgbx5551"

@@ -118,6 +118,7 @@ or software researchers).
   - Decode ABGR8888 ✔️
   - Decode RGBA8888 ✔️
   - Decode BGRA8888 ✔️
+  - Decode RGB48 ✔️
   - Decode PAL4_RGBX5551 ✔️
   - Decode PAL4_RGB888 ✔️
   - Decode PAL4_IA8 ✔️
