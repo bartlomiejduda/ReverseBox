@@ -9,6 +9,7 @@ from PIL import Image
 from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
 from reversebox.image.compression.compression_gst import decompress_gst_image
+from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
 from reversebox.image.decoders.yuv_decoder import YUVDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -691,3 +692,7 @@ class ImageDecoder:
     def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         yuv_decoder = YUVDecoder()
         return yuv_decoder.decode_yuv_image_main(image_data, img_width, img_height, image_format)
+
+    def decode_bumpmap_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        bumpmap_decoder = BumpmapDecoder()
+        return bumpmap_decoder.decode_bumpmap_image_main(image_data, img_width, img_height, image_format)

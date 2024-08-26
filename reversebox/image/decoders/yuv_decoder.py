@@ -62,7 +62,7 @@ class YUVDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_yuy2_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+    def _decode_yuv422_yuy2_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         is_width_odd: bool = True if (img_width & 1) else False
         current_yuv_offset: int = 0
         current_pixel_number: int = 0
@@ -90,7 +90,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_nv12_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+    def _decode_yuv420_nv12_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         p: int = img_height
@@ -139,7 +139,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_nv21_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+    def _decode_yuv420_nv21_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         p: int = img_height
@@ -188,7 +188,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_uyvy_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+    def _decode_yuv422_uyvy_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         j: int = 0
@@ -400,7 +400,7 @@ class YUVDecoder:
 
         return output_texture_data
 
-    def _decode_uyyvyy411_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+    def _decode_yuv411_uyyvyy411_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
         output_texture_data = bytearray(img_width * img_height * 4)
 
         def set_pixel(out_rgba_array, row, col, R, G, B):
@@ -491,14 +491,14 @@ class YUVDecoder:
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
-        if image_format == ImageFormats.YUY2:
-            return self._decode_yuy2_image(image_data, img_width, img_height)
-        elif image_format == ImageFormats.NV12:
-            return self._decode_nv12_image(image_data, img_width, img_height)
-        elif image_format == ImageFormats.NV21:
-            return self._decode_nv21_image(image_data, img_width, img_height)
-        elif image_format == ImageFormats.UYVY:
-            return self._decode_uyvy_image(image_data, img_width, img_height)
+        if image_format == ImageFormats.YUV422_YUY2:
+            return self._decode_yuv422_yuy2_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV420_NV12:
+            return self._decode_yuv420_nv12_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV420_NV21:
+            return self._decode_yuv420_nv21_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV422_UYVY:
+            return self._decode_yuv422_uyvy_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUV444P:
             return self._decode_yuv444p_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUV410P:
@@ -509,8 +509,8 @@ class YUVDecoder:
             return self._decode_yuv422p_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUV411P:
             return self._decode_yuv411p_image(image_data, img_width, img_height)
-        elif image_format == ImageFormats.UYYVYY411:
-            return self._decode_uyyvyy411_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.YUV411_UYYVYY411:
+            return self._decode_yuv411_uyyvyy411_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUV440P:
             return self._decode_yuv440p_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUVA420P:

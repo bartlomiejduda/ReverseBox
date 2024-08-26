@@ -25,7 +25,7 @@ class ImageFormats(Enum):
     RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
-    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (same as Y800)
+    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (aliases: Y800 and L8)
 
     # 16-bit
     GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
@@ -81,7 +81,7 @@ class ImageFormats(Enum):
     PAL8_RGB565 = "pal8_rgb565"  # N64_C8 (type 1)
     PAL8_RGB5A3 = "pal8_rgb5a3"  # N64_C8 (type 2)
     PAL8_RGBA8888 = "pal8_rgba8888"
-    PAL8_BGRA8888 = "pal8_bgra8888"
+    PAL8_BGRA8888 = "pal8_bgra8888"  # PIX_FMT_PAL8 / 8 bit with PIX_FMT_RGB32 palette
 
     # 16-bit
     PAL16_IA8 = "pal16_ia8"  # N64_C14X2 (type 0)
@@ -112,15 +112,18 @@ class ImageFormats(Enum):
 
     # YUV Formats
     # https://wiki.videolan.org/YUV
-    YUY2 = "yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr / <YUY2, YUNV, V422, YUYV>
-    NV12 = "nv12"  # PIX_FMT_NV12 / planar YUV 4:2:0
-    NV21 = "nv21"  # PIX_FMT_NV21
-    UYVY = "uyvy"  # PIX_FMT_UYVY422 / packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
-    YUV444P = "yuv444p"  # PIX_FMT_YUV444P / planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
     YUV410P = "yuv410p"  # PIX_FMT_YUV410P / planar YUV 4:1:0, 9bpp, (1 Cr & Cb sample per 4x4 Y samples)
-    YUV420P = "yuv420p"  # PIX_FMT_YUV420P / planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
-    YUV422P = "yuv422p"  # PIX_FMT_YUV422P / planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples)
     YUV411P = "yuv411p"  # PIX_FMT_YUV411P / planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples)
-    UYYVYY411 = "uyyvyy411"  # PIX_FMT_UYYVYY411 / packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3
-    YUV440P = "yuv440p"  # PIX_FMT_YUV440P / planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)
+    YUV411_UYYVYY411 = "yuv411_uyyvyy411"  # PIX_FMT_UYYVYY411 / packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3
+    YUV420_NV12 = "yuv420_nv12"  # PIX_FMT_NV12 / planar YUV 4:2:0
+    YUV420_NV21 = "yuv420_nv21"  # PIX_FMT_NV21 / planar YUV 4:2:0
+    YUV420P = "yuv420p"  # PIX_FMT_YUV420P / planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
     YUVA420P = "yuva420p"  # PIX_FMT_YUVA420P / planar YUV 4:2:0, 20bpp, (1 Cr & Cb sample per 2x2 Y & A samples)
+    YUV422P = "yuv422p"  # PIX_FMT_YUV422P / planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples)
+    YUV422_UYVY = "yuv422_uyvy"  # PIX_FMT_UYVY422 / packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
+    YUV422_YUY2 = "yuv422_yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr / <YUY2, YUNV, V422, YUYV>
+    YUV440P = "yuv440p"  # PIX_FMT_YUV440P / planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)
+    YUV444P = "yuv444p"  # PIX_FMT_YUV444P / planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
+
+    # Other
+    BUMPMAP_SR = "bumpmap_sr"  # 16-bit normal map. Each texel consist of a pair of 8-bit values (S and R)
