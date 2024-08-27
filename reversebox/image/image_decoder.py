@@ -10,6 +10,7 @@ from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
 from reversebox.image.compression.compression_gst import decompress_gst_image
 from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
+from reversebox.image.decoders.n64_decoder import N64Decoder
 from reversebox.image.decoders.yuv_decoder import YUVDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -435,7 +436,7 @@ class ImageDecoder:
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
-        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),
+        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),  # GRAY, 4bpp
 
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
@@ -443,8 +444,8 @@ class ImageDecoder:
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB332: (_decode_rgb332_pixel, 8, get_uint8),
         ImageFormats.BGR332: (_decode_bgr332_pixel, 8, get_uint8),
-        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),
-        ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),
+        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),  # GRAY, 8bpp
+        ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),  # GRAY+ALPHA, 8bpp
 
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
         ImageFormats.GRAY16: (_decode_gray16_pixel, 16, get_uint16),
@@ -460,7 +461,7 @@ class ImageDecoder:
         ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),  # BGR555
         ImageFormats.ARGB1555: (_decode_argb1555_pixel, 16, get_uint16),
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
-        ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),
+        ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),  # GRAY+ALPHA, 16bpp
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
 
         ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
@@ -696,3 +697,7 @@ class ImageDecoder:
     def decode_bumpmap_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         bumpmap_decoder = BumpmapDecoder()
         return bumpmap_decoder.decode_bumpmap_image_main(image_data, img_width, img_height, image_format)
+
+    def decode_n64_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        n64_decoder = N64Decoder()
+        return n64_decoder.decode_n64_image_main(image_data, img_width, img_height, image_format)

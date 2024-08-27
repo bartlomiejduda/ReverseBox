@@ -2,33 +2,12 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+from reversebox.image.common import crop_image, get_storage_wh
 
 # BC Swizzle
 # Used in some WII games like Mario Kart Wii
 
 # fmt: off
-
-
-def crop_image(image_data: bytes, width: int, height: int, bpp: int, new_width: int, new_height: int) -> bytes:
-    if width == new_width and height == new_height:
-        return image_data
-
-    cropped_image_data = bytearray(new_width * new_height * bpp // 8)
-
-    lw = min(width, new_width) * bpp // 8
-
-    for y in range(0, min(height, new_height)):
-        dst = y * new_width * bpp // 8
-        src = y * width * bpp // 8
-        cropped_image_data[dst: dst + lw] = image_data[src: src + lw]
-
-    return cropped_image_data
-
-
-def get_storage_wh(image_width: int, image_height: int, block_width: int, block_height: int) -> tuple:
-    image_width = (image_width + block_width - 1) // block_width * block_width
-    image_height = (image_height + block_height - 1) // block_height * block_height
-    return image_width, image_height
 
 
 def unswizzle_bc(image_data: bytes, image_width: int, image_height: int, block_width: int, block_height: int, bpp: int) -> bytes:

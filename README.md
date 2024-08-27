@@ -146,6 +146,8 @@ or software researchers).
   - Decode N64_I8 ✔️
   - Decode N64_IA4 ✔️
   - Decode N64_IA8 ✔️
+  - Decode N64_RGBA32 ✔️
+  - Decode N64_CMPR ✔️
   - Decode DXT1 ✔️
   - Decode DXT3 ✔️
   - Decode DXT5 ✔️

@@ -89,11 +89,13 @@ class ImageFormats(Enum):
     PAL16_RGB5A3 = "pal16_rgb5a3"  # N64_C14X2 (type 2)
 
     # N64 / WII formats
-    N64_RGB5A3 = "n64_rgb5a3"
-    N64_I4 = "n64_i4"
-    N64_I8 = "n64_i8"
-    N64_IA4 = "n64_ia4"
-    N64_IA8 = "n64_ia8"
+    N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp
+    N64_RGBA32 = "n64_rgba32"  # COLOR+ALPHA, 32bpp
+    N64_CMPR = "n64_cmpr"  # COLOR+ALPHA, 4bpp, compressed
+    N64_I4 = "n64_i4"  # GRAY, 4bpp
+    N64_I8 = "n64_i8"  # GRAY, 8bpp
+    N64_IA4 = "n64_ia4"  # GRAY+ALPHA, 8bpp
+    N64_IA8 = "n64_ia8"  # GRAY+ALPHA, 16bpp
 
     # DXT Formats
     DXT1 = "dxt1"  # BC1
@@ -125,5 +127,5 @@ class ImageFormats(Enum):
     YUV440P = "yuv440p"  # PIX_FMT_YUV440P / planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)
     YUV444P = "yuv444p"  # PIX_FMT_YUV444P / planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
 
-    # Other
+    # Bumpmaps / Normal maps
     BUMPMAP_SR = "bumpmap_sr"  # 16-bit normal map. Each texel consist of a pair of 8-bit values (S and R)
