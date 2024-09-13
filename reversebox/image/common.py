@@ -2,6 +2,9 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+from reversebox.image.image_formats import ImageFormats
+
+# fmt: off
 
 
 def convert_bpp_to_bytes_per_pixel(input_bpp: int) -> int:
@@ -33,7 +36,7 @@ def get_img_width_from_stride(stride: int, bpp: int) -> int:
 
 # used in N64/WII games
 def get_storage_wh(
-    image_width: int, image_height: int, block_width: int, block_height: int
+        image_width: int, image_height: int, block_width: int, block_height: int
 ) -> tuple:
     image_width = (image_width + block_width - 1) // block_width * block_width
     image_height = (image_height + block_height - 1) // block_height * block_height
@@ -42,12 +45,12 @@ def get_storage_wh(
 
 # used in N64/WII games
 def crop_image(
-    image_data: bytes,
-    width: int,
-    height: int,
-    bpp: int,
-    new_width: int,
-    new_height: int,
+        image_data: bytes,
+        width: int,
+        height: int,
+        bpp: int,
+        new_width: int,
+        new_height: int,
 ) -> bytes:
     if width == new_width and height == new_height:
         return image_data
@@ -59,6 +62,60 @@ def crop_image(
     for y in range(0, min(height, new_height)):
         dst = y * new_width * bpp // 8
         src = y * width * bpp // 8
-        cropped_image_data[dst : dst + lw] = image_data[src : src + lw]
+        cropped_image_data[dst: dst + lw] = image_data[src: src + lw]
 
     return cropped_image_data
+
+
+def get_bpp_for_image_format(image_format: ImageFormats) -> int:
+    if image_format in (ImageFormats.RGB121,
+                        ImageFormats.N64_CMPR,
+                        ImageFormats.N64_I4,
+                        ImageFormats.DXT1):
+        return 4
+    elif image_format in (ImageFormats.RGBX2222,
+                          ImageFormats.RGBA2222,
+                          ImageFormats.RGB121_BYTE,
+                          ImageFormats.RGB332,
+                          ImageFormats.BGR332,
+                          ImageFormats.GRAY8,
+                          ImageFormats.N64_I8,
+                          ImageFormats.N64_IA4,
+                          ImageFormats.DXT3,
+                          ImageFormats.DXT5):
+        return 8
+    elif image_format in (ImageFormats.GRAY8A,
+                          ImageFormats.GRAY16,
+                          ImageFormats.RGB565,
+                          ImageFormats.BGR565,
+                          ImageFormats.RGBX5551,
+                          ImageFormats.RGBA5551,
+                          ImageFormats.ARGB4444,
+                          ImageFormats.RGBA4444,
+                          ImageFormats.RGBX4444,
+                          ImageFormats.BGRX4444,
+                          ImageFormats.XRGB1555,
+                          ImageFormats.XBGR1555,
+                          ImageFormats.ARGB1555,
+                          ImageFormats.ABGR1555,
+                          ImageFormats.N64_RGB5A3,
+                          ImageFormats.N64_IA8):
+        return 16
+    elif image_format in (ImageFormats.RGB888,
+                          ImageFormats.BGR888,):
+        return 24
+    elif image_format in (ImageFormats.RGBA8888,
+                          ImageFormats.BGRA8888,
+                          ImageFormats.ARGB8888,
+                          ImageFormats.ABGR8888,
+                          ImageFormats.XRGB8888,
+                          ImageFormats.RGBX8888,
+                          ImageFormats.XBGR8888,
+                          ImageFormats.BGRX8888,
+                          ImageFormats.N64_RGBA32):
+        return 32
+    elif image_format in (ImageFormats.RGB48,
+                          ImageFormats.BGR48,):
+        return 48
+    else:
+        raise Exception(f"Not supported image format! Format: {image_format}")
