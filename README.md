@@ -85,6 +85,7 @@ or software researchers).
   - FNV1-64 ✔️
   - FNV1A-32 ✔️
   - FNV1A-64 ✔️
+  - SDBM ✔️
   - SHA-1 ✔️ <span style="color:yellow">(wrapper only)</span>
   - SHA-2 (256 bits) ✔️ <span style="color:yellow">(wrapper only)</span>
   - MD2 ✔️ <span style="color:yellow">(wrapper only)</span>
