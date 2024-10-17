@@ -433,6 +433,8 @@ class ImageDecoder:
         p[3] = pixel_int >> 8
         return p
 
+    # source format is one of the listed below
+    # target format is always RGBA8888
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),

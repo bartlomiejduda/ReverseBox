@@ -118,7 +118,7 @@ or software researchers).
   - Decode XBGR1555 ✔️
   - Decode ARGB8888 ✔️
   - Decode ABGR8888 ✔️
-  - Decode RGBA8888 ✔️
+  - Decode/Encode RGBA8888 ✔️
   - Decode BGRA8888 ✔️
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
