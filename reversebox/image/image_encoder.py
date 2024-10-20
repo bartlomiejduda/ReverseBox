@@ -31,11 +31,28 @@ class ImageEncoder:
         p[3] = (pixel_int >> 24) & 0xff
         return p
 
+    def _encode_rgb565_pixel(self, pixel_int: int) -> bytearray:
+        r = (pixel_int >> 0) & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+
+        r5 = (r >> 3) & 0x1F
+        g6 = (g >> 2) & 0x3F
+        b5 = (b >> 3) & 0x1F
+
+        rgb565 = (r5 << 11) | (g6 << 5) | b5
+
+        rgb565_bytes = bytearray(2)
+        rgb565_bytes[0] = rgb565 & 0xFF
+        rgb565_bytes[1] = (rgb565 >> 8) & 0xFF
+        return rgb565_bytes
+
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel)
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
+        ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -66,20 +83,21 @@ class ImageEncoder:
         read_offset = 0
         image_endianess_format: str = self._get_endianess_format(image_endianess)
 
-        if bits_per_pixel == 4:
-            pass
-        elif bits_per_pixel == 8:
-            pass
-        elif bits_per_pixel == 16:
-            pass
-        elif bits_per_pixel == 32:
-            for i in range(len(image_data) // source_image_bytes_per_pixel):
-                image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
-                pixel_int: int = get_uint32(image_pixel, image_endianess_format)
-                read_offset += source_image_bytes_per_pixel
+        for i in range(len(image_data) // source_image_bytes_per_pixel):
+            image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
+            pixel_int: int = get_uint32(image_pixel, image_endianess_format)
+            read_offset += source_image_bytes_per_pixel
+
+            if bits_per_pixel == 4:
+                pass
+            elif bits_per_pixel == 8:
+                pass
+            elif bits_per_pixel == 16:
+                texture_data[i * 2: (i + 1) * 2] = encode_function(self, pixel_int)  # noqa
+            elif bits_per_pixel == 32:
                 texture_data[i * 4: (i + 1) * 4] = encode_function(self, pixel_int)  # noqa
-        else:
-            raise Exception(f"[2] Bits_per_pixel={bits_per_pixel} not supported!")
+            else:
+                raise Exception(f"[2] Bits_per_pixel={bits_per_pixel} not supported!")
 
         return texture_data
 

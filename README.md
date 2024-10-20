@@ -102,7 +102,7 @@ or software researchers).
   - Decode GRAY8 ✔️
   - Decode RGBX332 (RGB8) ✔️
   - Decode BGRX332 (BGR8) ✔️
-  - Decode RGB565 ✔️
+  - Decode/Encode RGB565 ✔️
   - Decode BGR565 ✔️
   - Decode RGBX5551 ✔️
   - Decode RGBA5551 ✔️
