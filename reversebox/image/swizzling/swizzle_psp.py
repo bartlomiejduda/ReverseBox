@@ -33,12 +33,12 @@ def swizzle_psp(image_data: bytes, img_width: int, img_height: int, bpp: int):
     row_blocks = stride // 16
 
     for y in range(img_height):
-        for x in range(img_width):
+        for x in range(stride):
             block_x = x // 16
             block_y = y // 8
             block_index = block_x + (block_y * row_blocks)
             block_address = block_index * 16 * 8
-            swizzled_data[block_address + (x - (block_x * 16)) + ((y - (block_y * 8)) * 16)] = image_data[source_offset]
+            swizzled_data[block_address + (x - block_x * 16) + ((y - block_y * 8) * 16)] = image_data[source_offset]
             source_offset += 1
 
     return swizzled_data
