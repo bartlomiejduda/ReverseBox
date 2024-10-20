@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.16.8"
+VERSION_NUM = "0.16.9"
 
 
 def get_long_description() -> str:
@@ -48,8 +48,8 @@ setuptools.setup(
     ],
     test_suite="tests",
     keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python, image, decode, decoding, "
-    "RGB, swizzle, swizzling, morton, twiddle, twiddling, texture, UYVY, YUY2, NV21, NV12, RGBA, RGBA8888, RGBA8, BGR, "
-    "grayscale, graphics, color, pixel, convert, converting, YUV, RAW",
+    "RGB, swizzle, swizzling, morton, twiddle, twiddling, texture, UYVY, YUY2, NV21, NV12, RGBA, RGBA8888, RGB565, RGBA8, BGR, "
+    "grayscale, graphics, color, pixel, convert, converting, YUV, RAW, PSP, PS1, PS2, PS3, XBOX, X360, gamecube, dreamcast",
     python_requires=">=3.6",
     install_requires=["lzokay", "polib", "crc", "hashbase", "pillow", "rawutil"],
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),

@@ -2,7 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
-
+from typing import Tuple
 
 from reversebox.common.logger import get_logger
 from reversebox.image.image_formats import ImageFormats
@@ -55,6 +55,13 @@ class ImageEncoder:
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
     }
 
+    indexed_data_formats = {
+        # image_format: (encode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
+        ImageFormats.PAL4_RGBA8888: (_encode_rgba8888_pixel, 4, 4, get_uint32),
+        ImageFormats.PAL8_RGBA8888: (_encode_rgba8888_pixel, 8, 4, get_uint32),
+
+    }
+
     def _get_endianess_format(self, endianess: str) -> str:
         if endianess == "little":
             endianess_format = "<"
@@ -101,5 +108,22 @@ class ImageEncoder:
 
         return texture_data
 
+    def _encode_indexed(self, image_data: bytes, img_width: int,
+                        img_height: int, image_format: tuple, image_endianess: str, palette_endianess: str) -> Tuple[bytes, bytes]:
+        # encode_function, bits_per_pixel, palette_entry_size, palette_entry_write_function = image_format
+        # image_handler = BytesHandler(image_data)
+        texture_data = bytearray(img_width * img_height * 4)
+        palette_data = bytearray(img_width * img_height * 4)  # TODO
+        # image_offset: int = 0
+        # palette_offset: int = 0
+        # image_endianess_format: str = self._get_endianess_format(image_endianess)
+        # palette_endianess_format: str = self._get_endianess_format(palette_endianess)
+
+        # TODO
+        return texture_data, palette_data
+
     def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._encode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
+
+    def decode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
+        return self._encode_indexed(image_data, img_width, img_height, self.indexed_data_formats[image_format], image_endianess, palette_endianess)
