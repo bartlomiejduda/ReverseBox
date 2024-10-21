@@ -125,5 +125,5 @@ class ImageEncoder:
     def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._encode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
-    def decode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
+    def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
         return self._encode_indexed(image_data, img_width, img_height, self.indexed_data_formats[image_format], image_endianess, palette_endianess)

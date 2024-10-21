@@ -7,6 +7,8 @@ from reversebox.image.common import get_stride_value
 
 # fmt: off
 
+# Note: Input data has to be 16-bytes aligned to be processed correctly!
+
 
 def unswizzle_psp(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     unswizzled_data = bytearray(len(image_data))

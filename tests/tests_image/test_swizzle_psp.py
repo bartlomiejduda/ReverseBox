@@ -11,7 +11,7 @@ from reversebox.image.swizzling.swizzle_psp import swizzle_psp, unswizzle_psp
 # fmt: off
 
 
-@pytest.mark.unittest
+@pytest.mark.imagetest
 def test_psp_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
         os.path.dirname(__file__), "image_files\\RGBA8888_PSP_SWIZZLED.bin"
