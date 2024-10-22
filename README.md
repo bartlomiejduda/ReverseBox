@@ -183,6 +183,7 @@ or software researchers).
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
+  - PS4 Swizzling/Twiddling ✔️
   - PSP Swizzling/Twiddling ✔️
   - GameCube/WII Swizzling/Twiddling ✔️
   - PSVITA Swizzling/Twiddling ✔️

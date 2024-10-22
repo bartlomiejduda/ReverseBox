@@ -9,7 +9,7 @@ import pytest
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_ps4 import unswizzle_ps4
+from reversebox.image.swizzling.swizzle_ps4 import swizzle_ps4, unswizzle_ps4
 
 # fmt: off
 
@@ -25,7 +25,7 @@ def test_ps4_unswizzle_and_swizzle():
     swizzled_file_data = bin_file.read()
 
     unswizzled_file_data = unswizzle_ps4(
-        swizzled_file_data, 2048, 2048, 8
+        swizzled_file_data, 2048, 2048, 4, 4, 16
     )
 
     # debug start ###############################################################################################
@@ -40,14 +40,14 @@ def test_ps4_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    # reswizzled_file_data = swizzle_morton_dreamcast(
-    #     unswizzled_file_data, 512, 512, 8
-    # )
-    #
-    # assert swizzled_file_data[:10] == reswizzled_file_data[:10]
-    # assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
-    # assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
-    # assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
+    reswizzled_file_data = swizzle_ps4(
+        unswizzled_file_data, 2048, 2048, 4, 4, 16
+    )
+
+    assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
+    assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
+    assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
 
 
 # fmt: on

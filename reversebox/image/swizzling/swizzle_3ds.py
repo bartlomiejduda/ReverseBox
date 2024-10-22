@@ -1,5 +1,6 @@
 # TODO - refactor this
 # fmt: off
+# Should occur in some MT Framework games on 3DS
 def unswizzle_3ds(buffer, width, height):
     bpp: int = 24
     l: int = 8
