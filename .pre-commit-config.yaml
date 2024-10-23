@@ -24,7 +24,7 @@ repos:
     rev: 23.3.0
     hooks:
     -   id: black
-        exclude: tests_io/data/.*
+        exclude: (tests_io/data|tests_image/image_files)/.*
 -   repo: https://github.com/pycqa/flake8
     rev: 5.0.4
     hooks:
