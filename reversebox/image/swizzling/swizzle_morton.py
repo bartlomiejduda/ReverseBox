@@ -7,7 +7,7 @@ from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # Morton Order Texture Swizzling
 # https://en.wikipedia.org/wiki/Z-order_curve
-# Used in XBOX CLASSIC and PS3 games
+# Used in XBOX CLASSIC and PS3 games (e.g. EA XSH files)
 
 # fmt: off
 
@@ -43,3 +43,18 @@ def unswizzle_morton(image_data: bytes, img_width: int, img_height: int, bpp: in
         source_index += bytes_per_pixel
 
     return unswizzled_data
+
+
+# TODO - not working as expected
+def swizzle_morton(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    swizzled_data = bytearray(len(image_data))
+    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
+    source_index: int = 0
+
+    for t in range(img_width * img_height):
+        index = calculate_morton_index(t, img_width, img_height)
+        destination_index = bytes_per_pixel * index
+        swizzled_data[source_index: source_index + bytes_per_pixel] = image_data[destination_index: destination_index + bytes_per_pixel]
+        source_index += bytes_per_pixel
+
+    return swizzled_data
