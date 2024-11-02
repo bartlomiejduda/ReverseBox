@@ -5,9 +5,12 @@ License: GPL-3.0 License
 
 from reversebox.io_files.bytes_handler import BytesHandler
 
+# fmt: off
 
-def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
-    unswizzled_palette_data: bytes = b""
+
+# this function can both swizzle and unswizzle ps2 palette
+def _convert_ps2_palette(palette_data: bytes) -> bytes:
+    converted_palette_data: bytes = b""
     palette_handler = BytesHandler(palette_data)
     bytes_per_palette_pixel: int = 4
     parts: int = int(len(palette_data) / 32)
@@ -31,15 +34,17 @@ def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
                     palette_entry = palette_handler.get_bytes(
                         palette_offset, bytes_per_palette_pixel
                     )
-                    unswizzled_palette_data += palette_entry
+                    converted_palette_data += palette_entry
 
-    return unswizzled_palette_data
+    return converted_palette_data
+
+
+def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
+    return _convert_ps2_palette(palette_data)
 
 
 def swizzle_ps2_palette(palette_data: bytes) -> bytes:
-    return unswizzle_ps2_palette(
-        palette_data
-    )  # this function can both swizzle and unswizzle
+    return _convert_ps2_palette(palette_data)
 
 
 # TODO - refactor this
@@ -74,3 +79,5 @@ def unswizzle_ps2_4bit(image_data: bytes, img_width: int, img_height: int) -> by
         idx = ((idx2 << 4) | idx1) & 0xFF
         unswizzled_data[i] = idx
     return unswizzled_data
+
+# fmt: on
