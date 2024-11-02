@@ -2,11 +2,12 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 from reversebox.io_files.bytes_handler import BytesHandler
 
 
 def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
-    converted_raw_palette_data: bytes = b""
+    unswizzled_palette_data: bytes = b""
     palette_handler = BytesHandler(palette_data)
     bytes_per_palette_pixel: int = 4
     parts: int = int(len(palette_data) / 32)
@@ -19,22 +20,29 @@ def unswizzle_ps2_palette(palette_data: bytes) -> bytes:
         for block in range(blocks):
             for stripe in range(stripes):
                 for color in range(colors):
-                    pal_index: int = (
+                    palette_index: int = (
                         index
                         + part * colors * stripes * blocks
                         + block * colors
                         + stripe * stripes * colors
                         + color
                     )
-                    pal_offset: int = pal_index * bytes_per_palette_pixel
-                    pal_entry = palette_handler.get_bytes(
-                        pal_offset, bytes_per_palette_pixel
+                    palette_offset: int = palette_index * bytes_per_palette_pixel
+                    palette_entry = palette_handler.get_bytes(
+                        palette_offset, bytes_per_palette_pixel
                     )
-                    converted_raw_palette_data += pal_entry
+                    unswizzled_palette_data += palette_entry
 
-    return converted_raw_palette_data
+    return unswizzled_palette_data
 
 
+def swizzle_ps2_palette(palette_data: bytes) -> bytes:
+    return unswizzle_ps2_palette(
+        palette_data
+    )  # this function can both swizzle and unswizzle
+
+
+# TODO - refactor this
 def unswizzle_ps2_8bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
     unswizzled_data: bytes = bytearray(img_width * img_height)
     for y in range(img_height):
@@ -49,6 +57,7 @@ def unswizzle_ps2_8bit(image_data: bytes, img_width: int, img_height: int) -> by
     return unswizzled_data
 
 
+# TODO - refactor this
 def unswizzle_ps2_4bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
     pixels: bytes = bytearray(img_width * img_height)
     for i in range(img_width * img_height // 2):
