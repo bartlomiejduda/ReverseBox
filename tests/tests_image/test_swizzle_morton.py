@@ -22,6 +22,7 @@ def test_morton_unswizzle_and_swizzle():
 
     bin_file = open(swizzled_file_path, "rb")
     swizzled_file_data = bin_file.read()
+    bin_file.close()
 
     unswizzled_file_data = unswizzle_morton(
         swizzled_file_data, 256, 64, 16
