@@ -50,7 +50,6 @@ def unswizzle_morton(image_data: bytes, img_width: int, img_height: int, bpp: in
     return unswizzled_data
 
 
-# TODO - not working as expected
 def swizzle_morton(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     swizzled_data = bytearray(len(image_data))
     bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)

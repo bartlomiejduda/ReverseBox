@@ -8,7 +8,6 @@ License: GPL-3.0 License
 # Swizzle used in PS4 games e.g. "Dragons Dogma Dark Arisen" (MT Framework TEX files)
 
 
-# TODO - should be the same as standard morton index calc
 def calculate_morton_index_ps4(t: int, input_img_width: int, input_img_height: int) -> int:
     num1 = num2 = 1
     num3 = num4 = 0
