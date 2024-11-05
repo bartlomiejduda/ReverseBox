@@ -124,6 +124,7 @@ or software researchers).
   - Decode BGR48 ✔️
   - Decode PAL4_RGBX5551 ✔️
   - Decode PAL4_RGB888 ✔️
+  - Decode PAL4_BGR888 ✔️
   - Decode PAL4_IA8 ✔️
   - Decode PAL4_RGB565 ✔️
   - Decode PAL4_RGB5A3 ✔️

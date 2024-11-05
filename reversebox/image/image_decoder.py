@@ -6,7 +6,6 @@ import struct
 
 from PIL import Image
 
-from reversebox.common.common import calculate_padding_length
 from reversebox.common.logger import get_logger
 from reversebox.image.compression.compression_gst import decompress_gst_image
 from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
@@ -486,6 +485,7 @@ class ImageDecoder:
         # image_format: (decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
         ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
         ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
+        ImageFormats.PAL4_BGR888: (_decode_bgr888_pixel, 4, 3, get_uint24),
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
         ImageFormats.PAL4_IA8: (_decode_ia8_pixel, 4, 2, get_uint16),  # N64_C4 (type 0)
         ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),  # N64_C4 (type 1)
@@ -653,10 +653,15 @@ class ImageDecoder:
         block_width, block_height, detail_bpp = image_format
 
         size_of_base: int = (img_width // block_width) * (img_height // block_height)
-        detail_offset: int = size_of_base + calculate_padding_length(size_of_base, 16)
+        size_of_detail: int = img_width * img_height * detail_bpp // 8
+
+        if size_of_base + size_of_detail != len(image_data):
+            logger.warning(f"Size of image {len(image_data)} is different than combined base and detail size {size_of_base + size_of_detail}!")
+
+        detail_offset: int = (size_of_base + (16 - 1)) & ~(16 - 1)
 
         base_data: bytes = image_data[:size_of_base]
-        detail_data: bytes = image_data[detail_offset:]
+        detail_data: bytes = image_data[detail_offset: detail_offset + size_of_detail]
 
         # unswizzle GST data
         if is_swizzled:

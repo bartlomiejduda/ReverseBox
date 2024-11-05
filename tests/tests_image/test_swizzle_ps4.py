@@ -9,7 +9,7 @@ import pytest
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_ps4 import swizzle_ps4, unswizzle_ps4
+from reversebox.image.swizzling.swizzle_morton_ps4 import swizzle_ps4, unswizzle_ps4
 
 # fmt: off
 

@@ -5,6 +5,8 @@ License: GPL-3.0 License
 
 # fmt: off
 
+# Morton Order Texture Swizzling (+ extra PS4 swizzle logic)
+# https://en.wikipedia.org/wiki/Z-order_curve
 # Swizzle used in PS4 games e.g. "Dragons Dogma Dark Arisen" (MT Framework TEX files)
 
 

@@ -65,6 +65,7 @@ class ImageFormats(Enum):
     # 4-bit
     PAL4_RGBX5551 = "pal4_rgbx5551"
     PAL4_RGB888 = "pal4_rgb888"
+    PAL4_BGR888 = "pal4_bgr888"
     PAL4_RGBA8888 = "pal4_rgba8888"
     PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
     PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)

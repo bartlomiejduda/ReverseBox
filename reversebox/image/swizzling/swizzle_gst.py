@@ -29,7 +29,7 @@ def get_detail1_offset(x: int, y: int, width: int) -> int:
     x2 = ((x1 & ~0x0F) >> 1) + ((x1 & 0x07) ^ ((y1 & 0x02) << 1) ^ (y1 & 0x04))
     y2 = ((y1 & ~0x03) >> 1) + (y1 & 0x01)
     z2 = ((x1 & 0x08) >> 2) + ((y1 & 0x02) >> 1)
-    return 16 * (y2 * width // 4 + x2) + 4 * z2 + z1
+    return 16 * (y2 * (width // 4) + x2) + 4 * z2 + z1
 
 
 def get_detail2_offset(x: int, y: int, width: int) -> int:
@@ -45,13 +45,13 @@ def get_detail2_offset(x: int, y: int, width: int) -> int:
 def get_1_bit(input_bytes: bytes, offset: int) -> int:
     index = offset >> 3
     bit = offset & 0x07
-    return input_bytes[index] >> bit & 1
+    return (input_bytes[index] >> bit) & 1
 
 
 def get_2_bits(input_bytes: bytes, offset: int) -> int:
     index = offset >> 3
     bit = offset & 0x07
-    return input_bytes[index] >> bit & 3
+    return (input_bytes[index] >> bit) & 3
 
 
 def unswizzle_gst_base(
@@ -75,16 +75,16 @@ def unswizzle_gst_base(
 
 
 def unswizzle_detail1(image_data: bytes, img_width: int, img_height: int) -> bytes:
-    unswizzled_data: bytes = b""
+    unswizzled_data: bytearray = bytearray(len(image_data))
+    dest_index: int = 0
     for y in range(img_height):
         for x in range(0, img_width, 8):
-            data_byte = 0
-            x_final = 7
-            while x_final >= 0:
-                offset = get_detail1_offset(x + x_final, y, img_width)
-                data_byte = (data_byte << 1) + get_1_bit(image_data, offset)
-                x_final -= 1
-            unswizzled_data += struct.pack("B", data_byte)
+            data = 0
+            for xfine in range(7, -1, -1):
+                offset = get_detail1_offset(x + xfine, y, img_width)
+                data = (data << 1) + get_1_bit(image_data, offset)
+            unswizzled_data[dest_index] = data
+            dest_index += 1
 
     return unswizzled_data
 
