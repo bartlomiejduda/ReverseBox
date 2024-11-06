@@ -64,9 +64,13 @@ class ImageFormats(Enum):
     # Indexed Formats
     # 4-bit
     PAL4_RGBX5551 = "pal4_rgbx5551"
+    PAL4_BGRX5551 = "pal4_bgrx5551"
+    PAL4_XRGB1555 = "pal4_xrgb1555"  # RGB555 (little endian)
+    PAL4_XBGR1555 = "pal4_xbgr1555"  # BGR555 (little endian)
     PAL4_RGB888 = "pal4_rgb888"
     PAL4_BGR888 = "pal4_bgr888"
     PAL4_RGBA8888 = "pal4_rgba8888"
+    PAL4_BGRA8888 = "pal4_bgra8888"
     PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
     PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)
     PAL4_RGB5A3 = "pal4_rgb5a3"  # N64_C4 (type 2)
@@ -75,6 +79,8 @@ class ImageFormats(Enum):
     PAL8_RGBX2222 = "pal8_rgbx2222"
     PAL8_RGBX5551 = "pal8_rgbx5551"
     PAL8_BGRX5551 = "pal8_bgrx5551"
+    PAL8_XRGB1555 = "pal8_xrgb1555"  # RGB555 (little endian)
+    PAL8_XBGR1555 = "pal8_xbgr1555"  # BGR555 (little endian)
     PAL8_RGB888 = "pal8_rgb888"
     PAL8_BGR888 = "pal8_bgr888"
     PAL8_RGBX6666 = "pal8_rgbx6666"

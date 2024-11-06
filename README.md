@@ -123,16 +123,22 @@ or software researchers).
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
   - Decode PAL4_RGBX5551 ✔️
+  - Decode PAL4_BGRX5551 ✔️
+  - Decode PAL4_XRGB1555 ✔️
+  - Decode PAL4_XBGR1555 ✔️
   - Decode PAL4_RGB888 ✔️
   - Decode PAL4_BGR888 ✔️
   - Decode PAL4_IA8 ✔️
   - Decode PAL4_RGB565 ✔️
   - Decode PAL4_RGB5A3 ✔️
   - Decode PAL4_RGBA8888 ✔️
+  - Decode PAL4_BGRA8888 ✔️
   - Decode PAL4_RGB5A3 ✔️
   - Decode PAL8_RGBX2222 ✔️
   - Decode PAL8_RGBX5551 ✔️
   - Decode PAL8_BGRX5551 ✔️
+  - Decode PAL8_XRGB1555 ✔️
+  - Decode PAL8_XBGR1555 ✔️
   - Decode PAL8_RGB888 ✔️
   - Decode PAL8_BGR888 ✔️
   - Decode PAL8_RGBX6666 ✔️

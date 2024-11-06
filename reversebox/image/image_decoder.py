@@ -3,6 +3,7 @@ Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
 import struct
+import traceback
 
 from PIL import Image
 
@@ -484,9 +485,13 @@ class ImageDecoder:
     indexed_data_formats = {
         # image_format: (decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
         ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
+        ImageFormats.PAL4_BGRX5551: (_decode_bgrx5551_pixel, 4, 2, get_uint16),
+        ImageFormats.PAL4_XRGB1555: (_decode_xrgb1555_pixel, 4, 2, get_uint16),  # RGB555 (little endian)
+        ImageFormats.PAL4_XBGR1555: (_decode_xbgr1555_pixel, 4, 2, get_uint16),  # BGR555 (little endian)
         ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
         ImageFormats.PAL4_BGR888: (_decode_bgr888_pixel, 4, 3, get_uint24),
         ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
+        ImageFormats.PAL4_BGRA8888: (_decode_bgra8888_pixel, 4, 4, get_uint32),
         ImageFormats.PAL4_IA8: (_decode_ia8_pixel, 4, 2, get_uint16),  # N64_C4 (type 0)
         ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),  # N64_C4 (type 1)
         ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),  # N64_C4 (type 2)
@@ -494,6 +499,8 @@ class ImageDecoder:
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
         ImageFormats.PAL8_BGRX5551: (_decode_bgrx5551_pixel, 8, 2, get_uint16),
+        ImageFormats.PAL8_XRGB1555: (_decode_xrgb1555_pixel, 8, 2, get_uint16),  # RGB555 (little endian)
+        ImageFormats.PAL8_XBGR1555: (_decode_xbgr1555_pixel, 8, 2, get_uint16),  # BGR555 (little endian)
         ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_BGR888: (_decode_bgr888_pixel, 8, 3, get_uint24),
         ImageFormats.PAL8_RGBX6666: (_decode_rgbx6666_pixel, 8, 3, get_uint24),
@@ -675,13 +682,18 @@ class ImageDecoder:
         decompressed_texture_data: bytes = decompress_gst_image(base_data, detail_data, img_width, img_height, block_width, block_height, detail_bpp)
 
         # convert indexed image to RGBA to get final result
-        output_texture_data = self.decode_indexed_image(
-            decompressed_texture_data,
-            palette_data,
-            img_width,
-            img_height,
-            convert_format
-        )
+        try:
+            output_texture_data = self.decode_indexed_image(
+                decompressed_texture_data,
+                palette_data,
+                img_width,
+                img_height,
+                convert_format
+            )
+        except Exception as error:
+            logger.error(f"Error while decoding GST image! Error: {error}")
+            logger.error(traceback.format_exc())
+            return decompressed_texture_data
 
         return output_texture_data
 
