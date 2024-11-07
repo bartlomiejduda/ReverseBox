@@ -52,6 +52,6 @@ def test_morton_unswizzle_and_swizzle():
     assert swizzled_file_data[:10] == reswizzled_file_data[:10]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
-    assert swizzled_file_data[-10:] == reswizzled_file_data[-10:]
+    assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
 
 # fmt: on

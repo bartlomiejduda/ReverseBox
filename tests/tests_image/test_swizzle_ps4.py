@@ -24,8 +24,15 @@ def test_ps4_unswizzle_and_swizzle():
     bin_file.seek(32)
     swizzled_file_data = bin_file.read()
 
+    img_width = 2048
+    img_height = 2048
+    block_width = 4
+    block_height = 4
+    block_data_size = 16
+    image_format = ImageFormats.DXT5
+
     unswizzled_file_data = unswizzle_ps4(
-        swizzled_file_data, 2048, 2048, 4, 4, 16
+        swizzled_file_data, img_width, img_height, block_width, block_height, block_data_size
     )
 
     # debug start ###############################################################################################
@@ -34,14 +41,14 @@ def test_ps4_unswizzle_and_swizzle():
         image_decoder = ImageDecoder()
         wrapper = PillowWrapper()
         decoded_image_data: bytes = image_decoder.decode_compressed_image(
-            unswizzled_file_data, 2048, 2048, ImageFormats.DXT5
+            unswizzled_file_data, img_width, img_height, image_format
         )
-        pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, 2048, 2048)
+        pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()
     # debug end #################################################################################################
 
     reswizzled_file_data = swizzle_ps4(
-        unswizzled_file_data, 2048, 2048, 4, 4, 16
+        unswizzled_file_data, img_width, img_height, block_width, block_height, block_data_size
     )
 
     assert swizzled_file_data[:10] == reswizzled_file_data[:10]

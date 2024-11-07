@@ -9,25 +9,30 @@ import pytest
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_psp import swizzle_psp, unswizzle_psp
+from reversebox.image.swizzling.swizzle_gamecube import (
+    swizzle_gamecube,
+    unswizzle_gamecube,
+)
 
 # fmt: off
 
 
 @pytest.mark.imagetest
-def test_psp_unswizzle_and_swizzle():
+def test_gamecube_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files\\RGBA8888_PSP_SWIZZLED.bin"
+        os.path.dirname(__file__), "image_files/gamecube_swizzle_bluebar.bin"
     )
 
-    swizzled_file_data = open(swizzled_file_path, "rb").read()
+    bin_file = open(swizzled_file_path, "rb")
+    swizzled_file_data = bin_file.read()
+    bin_file.close()
 
-    img_width = 512
-    img_height = 256
+    img_width = 256
+    img_height = 28
     bpp = 32
-    image_format = ImageFormats.RGBA8888
+    image_format = ImageFormats.ARGB8888
 
-    unswizzled_file_data = unswizzle_psp(
+    unswizzled_file_data = unswizzle_gamecube(
         swizzled_file_data, img_width, img_height, bpp
     )
 
@@ -43,7 +48,7 @@ def test_psp_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_psp(
+    reswizzled_file_data = swizzle_gamecube(
         unswizzled_file_data, img_width, img_height, bpp
     )
 
@@ -51,6 +56,5 @@ def test_psp_unswizzle_and_swizzle():
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
     assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
-
 
 # fmt: on

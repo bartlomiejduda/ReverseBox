@@ -5,6 +5,7 @@ License: GPL-3.0 License
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # Swizzling used in GameCube and WII games
+# e.g. GSH files from FIFA 09 (WII)
 
 # fmt: off
 
@@ -82,3 +83,25 @@ def unswizzle_gamecube(image_data: bytes, img_width: int, img_height: int, bpp: 
                 destination_index += bytes_per_pixel
 
     return unswizzled_data
+
+
+def swizzle_gamecube(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    swizzled_data = bytearray(len(image_data))
+    destination_index: int = 0
+    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
+
+    for y in range(img_height):
+        for x in range(img_width):
+            index = get_pixel_offset(x, y, img_width, bpp)
+
+            if bpp == 32:
+                swizzled_data[index] = image_data[destination_index]
+                swizzled_data[index+1] = image_data[destination_index+1]
+                swizzled_data[index+32] = image_data[destination_index+2]
+                swizzled_data[index+33] = image_data[destination_index+3]
+                destination_index += 4
+            else:
+                swizzled_data[index: index + bytes_per_pixel] = image_data[destination_index: destination_index + bytes_per_pixel]
+                destination_index += bytes_per_pixel
+
+    return swizzled_data

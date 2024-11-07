@@ -27,8 +27,13 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
     win_file.seek(0x10d84)
     swizzled_file_data = win_file.read(262144)
 
+    img_width = 512
+    img_height = 512
+    bpp = 8
+    image_format = ImageFormats.GRAY8
+
     unswizzled_file_data = unswizzle_morton_dreamcast(
-        swizzled_file_data, 512, 512, 8
+        swizzled_file_data, img_width, img_height, bpp
     )
 
     # debug start ###############################################################################################
@@ -37,14 +42,14 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
         image_decoder = ImageDecoder()
         wrapper = PillowWrapper()
         decoded_image_data: bytes = image_decoder.decode_image(
-            unswizzled_file_data, 512, 512, ImageFormats.GRAY8, "little",
+            unswizzled_file_data, img_width, img_height, image_format,
         )
-        pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, 512, 512)
+        pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()
     # debug end #################################################################################################
 
     reswizzled_file_data = swizzle_morton_dreamcast(
-        unswizzled_file_data, 512, 512, 8
+        unswizzled_file_data, img_width, img_height, bpp
     )
 
     assert swizzled_file_data[:10] == reswizzled_file_data[:10]
