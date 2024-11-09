@@ -47,9 +47,8 @@ def swizzle_ps2_palette(palette_data: bytes) -> bytes:
     return _convert_ps2_palette(palette_data)
 
 
-# TODO - refactor this
-def unswizzle_ps2_8bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
-    unswizzled_data: bytes = bytearray(img_width * img_height)
+def _convert_ps2_8bit(image_data: bytes, img_width: int, img_height: int, swizzle_flag: bool) -> bytes:
+    converted_data: bytearray = bytearray(img_width * img_height)
     for y in range(img_height):
         for x in range(img_width):
             block_location = (y & (~0xF)) * img_width + (x & (~0xF)) * 2
@@ -58,26 +57,57 @@ def unswizzle_ps2_8bit(image_data: bytes, img_width: int, img_height: int) -> by
             column_location = pos_y * img_width * 2 + ((x + swap_selector) & 0x7) * 4
             byte_num = ((y >> 1) & 1) + ((x >> 2) & 2)
             swizzle_id = block_location + column_location + byte_num
-            unswizzled_data[y * img_width + x] = image_data[swizzle_id]  # type: ignore
-    return unswizzled_data
+
+            if not swizzle_flag:  # do unswizzle
+                converted_data[y * img_width + x] = image_data[swizzle_id]
+            else:  # do swizzle
+                converted_data[swizzle_id] = image_data[y * img_width + x]
+
+    return converted_data
 
 
-# TODO - refactor this
-def unswizzle_ps2_4bit(image_data: bytes, img_width: int, img_height: int) -> bytes:
-    pixels: bytes = bytearray(img_width * img_height)
-    for i in range(img_width * img_height // 2):
-        index = image_data[i]
-        id2 = (index >> 4) & 0xF
-        id1 = index & 0xF
-        pixels[i * 2] = id1  # type: ignore
-        pixels[i * 2 + 1] = id2  # type: ignore
-    new_pixels: bytes = unswizzle_ps2_8bit(pixels, img_width, img_height)
-    unswizzled_data = bytearray(img_width * img_height)
-    for i in range(img_width * img_height // 2):
-        idx1 = new_pixels[i * 2 + 0]
-        idx2 = new_pixels[i * 2 + 1]
-        idx = ((idx2 << 4) | idx1) & 0xFF
-        unswizzled_data[i] = idx
-    return unswizzled_data
+def _convert_ps2_4bit(input_buffer: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
+    converted_data: bytearray = bytearray(len(input_buffer))
+    input_pixels_8bpp = bytearray(width * height)
+    buffer_byte_size = (width * height + 1) // 2
+
+    # unpack 4bpp pixels to 8bpp
+    for i in range(buffer_byte_size):
+        byte_value = input_buffer[i]
+        nybble_low = byte_value & 0xF
+        nybble_high = byte_value >> 4
+        input_pixels_8bpp[i * 2] = nybble_low
+        input_pixels_8bpp[i * 2 + 1] = nybble_high
+
+    # swizzle/unswizzle for 8bpp
+    output_pixels_8bpp = _convert_ps2_8bit(input_pixels_8bpp, width, height, swizzle_flag)
+
+    # repack 8bpp pixels to 4bpp
+    for i in range(buffer_byte_size):
+        nybble_low = output_pixels_8bpp[i * 2]
+        nybble_high = output_pixels_8bpp[i * 2 + 1]
+        byte_value = (nybble_high << 4) | nybble_low
+        converted_data[i] = byte_value
+
+    return converted_data
+
+
+def unswizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    if bpp == 4:
+        return _convert_ps2_4bit(image_data, img_width, img_height, False)
+    elif bpp == 8:
+        return _convert_ps2_8bit(image_data, img_width, img_height, False)
+    else:
+        raise Exception(f"Bpp {bpp} not supported for PS2 unswizzle!")
+
+
+def swizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    if bpp == 4:
+        return _convert_ps2_4bit(image_data, img_width, img_height, True)
+        pass
+    elif bpp == 8:
+        return _convert_ps2_8bit(image_data, img_width, img_height, True)
+    else:
+        raise Exception(f"Bpp {bpp} not supported for PS2 swizzle!")
 
 # fmt: on

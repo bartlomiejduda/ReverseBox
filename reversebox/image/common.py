@@ -23,6 +23,7 @@ def convert_bpp_to_bytes_per_pixel(input_bpp: int) -> int:
 # The stride is the number of bytes from one row of pixels in memory to the next row of pixels in memory.
 # Stride is also called pitch. If padding bytes are present, the stride is wider than the width of the image.
 # stride = rowbytes = pitch
+# stride = (width * bpp) >> 3
 def get_stride_value(img_width: int, bpp: int) -> int:
     stride: int = img_width * bpp // 8
     return stride
