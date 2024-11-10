@@ -4,7 +4,8 @@ License: GPL-3.0 License
 """
 import ctypes
 from ctypes import byref, c_char
-from pathlib import Path
+
+from reversebox.common.common import get_dll_path
 
 
 class RefpackHandler:
@@ -40,19 +41,15 @@ class RefpackHandler:
             raise Exception("Compressed data too short!")
         if compressed_data[:2] != b"\x10\xFB":
             raise Exception("Wrong refpack compression header!")
-        temp_buffer = (c_char * self._get_output_buffer_size(compressed_data))()
+        uncompressed_data_buffer = (
+            c_char * self._get_output_buffer_size(compressed_data)
+        )()
         try:
-            refpack_dll_path: str = str(
-                Path(__file__)
-                .parents[1]
-                .resolve()
-                .joinpath("libs")
-                .joinpath("refpack.dll")
-            )
+            refpack_dll_path: str = get_dll_path("refpack.dll")
             refpack_dll_file = ctypes.CDLL(refpack_dll_path)
             uncompressed_data_size = refpack_dll_file.unrefpack(
-                compressed_data, byref(temp_buffer), 1
+                compressed_data, byref(uncompressed_data_buffer), 1
             )
         except Exception as error:
             raise Exception(f"Error while decompressing refpack data! Error: {error}")
-        return bytes(bytearray(temp_buffer)[:uncompressed_data_size])
+        return bytes(bytearray(uncompressed_data_buffer)[:uncompressed_data_size])

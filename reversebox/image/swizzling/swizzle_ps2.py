@@ -2,7 +2,10 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+import ctypes
+from ctypes import byref, c_char
 
+from reversebox.common.common import get_dll_path
 from reversebox.io_files.bytes_handler import BytesHandler
 
 # fmt: off
@@ -67,9 +70,9 @@ def _convert_ps2_8bit(image_data: bytes, img_width: int, img_height: int, swizzl
     return converted_data
 
 
-# this is so-called "type 2" 4-bit swizzle function
+# this is so-called "type 2" 4-bit PS2 swizzle function
 # there is also "type 1" function which is not supported at the moment
-# and I have strong suspicion that "type 3" exist and is used for SSH files in EA games...
+# and "type 3" exist which is used for SSH files in EA games
 def _convert_ps2_4bit_type2(input_buffer: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(input_buffer))
     input_pixels_8bpp = bytearray(width * height)
@@ -96,7 +99,7 @@ def _convert_ps2_4bit_type2(input_buffer: bytes, width: int, height: int, swizzl
     return converted_data
 
 
-def pixel16_offset(x: int, y: int, width: int) -> int:
+def _pixel16_offset(x: int, y: int, width: int) -> int:
     bit: int = 0
 
     if width >= 16:
@@ -117,7 +120,7 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
     for y in range(height):
         ywidth = y * width << 1
         for x in range(width):
-            loc = pixel16_offset(x, y, width) >> 3
+            loc = _pixel16_offset(x, y, width) >> 3
 
             if not swizzle_flag:  # do unswizzle
                 converted_data[(x << 1) + ywidth:(x << 1) + ywidth + 2] = image_data[loc:loc + 2]
@@ -125,6 +128,35 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
                 converted_data[loc:loc + 2] = image_data[(x << 1) + ywidth:(x << 1) + ywidth + 2]
 
     return converted_data
+
+
+# special 4-bit swizzle/unswizzle function used in SSH files from EA PS2 games
+def _convert_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
+    if bpp != 4:
+        raise Exception(f"Not supported bpp={bpp} for EA swizzle!")
+
+    converted_data_size: int = len(image_data)
+    converted_data_buffer = (c_char * converted_data_size)()
+
+    try:
+        ea_swizzle_dll_path: str = get_dll_path("ea_swizzle.dll")
+        refpack_dll_file = ctypes.CDLL(ea_swizzle_dll_path)
+        if not swizzle_flag:
+            refpack_dll_file.unswizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
+        else:
+            refpack_dll_file.swizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
+    except Exception as error:
+        raise Exception(f"Error while unswizzling data! Error: {error}")
+
+    return bytes(bytearray(converted_data_buffer)[:converted_data_size])
+
+
+def unswizzle_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    return _convert_ps2_ea_4bit(image_data, img_width, img_height, bpp, False)
+
+
+def swizzle_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+    return _convert_ps2_ea_4bit(image_data, img_width, img_height, bpp, True)
 
 
 def unswizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:

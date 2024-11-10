@@ -3,6 +3,7 @@ Copyright © 2022-2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
 import os.path
+from pathlib import Path
 
 
 def convert_int_to_hex_string(input_value: int) -> str:
@@ -58,3 +59,10 @@ def get_file_extension(input_filename: str) -> str:
 # e.g. "file.dds" --> DDS
 def get_file_extension_uppercase(input_filename: str) -> str:
     return os.path.splitext(input_filename)[-1].strip(".").upper()
+
+
+def get_dll_path(dll_name: str) -> str:
+    dll_path: str = str(
+        Path(__file__).parents[1].resolve().joinpath("libs").joinpath(dll_name)
+    )
+    return dll_path

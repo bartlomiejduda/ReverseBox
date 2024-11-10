@@ -11,7 +11,9 @@ from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.image.swizzling.swizzle_ps2 import (
     swizzle_ps2,
+    swizzle_ps2_ea_4bit,
     unswizzle_ps2,
+    unswizzle_ps2_ea_4bit,
     unswizzle_ps2_palette,
 )
 
@@ -58,9 +60,7 @@ def test_ps2_unswizzle_and_swizzle_8bit():
     assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
 
 
-# TODO - fix 4-bit PS2 unswizzle
-# currently only "type 2" 4-bit function is implemented
-# this sample probably uses "type 3" 4-bit function
+# this sample uses special "type 3" 4-bit PS2 swizzle function
 @pytest.mark.imagetest
 def test_ps2_unswizzle_and_swizzle_4bit():
     swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_4bit_monkey_data.bin")
@@ -74,7 +74,7 @@ def test_ps2_unswizzle_and_swizzle_4bit():
     bpp = 4
     image_format = ImageFormats.PAL4_RGBA8888
 
-    unswizzled_file_data = unswizzle_ps2(
+    unswizzled_file_data = unswizzle_ps2_ea_4bit(
         swizzled_file_data, img_width, img_height, bpp
     )
 
@@ -91,7 +91,7 @@ def test_ps2_unswizzle_and_swizzle_4bit():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_ps2(
+    reswizzled_file_data = swizzle_ps2_ea_4bit(
         unswizzled_file_data, img_width, img_height, bpp
     )
 
