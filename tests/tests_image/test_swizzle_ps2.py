@@ -59,6 +59,8 @@ def test_ps2_unswizzle_and_swizzle_8bit():
 
 
 # TODO - fix 4-bit PS2 unswizzle
+# currently only "type 2" 4-bit function is implemented
+# this sample probably uses "type 3" 4-bit function
 @pytest.mark.imagetest
 def test_ps2_unswizzle_and_swizzle_4bit():
     swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_4bit_monkey_data.bin")
@@ -89,14 +91,14 @@ def test_ps2_unswizzle_and_swizzle_4bit():
         pil_image.show()
     # debug end #################################################################################################
 
-    # reswizzled_file_data = swizzle_ps2(
-    #     unswizzled_file_data, img_width, img_height, bpp
-    # )
-    #
-    # assert swizzled_file_data[:10] == reswizzled_file_data[:10]
-    # assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
-    # assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
-    # assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
+    reswizzled_file_data = swizzle_ps2(
+        unswizzled_file_data, img_width, img_height, bpp
+    )
+
+    assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
+    assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
+    assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
 
 
 # fmt: on

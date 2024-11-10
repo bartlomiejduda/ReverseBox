@@ -9,6 +9,7 @@ from reversebox.io_files.bytes_handler import BytesHandler
 
 
 # this function can both swizzle and unswizzle ps2 palette
+# it supports 32bit and 16bit palettes
 def _convert_ps2_palette(palette_data: bytes) -> bytes:
     converted_palette_data: bytes = b""
     palette_handler = BytesHandler(palette_data)
@@ -66,7 +67,10 @@ def _convert_ps2_8bit(image_data: bytes, img_width: int, img_height: int, swizzl
     return converted_data
 
 
-def _convert_ps2_4bit(input_buffer: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
+# this is so-called "type 2" 4-bit swizzle function
+# there is also "type 1" function which is not supported at the moment
+# and I have strong suspicion that "type 3" exist and is used for SSH files in EA games...
+def _convert_ps2_4bit_type2(input_buffer: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(input_buffer))
     input_pixels_8bpp = bytearray(width * height)
     buffer_byte_size = (width * height + 1) // 2
@@ -92,21 +96,55 @@ def _convert_ps2_4bit(input_buffer: bytes, width: int, height: int, swizzle_flag
     return converted_data
 
 
+def pixel16_offset(x: int, y: int, width: int) -> int:
+    bit: int = 0
+
+    if width >= 16:
+        pagex = x >> 6
+        pagey = y >> 6
+        newx = (y & 0x38) + (x & 0x07)
+        newy = ((x & 0x30) >> 1) + (y & 0x07)
+        bit = ((x & 0x08) << 1)
+        x = (pagex << 6) + newx
+        y = (pagey << 5) + newy
+
+    return 32 * (y * width + x) + bit
+
+
+def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
+    converted_data: bytearray = bytearray(len(image_data))
+
+    for y in range(height):
+        ywidth = y * width << 1
+        for x in range(width):
+            loc = pixel16_offset(x, y, width) >> 3
+
+            if not swizzle_flag:  # do unswizzle
+                converted_data[(x << 1) + ywidth:(x << 1) + ywidth + 2] = image_data[loc:loc + 2]
+            else:  # do swizzle
+                converted_data[loc:loc + 2] = image_data[(x << 1) + ywidth:(x << 1) + ywidth + 2]
+
+    return converted_data
+
+
 def unswizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     if bpp == 4:
-        return _convert_ps2_4bit(image_data, img_width, img_height, False)
+        return _convert_ps2_4bit_type2(image_data, img_width, img_height, False)
     elif bpp == 8:
         return _convert_ps2_8bit(image_data, img_width, img_height, False)
+    elif bpp in (15, 16):
+        return _convert_ps2_16bit(image_data, img_width, img_height, False)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 unswizzle!")
 
 
 def swizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     if bpp == 4:
-        return _convert_ps2_4bit(image_data, img_width, img_height, True)
-        pass
+        return _convert_ps2_4bit_type2(image_data, img_width, img_height, True)
     elif bpp == 8:
         return _convert_ps2_8bit(image_data, img_width, img_height, True)
+    elif bpp in (15, 16):
+        return _convert_ps2_16bit(image_data, img_width, img_height, True)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 swizzle!")
 
