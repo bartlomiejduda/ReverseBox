@@ -130,7 +130,7 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
     return converted_data
 
 
-# special 4-bit swizzle/unswizzle function used in SSH files from EA PS2 games
+# special "type 3" 4-bit swizzle/unswizzle function used in SSH files from EA PS2 games
 def _convert_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
     if bpp != 4:
         raise Exception(f"Not supported bpp={bpp} for EA swizzle!")
@@ -140,11 +140,11 @@ def _convert_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp
 
     try:
         ea_swizzle_dll_path: str = get_dll_path("ea_swizzle.dll")
-        refpack_dll_file = ctypes.CDLL(ea_swizzle_dll_path)
+        ea_swizzle_dll_file = ctypes.CDLL(ea_swizzle_dll_path)
         if not swizzle_flag:
-            refpack_dll_file.unswizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
+            ea_swizzle_dll_file.unswizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
         else:
-            refpack_dll_file.swizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
+            ea_swizzle_dll_file.swizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
     except Exception as error:
         raise Exception(f"Error while unswizzling data! Error: {error}")
 
