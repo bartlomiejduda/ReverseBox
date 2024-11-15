@@ -193,6 +193,7 @@ or software researchers).
   - PS2 Palette Swizzling/Twiddling ✔️
   - PS4 Swizzling/Twiddling ✔️
   - PSP Swizzling/Twiddling ✔️
+  - XBOX 360 Swizzling/Twiddling ✔️
   - GameCube/WII Swizzling/Twiddling ✔️
   - PSVITA Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
