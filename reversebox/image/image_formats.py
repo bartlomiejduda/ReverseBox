@@ -36,6 +36,7 @@ class ImageFormats(Enum):
     RGBA5551 = "rgba5551"
     ARGB4444 = "argb4444"
     RGBA4444 = "rgba4444"
+    ABGR4444 = "abgr4444"
     RGBX4444 = "rgbx4444"  # PIX_FMT_RGB444LE / PIX_FMT_RGB444BE / packed RGB 4:4:4, 16bpp, alfa bits are ignored (RGB444)
     BGRX4444 = "bgrx4444"  # PIX_FMT_BGR444LE / PIX_FMT_BGR444BE / packed BGR 4:4:4, 16bpp, alfa bits are ignored (BGR444)
     XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
