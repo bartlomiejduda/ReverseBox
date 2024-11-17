@@ -330,4 +330,5 @@ Check out list of tools written using ReverseBox:
 - [Acclaim TRE Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Acclaim/Acclaim_TRE_Tool)
 - [F-Zero X TEX Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/F-Zero%20X/TEX%20Tool)
 - [TPL Parser](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Mario%20Kart%20WII/TPL%20Parser)
+- [ImageHeat](https://github.com/bartlomiejduda/ImageHeat)
 - and more...
