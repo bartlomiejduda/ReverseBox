@@ -66,3 +66,9 @@ def get_dll_path(dll_name: str) -> str:
         Path(__file__).parents[1].resolve().joinpath("libs").joinpath(dll_name)
     )
     return dll_path
+
+
+# e.g. 5307904 --> "5.06 MB"
+def convert_from_bytes_to_mb_string(bytes_value: int) -> str:
+    result: float = bytes_value / 1024 / 1024
+    return str(round(result, 2)) + " MB"
