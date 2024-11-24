@@ -65,6 +65,15 @@ class PillowWrapper:
         pil_image_file_data: bytes = image_buffer.read()
         return pil_image_file_data
 
+    def get_pil_image_file_data_for_export2(
+        self, pil_image: Image, pillow_format: str = "DDS"
+    ) -> bytes:
+        image_buffer = io.BytesIO()
+        pil_image.save(image_buffer, pillow_format)
+        image_buffer.seek(0)
+        pil_image_file_data: bytes = image_buffer.read()
+        return pil_image_file_data
+
     def get_pil_rgba_data_for_import(self, file_path: str) -> bytes:
         pil_image: Image = Image.open(file_path)
         pil_image = pil_image.convert("RGBA")
