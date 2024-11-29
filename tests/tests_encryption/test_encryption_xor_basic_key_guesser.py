@@ -13,9 +13,8 @@ from tests.common import XORGuesserEntry
 @pytest.mark.unittest
 def test_encryption_xor_basic_guesser_to_match_expected_xor_key_to_be_found():
     xor_data_list = [
-        XORGuesserEntry(
-            encrypted_data=b"\x78\x23", decrypted_data=b"\x38\x63", max_key_length=2, expected_xor_key=b"\x40"
-        ),
+        XORGuesserEntry(encrypted_data=b"\x78\x23", decrypted_data=b"\x38\x63", max_key_length=2, expected_xor_key=b"\x40"),
+        XORGuesserEntry(encrypted_data=b"\x2A\x13\x07\x37", decrypted_data=b"\x4C\x75\x61\x51", max_key_length=2, expected_xor_key=b"\x66"),  # LuaQ file
     ]
 
     for test_entry in xor_data_list:
