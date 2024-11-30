@@ -40,12 +40,12 @@ class TranslationTextHandler(FileHandler):
         log_level: int = logging.WARNING,
     ):
         self.translation_memory: List[TranslationEntry] = translation_memory
-        self.global_export_function: Optional[
-            Callable[[bytes], bytes]
-        ] = global_export_function
-        self.global_import_function: Optional[
-            Callable[[bytes], bytes]
-        ] = global_import_function
+        self.global_export_function: Optional[Callable[[bytes], bytes]] = (
+            global_export_function
+        )
+        self.global_import_function: Optional[Callable[[bytes], bytes]] = (
+            global_import_function
+        )
         logger.setLevel(log_level)
         super(TranslationTextHandler, self).__init__(file_path, "rb", endianess_str)
 
@@ -70,12 +70,16 @@ class TranslationTextHandler(FileHandler):
         output_po_file.metadata = {
             "Project-Id-Version": "1.0",
             "Report-Msgid-Bugs-To": "you@example.com",
-            "POT-Creation-Date": creation_date_string
-            if creation_date_string
-            else self._get_current_utc_datetime_for_po_file(),
-            "PO-Revision-Date": revision_date_string
-            if revision_date_string
-            else self._get_current_utc_datetime_for_po_file(),
+            "POT-Creation-Date": (
+                creation_date_string
+                if creation_date_string
+                else self._get_current_utc_datetime_for_po_file()
+            ),
+            "PO-Revision-Date": (
+                revision_date_string
+                if revision_date_string
+                else self._get_current_utc_datetime_for_po_file()
+            ),
             "Last-Translator": "you <you@example.com>",
             "Language-Team": "English <yourteam@example.com>",
             "Language": language,

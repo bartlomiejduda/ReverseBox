@@ -3,7 +3,6 @@ Copyright © 2022  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-
 import zlib
 
 

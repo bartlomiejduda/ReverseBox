@@ -2,6 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 from reversebox.image.common import crop_image, get_storage_wh
 
 # BC Swizzle

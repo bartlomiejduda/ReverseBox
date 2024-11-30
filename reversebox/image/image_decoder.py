@@ -2,6 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 import struct
 import traceback
 
@@ -509,6 +510,7 @@ class ImageDecoder:
         ImageFormats.PAL4_IA8: (_decode_ia8_pixel, 4, 2, get_uint16),  # N64_C4 (type 0)
         ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),  # N64_C4 (type 1)
         ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),  # N64_C4 (type 2)
+        ImageFormats.PAL4_GRAY8: (_decode_gray8_pixel, 4, 1, get_uint8),
 
         ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
         ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
@@ -523,6 +525,7 @@ class ImageDecoder:
         ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),  # N64_C8 (type 2)
         ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
         ImageFormats.PAL8_BGRA8888: (_decode_bgra8888_pixel, 8, 4, get_uint32),
+        ImageFormats.PAL8_GRAY8: (_decode_gray8_pixel, 8, 1, get_uint8),
 
         ImageFormats.PAL16_IA8: (_decode_ia8_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 0)
         ImageFormats.PAL16_RGB565: (_decode_rgb565_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 1)

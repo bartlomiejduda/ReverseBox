@@ -3,7 +3,6 @@ Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-
 # Ver    Date        Author             Comment
 # v0.1   13.06.2020  Bartlomiej Duda    Initial version
 # v0.2   26.11.2020  Bartlomiej Duda    Added "expected result" and "test xor"

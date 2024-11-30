@@ -2,6 +2,7 @@
 Copyright © 2022-2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 import os.path
 from pathlib import Path
 

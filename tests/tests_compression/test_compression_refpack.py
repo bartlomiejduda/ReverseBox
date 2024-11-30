@@ -2,6 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 import os
 
 import pytest
@@ -50,6 +51,6 @@ def test_open_and_decompress_file_with_refpack():
     refpack_handler = RefpackHandler()
     uncompressed_data = refpack_handler.decompress_data(compressed_input_file_data)
     assert len(uncompressed_data) == len(uncompressed_input_file_data)
-    assert type(uncompressed_data) == type(uncompressed_input_file_data)
+    assert type(uncompressed_data) is type(uncompressed_input_file_data)
     assert uncompressed_data[:10] == uncompressed_input_file_data[:10]
     assert uncompressed_data[-10:] == uncompressed_input_file_data[-10:]

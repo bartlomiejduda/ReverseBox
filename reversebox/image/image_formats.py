@@ -2,6 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 from enum import Enum
 
 # fmt: off
@@ -75,6 +76,7 @@ class ImageFormats(Enum):
     PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
     PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)
     PAL4_RGB5A3 = "pal4_rgb5a3"  # N64_C4 (type 2)
+    PAL4_GRAY8 = "pal4_gray8"
 
     # 8-bit
     PAL8_RGBX2222 = "pal8_rgbx2222"
@@ -90,6 +92,7 @@ class ImageFormats(Enum):
     PAL8_RGB5A3 = "pal8_rgb5a3"  # N64_C8 (type 2)
     PAL8_RGBA8888 = "pal8_rgba8888"
     PAL8_BGRA8888 = "pal8_bgra8888"  # PIX_FMT_PAL8 / 8 bit with PIX_FMT_RGB32 palette
+    PAL8_GRAY8 = "pal8_gray8"
 
     # 16-bit
     PAL16_IA8 = "pal16_ia8"  # N64_C14X2 (type 0)

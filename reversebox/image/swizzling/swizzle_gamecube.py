@@ -2,6 +2,7 @@
 Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # Swizzling used in GameCube and WII games
