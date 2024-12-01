@@ -10,7 +10,10 @@ import pytest
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_psvita import swizzle_psvita, unswizzle_psvita
+from reversebox.image.swizzling.swizzle_psvita_dreamcast import (
+    swizzle_psvita_dreamcast,
+    unswizzle_psvita_dreamcast,
+)
 
 # fmt: off
 
@@ -29,7 +32,7 @@ def test_ps_vita_unswizzle_and_swizzle():
     bpp = 32
     image_format = ImageFormats.BGRA8888
 
-    unswizzled_file_data = unswizzle_psvita(swizzled_file_data, img_width, img_height, bpp)
+    unswizzled_file_data = unswizzle_psvita_dreamcast(swizzled_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -43,7 +46,7 @@ def test_ps_vita_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_psvita(unswizzled_file_data, img_width, img_height, bpp)
+    reswizzled_file_data = swizzle_psvita_dreamcast(unswizzled_file_data, img_width, img_height, bpp)
 
     assert swizzled_file_data[:10] == reswizzled_file_data[:10]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]

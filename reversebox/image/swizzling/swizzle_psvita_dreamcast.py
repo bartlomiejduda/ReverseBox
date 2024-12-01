@@ -5,6 +5,17 @@ License: GPL-3.0 License
 
 # fmt: off
 
+# Morton Order Texture Swizzling (+ rotated by 90 degrees for console's CPU)
+# https://en.wikipedia.org/wiki/Z-order_curve
+# https://dreamcast.wiki/Twiddling
+
+# Same algorithm is used in Dreamcast and PS Vita consoles
+# I've seen it used in Dreamcast DTEX files and in PS Vita GXT files
+# example games:
+# - Danganronpa: Trigger Happy Havoc (PS Vita) (*.GXT)
+# - Danganronpa 2: Goodbye Despair (PS Vita) (*.GXT)
+# - Senran Kagura: Shinovi Versus (PS Vita) (*.GXT)
+
 
 def bsr(x: int) -> int:
     """bit scan reverse"""
@@ -23,7 +34,7 @@ def align(value: int, alignment: int) -> int:
     return (value + (alignment - 1)) & ~(alignment - 1)
 
 
-def get_morton_index_psvita(x: int, y: int, width: int, height: int) -> int:
+def get_morton_index_psvita_dreamcast(x: int, y: int, width: int, height: int) -> int:
     logW = bsr(width)
     logH = bsr(height)
     d = min(logW, logH)
@@ -40,10 +51,10 @@ def get_morton_index_psvita(x: int, y: int, width: int, height: int) -> int:
     return index
 
 
-def _convert_psvita_4bpp(pixel_data: bytes, img_width: int, img_height: int, swizzle_flag: bool) -> bytes:
+def _convert_psvita_dreamcast_4bpp(pixel_data: bytes, img_width: int, img_height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(pixel_data))
-    mx = get_morton_index_psvita(img_width - 1, 0, img_width, img_height)
-    my = get_morton_index_psvita(0, img_height - 1, img_width, img_height)
+    mx = get_morton_index_psvita_dreamcast(img_width - 1, 0, img_width, img_height)
+    my = get_morton_index_psvita_dreamcast(0, img_height - 1, img_width, img_height)
 
     line_stride = align(img_width, 2)
 
@@ -73,13 +84,13 @@ def _convert_psvita_4bpp(pixel_data: bytes, img_width: int, img_height: int, swi
     return converted_data
 
 
-def _convert_psvita(pixel_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
+def _convert_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(pixel_data))
     width_pow2 = enclosing_power_of_2(img_width)
     height_pow2 = enclosing_power_of_2(img_height)
 
-    mx = get_morton_index_psvita(width_pow2 - 1, 0, width_pow2, height_pow2)
-    my = get_morton_index_psvita(0, height_pow2 - 1, width_pow2, height_pow2)
+    mx = get_morton_index_psvita_dreamcast(width_pow2 - 1, 0, width_pow2, height_pow2)
+    my = get_morton_index_psvita_dreamcast(0, height_pow2 - 1, width_pow2, height_pow2)
 
     pixel_size = bpp // 8
 
@@ -100,13 +111,13 @@ def _convert_psvita(pixel_data: bytes, img_width: int, img_height: int, bpp: int
     return converted_data
 
 
-def unswizzle_psvita(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+def unswizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     if bpp == 4:
-        return _convert_psvita_4bpp(pixel_data, img_width, img_height, False)
-    return _convert_psvita(pixel_data, img_width, img_height, bpp, False)
+        return _convert_psvita_dreamcast_4bpp(pixel_data, img_width, img_height, False)
+    return _convert_psvita_dreamcast(pixel_data, img_width, img_height, bpp, False)
 
 
-def swizzle_psvita(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
+def swizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     if bpp == 4:
-        return _convert_psvita_4bpp(pixel_data, img_width, img_height, True)
-    return _convert_psvita(pixel_data, img_width, img_height, bpp, True)
+        return _convert_psvita_dreamcast_4bpp(pixel_data, img_width, img_height, True)
+    return _convert_psvita_dreamcast(pixel_data, img_width, img_height, bpp, True)

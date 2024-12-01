@@ -10,9 +10,9 @@ import pytest
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_morton_dreamcast import (
-    swizzle_morton_dreamcast,
-    unswizzle_morton_dreamcast,
+from reversebox.image.swizzling.swizzle_psvita_dreamcast import (
+    swizzle_psvita_dreamcast,
+    unswizzle_psvita_dreamcast,
 )
 
 # fmt: off
@@ -33,7 +33,7 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
     bpp = 8
     image_format = ImageFormats.GRAY8
 
-    unswizzled_file_data = unswizzle_morton_dreamcast(
+    unswizzled_file_data = unswizzle_psvita_dreamcast(
         swizzled_file_data, img_width, img_height, bpp
     )
 
@@ -49,7 +49,7 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_morton_dreamcast(
+    reswizzled_file_data = swizzle_psvita_dreamcast(
         unswizzled_file_data, img_width, img_height, bpp
     )
 
