@@ -332,3 +332,6 @@ Check out list of tools written using ReverseBox:
 - [TPL Parser](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Mario%20Kart%20WII/TPL%20Parser)
 - [ImageHeat](https://github.com/bartlomiejduda/ImageHeat)
 - and more...
+
+# Badges
+![PyPI Downloads](https://static.pepy.tech/badge/reversebox)

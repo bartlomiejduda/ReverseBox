@@ -50,14 +50,14 @@ class ImageFormats(Enum):
     BGR888 = "bgr888"  # PIX_FMT_BGR24  / packed RGB 8:8:8, 24bpp, BGRBGR
 
     # 32-bit
-    RGBA8888 = "rgba8888"  # PIX_FMT_RGBA / packed RGBA 8:8:8:8, 32bpp, RGBARGBA
-    BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA
+    RGBA8888 = "rgba8888"  # PIX_FMT_RGBA / packed RGBA 8:8:8:8, 32bpp, RGBARGBA  (R8G8B8A8_UNORM)
+    BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA  (B8G8R8A8_UNORM)
     ARGB8888 = "argb8888"  # PIX_FMT_ARGB / packed ARGB 8:8:8:8, 32bpp, ARGBARGB
     ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
     XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
     RGBX8888 = "rgbx8888"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
     XBGR8888 = "xbgr8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
-    BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...
+    BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...  (B8G8R8X8_UNORM)
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B
@@ -108,10 +108,12 @@ class ImageFormats(Enum):
     N64_IA4 = "n64_ia4"  # GRAY+ALPHA, 8bpp
     N64_IA8 = "n64_ia8"  # GRAY+ALPHA, 16bpp
 
-    # DXT Formats
-    DXT1 = "dxt1"  # BC1
-    DXT3 = "dxt3"  # BC2
-    DXT5 = "dxt5"  # BC3
+    # compressed Formats
+    BC1_DXT1 = "bc1_dxt1"
+    # BC2_DXT2 = "bc2_dxt2"  # TODO - implement this
+    BC2_DXT3 = "bc2_dxt3"
+    # BC3_DXT4 = "bc3_dxt4"  # TODO - implement this
+    BC3_DXT5 = "bc3_dxt5"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"

@@ -73,7 +73,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
     if image_format in (ImageFormats.RGB121,
                         ImageFormats.N64_CMPR,
                         ImageFormats.N64_I4,
-                        ImageFormats.DXT1) or "pal4" in image_format.value.lower():
+                        ImageFormats.BC1_DXT1) or "pal4" in image_format.value.lower():
         return 4
     elif image_format in (ImageFormats.RGBX2222,
                           ImageFormats.RGBA2222,
@@ -83,8 +83,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GRAY8,
                           ImageFormats.N64_I8,
                           ImageFormats.N64_IA4,
-                          ImageFormats.DXT3,
-                          ImageFormats.DXT5) or "pal8" in image_format.value.lower():
+                          ImageFormats.BC2_DXT3,
+                          ImageFormats.BC3_DXT5) or "pal8" in image_format.value.lower():
         return 8
     elif image_format in (ImageFormats.GRAY8A,
                           ImageFormats.GRAY16,

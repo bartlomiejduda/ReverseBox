@@ -27,7 +27,7 @@ def test_x360_unswizzle_and_swizzle():
 
     img_width = 1024
     img_height = 1024
-    image_format = ImageFormats.DXT1
+    image_format = ImageFormats.BC1_DXT1
 
     unswizzled_file_data = unswizzle_x360(
         swizzled_file_data, img_width, img_height

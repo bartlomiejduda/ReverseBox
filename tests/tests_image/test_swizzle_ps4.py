@@ -30,7 +30,7 @@ def test_ps4_unswizzle_and_swizzle():
     block_width = 4
     block_height = 4
     block_data_size = 16
-    image_format = ImageFormats.DXT5
+    image_format = ImageFormats.BC3_DXT5
 
     unswizzled_file_data = unswizzle_ps4(
         swizzled_file_data, img_width, img_height, block_width, block_height, block_data_size

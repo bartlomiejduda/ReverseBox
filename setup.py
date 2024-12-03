@@ -7,7 +7,7 @@ import os
 
 import setuptools
 
-VERSION_NUM = "0.19.3"
+VERSION_NUM = "0.19.4"
 
 
 def get_long_description() -> str:

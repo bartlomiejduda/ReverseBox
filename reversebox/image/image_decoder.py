@@ -243,13 +243,13 @@ class ImageDecoder:
 
     def _decode_bgrx8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        p[0] = (pixel_int >> 8) & 0xff
-        p[1] = (pixel_int >> 16) & 0xff
-        p[2] = (pixel_int >> 24) & 0xff
+        p[0] = (pixel_int >> 16) & 0xFF
+        p[1] = (pixel_int >> 8) & 0xFF
+        p[2] = (pixel_int >> 0) & 0xFF
         p[3] = 0xFF
         return p
 
-    def _decode_bgra8888_pixel(self, pixel_int: int) -> bytes:
+    def _decode_bgra8888_pixel(self, pixel_int: int) -> bytes:  # TODO - fix this?
         p = bytearray(4)
         p[0] = (pixel_int >> 16) & 0xff
         p[1] = (pixel_int >> 8) & 0xff
@@ -275,13 +275,9 @@ class ImageDecoder:
 
     def _decode_xrgb8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        R = (pixel_int >> 16) & 0xFF
-        G = (pixel_int >> 8) & 0xFF
-        B = pixel_int & 0xFF
-
-        p[0] = R
-        p[1] = G
-        p[2] = B
+        p[0] = (pixel_int >> 8) & 0xff
+        p[1] = (pixel_int >> 16) & 0xff
+        p[2] = (pixel_int >> 24) & 0xff
         p[3] = 0xFF
         return p
 
@@ -534,9 +530,9 @@ class ImageDecoder:
 
     compressed_data_formats = {
         # image format: (decoder_name, decoder_arg)
-        ImageFormats.DXT1: ("bcn", 1),
-        ImageFormats.DXT3: ("bcn", 2),
-        ImageFormats.DXT5: ("bcn", 3)
+        ImageFormats.BC1_DXT1: ("bcn", 1),
+        ImageFormats.BC2_DXT3: ("bcn", 2),
+        ImageFormats.BC3_DXT5: ("bcn", 3)
     }
 
     gst_data_formats = {
