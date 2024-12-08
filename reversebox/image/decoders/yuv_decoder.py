@@ -33,10 +33,21 @@ class YUVDecoder:
             i = 255
         return i
 
-    def _yuv_to_rgb(self, Y, U, V) -> tuple:
-        R = Y + 1.140 * (V - 128)
-        G = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
-        B = Y + 2.032 * (U - 128)
+    def _yuv_to_rgb(self, Y, U, V, standard: str = "rec709") -> tuple:
+        if standard == "jpeg":  # JPEG (JFIF)
+            R = Y + 1.140 * (V - 128)
+            G = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
+            B = Y + 2.032 * (U - 128)
+        elif standard == "rec601":  # REC 601 (SDTV)
+            R = Y + 1.403 * (V - 128)
+            G = Y - 0.344 * (U - 128) - 0.714 * (V - 128)
+            B = Y + 1.770 * (U - 128)
+        elif standard == "rec709":  # REC 709 (HDTV)
+            R = Y + 1.5748 * (V - 128)
+            G = Y - 0.1873 * (U - 128) - 0.4681 * (V - 128)
+            B = Y + 1.8556 * (U - 128)
+        else:
+            raise Exception("Standard not supported!")
 
         R = self._limit_rgb_value(R)
         G = self._limit_rgb_value(G)
@@ -492,19 +503,7 @@ class YUVDecoder:
 
         for i in range(img_height * img_width):
             V, U, Y, A = image_data[i * 4:i * 4 + 4]
-
-            Y -= 16
-            U -= 128
-            V -= 128
-
-            R = (298 * Y + 409 * V + 128) >> 8
-            G = (298 * Y - 100 * U - 208 * V + 128) >> 8
-            B = (298 * Y + 516 * U + 128) >> 8
-
-            R = self._limit_rgb_value(R)
-            G = self._limit_rgb_value(G)
-            B = self._limit_rgb_value(B)
-
+            R, G, B = self._yuv_to_rgb(Y, U, V)
             output_texture_data[i * 4:i * 4 + 4] = R, G, B, A
 
         return output_texture_data
