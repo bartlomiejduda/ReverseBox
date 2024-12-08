@@ -662,11 +662,30 @@ class ImageDecoder:
 
         return texture_data
 
-    def _decode_compressed(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple) -> bytes:
+    def _decode_compressed(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         # TODO - replace this wrapper
-        decoder_name, decoder_arg = image_format
+        decoder_name, decoder_arg = self.compressed_data_formats[image_format]
         pillow_image: Image = self.pillow_wrapper.get_pillow_image_from_dxt_data(image_data, img_width, img_height, decoder_name, decoder_arg)
         decoded_data: bytes = self.pillow_wrapper.get_image_data_from_pillow_image(pillow_image)
+
+        # decoded_data: bytes = b''
+        # if image_format == ImageFormats.BC1_DXT1:
+        #
+        #     decoded_data_size: int = len(image_data) * 10
+        #     converted_data_buffer = (c_char * decoded_data_size)()
+        #
+        #     try:
+        #         bc_dll_path: str = get_dll_path("bc.dll")
+        #         bc_dll_file = ctypes.CDLL(bc_dll_path)
+        #
+        #         bc_dll_file.CMP_ConvertTexture(image_data, ctypes.byref(converted_data_buffer), img_width, img_height)
+        #
+        #     except Exception as error:
+        #         raise Exception(f"Error while decoding compressed data! Error: {error}")
+        #
+        # else:
+        #     raise Exception("Not supported compressed format!")
+
         return decoded_data
 
     def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, convert_format: ImageFormats, is_swizzled: bool) -> bytes:
@@ -717,7 +736,7 @@ class ImageDecoder:
         return self._decode_indexed(image_data, palette_data, img_width, img_height, self.indexed_data_formats[image_format], image_endianess, palette_endianess)
 
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        return self._decode_compressed(image_data, img_width, img_height, self.compressed_data_formats[image_format])
+        return self._decode_compressed(image_data, img_width, img_height, image_format)
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)

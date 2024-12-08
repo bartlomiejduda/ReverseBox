@@ -335,3 +335,8 @@ Check out list of tools written using ReverseBox:
 
 # Badges
 ![PyPI Downloads](https://static.pepy.tech/badge/reversebox)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/ReverseBox)
+![GitHub License](https://img.shields.io/github/license/bartlomiejduda/ReverseBox)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/bartlomiejduda/ReverseBox)
+![GitHub repo size](https://img.shields.io/github/repo-size/bartlomiejduda/ReverseBox)
+![PyPI - Version](https://img.shields.io/pypi/v/ReverseBox)
