@@ -33,25 +33,25 @@ class YUVDecoder:
             i = 255
         return i
 
-    def _yuv_to_rgb(self, Y, U, V, standard: str = "rec709") -> tuple:
+    def _yuv_to_rgb(self, Y: float, U: float, V: float, standard: str = "rec709") -> tuple:
         if standard == "jpeg":  # JPEG (JFIF)
-            R = Y + 1.140 * (V - 128)
-            G = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
-            B = Y + 2.032 * (U - 128)
+            R1 = Y + 1.140 * (V - 128)
+            G1 = Y - 0.395 * (U - 128) - 0.581 * (V - 128)
+            B1 = Y + 2.032 * (U - 128)
         elif standard == "rec601":  # REC 601 (SDTV)
-            R = Y + 1.403 * (V - 128)
-            G = Y - 0.344 * (U - 128) - 0.714 * (V - 128)
-            B = Y + 1.770 * (U - 128)
+            R1 = Y + 1.403 * (V - 128)
+            G1 = Y - 0.344 * (U - 128) - 0.714 * (V - 128)
+            B1 = Y + 1.770 * (U - 128)
         elif standard == "rec709":  # REC 709 (HDTV)
-            R = Y + 1.5748 * (V - 128)
-            G = Y - 0.1873 * (U - 128) - 0.4681 * (V - 128)
-            B = Y + 1.8556 * (U - 128)
+            R1 = Y + 1.5748 * (V - 128)
+            G1 = Y - 0.1873 * (U - 128) - 0.4681 * (V - 128)
+            B1 = Y + 1.8556 * (U - 128)
         else:
             raise Exception("Standard not supported!")
 
-        R = self._limit_rgb_value(R)
-        G = self._limit_rgb_value(G)
-        B = self._limit_rgb_value(B)
+        R: int = self._limit_rgb_value(R1)
+        G: int = self._limit_rgb_value(G1)
+        B: int = self._limit_rgb_value(B1)
 
         return R, G, B
 
