@@ -181,6 +181,7 @@ or software researchers).
   - Decode UYYVYY411 ✔️
   - Decode YUV440P ✔️
   - Decode YUVA420P ✔️
+  - Decode AYUV ✔️
   - Decode GRAY8A (LA88) ✔️
   - Decode GRAY16 ✔️
   - Decode XRGB8888 ✔️

@@ -40,10 +40,10 @@ class ImageFormats(Enum):
     ABGR4444 = "abgr4444"
     RGBX4444 = "rgbx4444"  # PIX_FMT_RGB444LE / PIX_FMT_RGB444BE / packed RGB 4:4:4, 16bpp, alfa bits are ignored (RGB444)
     BGRX4444 = "bgrx4444"  # PIX_FMT_BGR444LE / PIX_FMT_BGR444BE / packed BGR 4:4:4, 16bpp, alfa bits are ignored (BGR444)
+    ARGB1555 = "argb1555"  # B5G5R5A1_UNORM
     XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
-    XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
-    ARGB1555 = "argb1555"  # TODO - find samples for this
     ABGR1555 = "abgr1555"  # TODO - find samples for this
+    XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
 
     # 24-bit
     RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB
@@ -51,13 +51,13 @@ class ImageFormats(Enum):
 
     # 32-bit
     RGBA8888 = "rgba8888"  # PIX_FMT_RGBA / packed RGBA 8:8:8:8, 32bpp, RGBARGBA  (R8G8B8A8_UNORM)
+    RGBX8888 = "rgbx8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
     BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA  (B8G8R8A8_UNORM)
+    BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...  (B8G8R8X8_UNORM)
     ARGB8888 = "argb8888"  # PIX_FMT_ARGB / packed ARGB 8:8:8:8, 32bpp, ARGBARGB
     ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
     XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
-    RGBX8888 = "rgbx8888"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
-    XBGR8888 = "xbgr8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
-    BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...  (B8G8R8X8_UNORM)
+    RGBX8888_old = "rgbx8888_old"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B
@@ -139,6 +139,7 @@ class ImageFormats(Enum):
     YUV422_YUY2 = "yuv422_yuy2"  # PIX_FMT_YUYV422 / packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr / <YUY2, YUNV, V422, YUYV>
     YUV440P = "yuv440p"  # PIX_FMT_YUV440P / planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)
     YUV444P = "yuv444p"  # PIX_FMT_YUV444P / planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
+    AYUV = "ayuv"
 
     # Bumpmaps / Normal maps
     BUMPMAP_SR = "bumpmap_sr"  # 16-bit normal map. Each texel consist of a pair of 8-bit values (S and R)

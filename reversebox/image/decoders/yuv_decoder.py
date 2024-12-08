@@ -487,6 +487,28 @@ class YUVDecoder:
 
         return output_texture_data
 
+    def _decode_ayuv_image(self, image_data: bytes, img_width: int, img_height: int) -> bytes:
+        output_texture_data = bytearray(img_width * img_height * 4)
+
+        for i in range(img_height * img_width):
+            V, U, Y, A = image_data[i * 4:i * 4 + 4]
+
+            Y -= 16
+            U -= 128
+            V -= 128
+
+            R = (298 * Y + 409 * V + 128) >> 8
+            G = (298 * Y - 100 * U - 208 * V + 128) >> 8
+            B = (298 * Y + 516 * U + 128) >> 8
+
+            R = self._limit_rgb_value(R)
+            G = self._limit_rgb_value(G)
+            B = self._limit_rgb_value(B)
+
+            output_texture_data[i * 4:i * 4 + 4] = R, G, B, A
+
+        return output_texture_data
+
     def decode_yuv_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         self._check_if_yuv_image_dimensions_are_correct(img_width, img_height)
 
@@ -514,5 +536,7 @@ class YUVDecoder:
             return self._decode_yuv440p_image(image_data, img_width, img_height)
         elif image_format == ImageFormats.YUVA420P:
             return self._decode_yuva420p_image(image_data, img_width, img_height)
+        elif image_format == ImageFormats.AYUV:
+            return self._decode_ayuv_image(image_data, img_width, img_height)
         else:
             raise Exception(f"Image format not supported by yuv decoder! Image_format: {image_format}")
