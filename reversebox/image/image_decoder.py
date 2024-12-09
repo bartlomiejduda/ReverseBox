@@ -305,20 +305,6 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-
-    def _decode_argb4444_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        a = (pixel_int >> 12) & 0xff
-        r = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
-        b = (pixel_int >> 0) & 0x0f
-
-        p[0] = (r << 4) | (r >> 0)
-        p[1] = (g << 4) | (g >> 0)
-        p[2] = (b << 4) | (b >> 0)
-        p[3] = (a << 4) | (a >> 0)
-        return p
-
     def _decode_rgba4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         a = (pixel_int >> 12) & 0xff
@@ -345,6 +331,18 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
+    def _decode_xbgr4444_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        r = (pixel_int >> 12) & 0xff
+        g = (pixel_int >> 8) & 0x0f
+        b = (pixel_int >> 4) & 0x0f
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = 0xFF
+        return p
+
     # RGB444
     def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
@@ -356,6 +354,19 @@ class ImageDecoder:
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
         p[3] = 0xFF
+        return p
+
+    def _decode_bgra4444_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        a = (pixel_int >> 12) & 0x0f
+        b = (pixel_int >> 8) & 0x0f
+        g = (pixel_int >> 4) & 0x0f
+        r = (pixel_int >> 0) & 0x0f
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = (a << 4) | (a >> 0)
         return p
 
     # BGR444
@@ -465,10 +476,11 @@ class ImageDecoder:
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
-        ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
         ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
         ImageFormats.ABGR4444: (_decode_abgr4444_pixel, 16, get_uint16),
+        ImageFormats.XBGR4444: (_decode_xbgr4444_pixel, 16, get_uint16),
         ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),  # RGB444
+        ImageFormats.BGRA4444: (_decode_bgra4444_pixel, 16, get_uint16),  # BGR444
         ImageFormats.BGRX4444: (_decode_bgrx4444_pixel, 16, get_uint16),  # BGR444
         ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),  # RGB555
         ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),  # BGR555

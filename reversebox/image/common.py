@@ -90,18 +90,21 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GRAY16,
                           ImageFormats.RGB565,
                           ImageFormats.BGR565,
-                          ImageFormats.RGBX5551,
-                          ImageFormats.RGBA5551,
-                          ImageFormats.ARGB4444,
                           ImageFormats.RGBA4444,
                           ImageFormats.RGBX4444,
+                          ImageFormats.BGRA4444,
                           ImageFormats.BGRX4444,
-                          ImageFormats.XRGB1555,
-                          ImageFormats.XBGR1555,
+                          ImageFormats.BGRX4444,
+                          ImageFormats.ABGR4444,
+                          ImageFormats.XBGR4444,
+                          ImageFormats.RGBA5551,
+                          ImageFormats.RGBX5551,
                           ImageFormats.ARGB1555,
+                          ImageFormats.XRGB1555,
                           ImageFormats.ABGR1555,
+                          ImageFormats.XBGR1555,
                           ImageFormats.N64_RGB5A3,
-                          ImageFormats.N64_IA8):
+                          ImageFormats.N64_IA8) or "pal16" in image_format.value.lower():
         return 16
     elif image_format in (ImageFormats.RGB888,
                           ImageFormats.BGR888,):
