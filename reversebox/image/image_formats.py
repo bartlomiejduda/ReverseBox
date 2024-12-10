@@ -111,10 +111,13 @@ class ImageFormats(Enum):
 
     # compressed Formats
     BC1_DXT1 = "bc1_dxt1"
-    # BC2_DXT2 = "bc2_dxt2"  # TODO - implement this
     BC2_DXT3 = "bc2_dxt3"
-    # BC3_DXT4 = "bc3_dxt4"  # TODO - implement this
     BC3_DXT5 = "bc3_dxt5"
+    BC4_UNORM = "bc4_unorm"
+    BC5_UNORM = "bc5_unorm"
+    BC6H_UF16 = "bc6h_uf16"
+    BC6H_SF16 = "bc6h_sf16"
+    BC7_UNORM = "bc7_unorm"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"

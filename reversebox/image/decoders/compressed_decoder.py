@@ -56,7 +56,7 @@ class CompressedImageDecoder:
         image.slicePitch = slice_pitch
 
         if image_data and len(image_data) > 0:
-            buffer = create_string_buffer(image_data)
+            buffer = create_string_buffer(bytes(image_data))
             image.pixels = cast(buffer, POINTER(c_uint8))  # buffer with input image data
         else:
             data_size = img_width * img_height * 4
@@ -76,6 +76,16 @@ class CompressedImageDecoder:
             return 74
         elif image_format == ImageFormats.BC3_DXT5:
             return 77
+        elif image_format == ImageFormats.BC4_UNORM:
+            return 80
+        elif image_format == ImageFormats.BC5_UNORM:
+            return 83
+        elif image_format == ImageFormats.BC6H_UF16:
+            return 95
+        elif image_format == ImageFormats.BC6H_SF16:
+            return 96
+        elif image_format == ImageFormats.BC7_UNORM:
+            return 98
         elif image_format == ImageFormats.RGBA8888:
             return 28
         else:
@@ -116,11 +126,11 @@ class CompressedImageDecoder:
         # decompressing image logic
         try:
             dll_file = ctypes.CDLL(dll_path)
-            h_result = dll_file.DecompressBC(input_dxgi_image, output_dxgi_image)
+            h_result = dll_file.DecompressBC(ctypes.byref(input_dxgi_image), ctypes.byref(output_dxgi_image))
         except Exception as error:
             raise Exception(f"Error while decoding compressed data! Error: {error}")
 
-        if h_result < 0:
+        if h_result != 0:
             raise Exception(f"DLL decompression failed! H_result: {h_result}")
 
         decoded_data_size: int = img_height * img_width * 4
