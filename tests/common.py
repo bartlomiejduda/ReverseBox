@@ -5,6 +5,8 @@ License: GPL-3.0 License
 
 from dataclasses import dataclass
 
+from reversebox.image.image_formats import ImageFormats
+
 
 @dataclass
 class CRCTestEntry:
@@ -88,3 +90,13 @@ class GetBitsStringTestEntry:
     value_to_test: int
     bits_to_fill: int
     expected_string: str
+
+
+@dataclass
+class ImageDecodeEncodeTestEntry:
+    img_file_path: str
+    debug_flag: bool
+    img_width: int
+    img_height: int
+    bpp: int
+    img_format: ImageFormats
