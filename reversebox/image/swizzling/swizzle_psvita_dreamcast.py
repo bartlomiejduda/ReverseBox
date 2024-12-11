@@ -26,7 +26,7 @@ def bsr(x: int) -> int:
 
 def enclosing_power_of_2(x: int) -> int:
     """find power of 2 equal or bigger than x"""
-    return 1 << (x - 1).bit_length()
+    return 1 << bsr(x + (x-1))
 
 
 def align(value: int, alignment: int) -> int:
@@ -95,15 +95,16 @@ def _convert_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int
     pixel_size = bpp // 8
 
     oy = 0
+    dest_offset = 0
     for y in range(img_height):
         ox = 0
         for x in range(img_width):
             src_offset = (ox + oy) * pixel_size
-            dest_offset = (y * img_width + x) * pixel_size
             if not swizzle_flag:
                 converted_data[dest_offset:dest_offset + pixel_size] = pixel_data[src_offset:src_offset + pixel_size]
             else:
                 converted_data[src_offset:src_offset + pixel_size] = pixel_data[dest_offset:dest_offset + pixel_size]
+            dest_offset += pixel_size
 
             ox = (ox - mx) & mx
         oy = (oy - my) & my

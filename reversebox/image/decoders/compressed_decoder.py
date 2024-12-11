@@ -120,8 +120,8 @@ class CompressedImageDecoder:
             raise Exception(f"Error while calculating pitch! Error: {error}")
 
         # initializing structure logic
-        input_dxgi_image = self._init_dxgi_image(img_width, img_height, input_format_number, c_input_row_pitch.value, c_input_slice_pitch.value, image_data)
-        output_dxgi_image = self._init_dxgi_image(img_width, img_height, output_format_number, c_output_row_pitch.value, c_output_slice_pitch.value, b'')
+        input_dxgi_image: DXGIImage = self._init_dxgi_image(img_width, img_height, input_format_number, c_input_row_pitch.value, c_input_slice_pitch.value, image_data)
+        output_dxgi_image: DXGIImage = self._init_dxgi_image(img_width, img_height, output_format_number, c_output_row_pitch.value, c_output_slice_pitch.value, b'')
 
         # decompressing image logic
         try:
