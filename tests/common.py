@@ -1,9 +1,10 @@
 """
-Copyright © 2022  Bartłomiej Duda
+Copyright © 2022-2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from reversebox.image.image_formats import ImageFormats
 
@@ -98,5 +99,5 @@ class ImageDecodeEncodeTestEntry:
     debug_flag: bool
     img_width: int
     img_height: int
-    bpp: int
     img_format: ImageFormats
+    bpp: Optional[int] = None

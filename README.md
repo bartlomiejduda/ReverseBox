@@ -122,7 +122,7 @@ or software researchers).
   - Decode ARGB8888 ✔️
   - Decode ABGR8888 ✔️
   - Decode/Encode RGBA8888 ✔️
-  - Decode BGRA8888 ✔️
+  - Decode/Encode BGRA8888 ✔️
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
   - Decode PAL4_RGBX5551 ✔️
@@ -160,9 +160,13 @@ or software researchers).
   - Decode N64_IA8 ✔️
   - Decode N64_RGBA32 ✔️
   - Decode N64_CMPR ✔️
-  - Decode DXT1 ✔️
-  - Decode DXT3 ✔️
-  - Decode DXT5 ✔️
+  - Decode BC1/DXT1 ✔️
+  - Decode BC2/DXT3 ✔️
+  - Decode BC3/DXT5 ✔️
+  - Decode BC4 ✔️
+  - Decode BC5 ✔️
+  - Decode BC6 ✔️
+  - Decode BC7 ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

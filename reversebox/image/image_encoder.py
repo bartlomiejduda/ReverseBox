@@ -32,6 +32,14 @@ class ImageEncoder:
         p[3] = (pixel_int >> 24) & 0xff
         return p
 
+    def _encode_bgra8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int >> 16) & 0xff
+        p[1] = (pixel_int >> 8) & 0xff
+        p[2] = (pixel_int >> 0) & 0xff
+        p[3] = (pixel_int >> 24) & 0xff
+        return p
+
     def _encode_rgb565_pixel(self, pixel_int: int) -> bytearray:
         r = (pixel_int >> 0) & 0xFF
         g = (pixel_int >> 8) & 0xFF
@@ -53,6 +61,7 @@ class ImageEncoder:
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel)
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
+        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
     }
 
