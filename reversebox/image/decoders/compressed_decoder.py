@@ -91,7 +91,6 @@ class CompressedImageDecoder:
         else:
             raise Exception(f"Not supported image format! Image_format: {image_format}")
 
-
     def _decode_directxtex_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         """
         Function used for decoding compressed BC formats
