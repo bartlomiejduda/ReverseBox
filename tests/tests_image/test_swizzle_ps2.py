@@ -23,8 +23,8 @@ from reversebox.image.swizzling.swizzle_ps2 import (
 
 @pytest.mark.imagetest
 def test_ps2_unswizzle_and_swizzle_8bit():
-    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_8bit_monkey_data.bin")
-    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_8bit_monkey_palette.bin")
+    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_8bit_monkey_data.bin")
+    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_8bit_monkey_palette.bin")
 
     swizzled_file_data = open(swizzled_file_path, "rb").read()
     palette_data = open(palette_file_path, "rb").read()
@@ -64,8 +64,8 @@ def test_ps2_unswizzle_and_swizzle_8bit():
 # this sample uses special "type 3" 4-bit PS2 swizzle function
 @pytest.mark.imagetest
 def test_ps2_unswizzle_and_swizzle_4bit():
-    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_4bit_monkey_data.bin")
-    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/ps2_swizzle_4bit_monkey_palette.bin")
+    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_4bit_monkey_data.bin")
+    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_4bit_monkey_palette.bin")
 
     swizzled_file_data = open(swizzled_file_path, "rb").read()
     palette_data = open(palette_file_path, "rb").read()

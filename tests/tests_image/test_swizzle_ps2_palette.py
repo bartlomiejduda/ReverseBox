@@ -19,7 +19,7 @@ from reversebox.image.swizzling.swizzle_ps2 import (
 @pytest.mark.imagetest
 def test_ps2_palette_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files\\ps2_swizzled_palette.bin"
+        os.path.dirname(__file__), "image_files/swizzle_ps2_palette.bin"
     )
 
     swizzled_palette_file = open(swizzled_file_path, "rb")

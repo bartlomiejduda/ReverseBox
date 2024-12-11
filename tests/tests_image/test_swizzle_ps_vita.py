@@ -21,7 +21,7 @@ from reversebox.image.swizzling.swizzle_psvita_dreamcast import (
 @pytest.mark.imagetest
 def test_ps_vita_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/ps_vita_swizzle_monkey.bin"
+        os.path.dirname(__file__), "image_files/swizzle_ps_vita_monkey_BGRA8888.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")
@@ -58,7 +58,7 @@ def test_ps_vita_unswizzle_and_swizzle():
 @pytest.mark.imagetest
 def test_ps_vita_unswizzle_and_swizzle_tex_all():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/tex_all_2.tex"
+        os.path.dirname(__file__), "image_files/swizzle_ps_vita_tex_all.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")
@@ -96,7 +96,7 @@ def test_ps_vita_unswizzle_and_swizzle_tex_all():
 @pytest.mark.imagetest
 def test_ps_vita_unswizzle_and_swizzle_monkey_dxt5():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/monkey_dxt5_psvita_swizzled.bin"
+        os.path.dirname(__file__), "image_files/swizzle_ps_vita_monkey_dxt5.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")

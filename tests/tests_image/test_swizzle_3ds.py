@@ -18,7 +18,7 @@ from reversebox.image.swizzling.swizzle_3ds import swizzle_3ds, unswizzle_3ds
 @pytest.mark.imagetest
 def test_3ds_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/3ds_swizzle.bin"
+        os.path.dirname(__file__), "image_files/swizzle_3ds.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")

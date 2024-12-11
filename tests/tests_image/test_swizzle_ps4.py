@@ -18,7 +18,7 @@ from reversebox.image.swizzling.swizzle_morton_ps4 import swizzle_ps4, unswizzle
 @pytest.mark.imagetest
 def test_ps4_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/DXT5_PS4_SWIZZLED.bin"
+        os.path.dirname(__file__), "image_files/swizzle_ps4_DXT5.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")

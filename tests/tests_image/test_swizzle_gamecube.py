@@ -21,7 +21,7 @@ from reversebox.image.swizzling.swizzle_gamecube import (
 @pytest.mark.imagetest
 def test_gamecube_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/gamecube_swizzle_bluebar.bin"
+        os.path.dirname(__file__), "image_files/swizzle_gamecube_bluebar.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")

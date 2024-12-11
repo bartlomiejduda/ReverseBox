@@ -18,7 +18,7 @@ from reversebox.image.swizzling.swizzle_morton import swizzle_morton, unswizzle_
 @pytest.mark.imagetest
 def test_morton_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/morton_swizzle_monkey.bin"
+        os.path.dirname(__file__), "image_files/swizzle_morton_monkey.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")

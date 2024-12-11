@@ -18,7 +18,7 @@ from reversebox.image.swizzling.swizzle_psp import swizzle_psp, unswizzle_psp
 @pytest.mark.imagetest
 def test_psp_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files\\RGBA8888_PSP_SWIZZLED.bin"
+        os.path.dirname(__file__), "image_files/swizzle_psp_RGBA8888.bin"
     )
 
     swizzled_file_data = open(swizzled_file_path, "rb").read()
@@ -57,8 +57,8 @@ def test_psp_unswizzle_and_swizzle():
 # TODO - fix swizzling for bubbles texture
 # @pytest.mark.imagetest
 # def test_psp_unswizzle_and_swizzle_bubbles():
-#     swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files\\psp_swizzle_bubbles_data.bin")
-#     palette_file_path = os.path.join(os.path.dirname(__file__), "image_files\\psp_swizzle_bubbles_palette.bin")
+#     swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files\\swizzle_psp_bubbles_data.bin")
+#     palette_file_path = os.path.join(os.path.dirname(__file__), "image_files\\swizzle_psp_bubbles_palette.bin")
 #
 #     swizzled_file_data = open(swizzled_file_path, "rb").read()
 #     palette_data = open(palette_file_path, "rb").read()

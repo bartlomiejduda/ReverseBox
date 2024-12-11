@@ -21,7 +21,7 @@ from reversebox.image.swizzling.swizzle_psvita_dreamcast import (
 @pytest.mark.imagetest
 def test_morton_dreamcast_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/GRAY8_DREAMCAST_SWIZZLED.bin"
+        os.path.dirname(__file__), "image_files/swizzle_dreamcast_GRAY8.bin"
     )
 
     win_file = open(swizzled_file_path, "rb")

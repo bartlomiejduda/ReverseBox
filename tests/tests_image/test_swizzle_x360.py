@@ -18,7 +18,7 @@ from reversebox.image.swizzling.swizzle_x360 import swizzle_x360, unswizzle_x360
 @pytest.mark.imagetest
 def test_x360_unswizzle_and_swizzle():
     swizzled_file_path = os.path.join(
-        os.path.dirname(__file__), "image_files/xbox360_swizzle_sample1.bin"
+        os.path.dirname(__file__), "image_files/swizzle_xbox360_sample1.bin"
     )
 
     bin_file = open(swizzled_file_path, "rb")
