@@ -56,6 +56,22 @@ class ImageEncoder:
         rgb565_bytes[1] = (rgb565 >> 8) & 0xFF
         return rgb565_bytes
 
+    def _encode_bgr565_pixel(self, pixel_int: int) -> bytearray:
+        b = (pixel_int >> 0) & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        r = (pixel_int >> 16) & 0xFF
+
+        b5 = (b >> 3) & 0x1F
+        g6 = (g >> 2) & 0x3F
+        r5 = (r >> 3) & 0x1F
+
+        bgr565 = (r5 << 11) | (g6 << 5) | b5
+
+        bgr565_bytes = bytearray(2)
+        bgr565_bytes[0] = bgr565 & 0xFF
+        bgr565_bytes[1] = (bgr565 >> 8) & 0xFF
+        return bgr565_bytes
+
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
@@ -63,6 +79,7 @@ class ImageEncoder:
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
         ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
+        ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
     }
 
     indexed_data_formats = {
