@@ -7,6 +7,7 @@ Pillow==10.4.0
 polib==1.2.0
 pre-commit==4.0.1
 pytest==8.3.3
+pytest-cov==6.0.0
 rawutil==2.8.1
 setuptools==75.6.0
 twine==5.1.1
