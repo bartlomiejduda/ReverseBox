@@ -94,6 +94,13 @@ class GetBitsStringTestEntry:
 
 
 @dataclass
+class GetSetBytesEntry:
+    value_int: int
+    value_bytes: bytes
+    endianess: str
+
+
+@dataclass
 class ImageDecodeEncodeTestEntry:
     img_file_path: str
     debug_flag: bool

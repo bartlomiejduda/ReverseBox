@@ -3,10 +3,21 @@ Copyright © 2024  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
+import io
+
 import pytest
 
-from reversebox.io_files.bytes_helper_functions import get_bits, get_bits_string
-from tests.common import GetBitsStringTestEntry, GetBitsTestEntry
+from reversebox.io_files.bytes_helper_functions import (
+    get_bits,
+    get_bits_string,
+    get_int8,
+    get_uint8,
+    get_uint16,
+    set_int8,
+    set_uint8,
+    set_uint16,
+)
+from tests.common import GetBitsStringTestEntry, GetBitsTestEntry, GetSetBytesEntry
 
 # fmt: off
 
@@ -45,3 +56,83 @@ def test_bytes_helper_functions_get_bits_string():
     for test_entry in get_bits_string_data_list:
         result: str = get_bits_string(test_entry.value_to_test, test_entry.bits_to_fill)
         assert result == test_entry.expected_string
+
+
+def _assert_get_set_functions(value_bytes: bytes, value_int: int, value_endianess: str, get_func, set_func) -> None:
+    input_memory_file = io.BytesIO(initial_bytes=value_bytes)
+    input_data: bytes = input_memory_file.read(len(value_bytes))
+    input_value: int = get_func(input_data, value_endianess)
+    assert input_value == value_int
+
+    output_memory_file = io.BytesIO()
+    output_value: bytes = set_func(value_int, value_endianess)
+    result: int = output_memory_file.write(output_value)
+    assert result == len(value_bytes)
+    assert output_value == value_bytes
+
+
+# 8 bits #
+@pytest.mark.unittest
+def test_bytes_helper_functions_get_and_set_uint8():
+
+    get_set_test_entries_list: list = [
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x0F", endianess="<"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00", endianess="<"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x02", endianess="<"),
+        GetSetBytesEntry(value_int=255, value_bytes=b"\xFF", endianess="<"),
+
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x0F", endianess=">"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00", endianess=">"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x02", endianess=">"),
+        GetSetBytesEntry(value_int=255, value_bytes=b"\xFF", endianess=">")
+    ]
+    for test_entry in get_set_test_entries_list:
+        _assert_get_set_functions(test_entry.value_bytes, test_entry.value_int, test_entry.endianess, get_uint8, set_uint8)
+
+
+@pytest.mark.unittest
+def test_bytes_helper_functions_get_and_set_int8():
+
+    get_set_test_entries_list: list = [
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x0F", endianess="<"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00", endianess="<"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x02", endianess="<"),
+        GetSetBytesEntry(value_int=-1, value_bytes=b"\xFF", endianess="<"),
+        GetSetBytesEntry(value_int=-10, value_bytes=b"\xF6", endianess="<"),
+        GetSetBytesEntry(value_int=-120, value_bytes=b"\x88", endianess="<"),
+        GetSetBytesEntry(value_int=127, value_bytes=b"\x7F", endianess="<"),
+        GetSetBytesEntry(value_int=-128, value_bytes=b"\x80", endianess="<"),
+
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x0F", endianess=">"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00", endianess=">"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x02", endianess=">"),
+        GetSetBytesEntry(value_int=-1, value_bytes=b"\xFF", endianess=">"),
+        GetSetBytesEntry(value_int=-10, value_bytes=b"\xF6", endianess=">"),
+        GetSetBytesEntry(value_int=-120, value_bytes=b"\x88", endianess=">"),
+        GetSetBytesEntry(value_int=127, value_bytes=b"\x7F", endianess=">"),
+        GetSetBytesEntry(value_int=-128, value_bytes=b"\x80", endianess=">"),
+
+    ]
+    for test_entry in get_set_test_entries_list:
+        _assert_get_set_functions(test_entry.value_bytes, test_entry.value_int, test_entry.endianess, get_int8, set_int8)
+
+
+# 16 bits #
+@pytest.mark.unittest
+def test_bytes_helper_functions_get_and_set_uint16():
+
+    get_set_test_entries_list: list = [
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x0F\x00", endianess="<"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00\x00", endianess="<"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x02\x00", endianess="<"),
+        GetSetBytesEntry(value_int=255, value_bytes=b"\xFF\x00", endianess="<"),
+        GetSetBytesEntry(value_int=43690, value_bytes=b"\xAA\xAA", endianess="<"),
+
+        GetSetBytesEntry(value_int=15, value_bytes=b"\x00\x0F", endianess=">"),
+        GetSetBytesEntry(value_int=0, value_bytes=b"\x00\x00", endianess=">"),
+        GetSetBytesEntry(value_int=2, value_bytes=b"\x00\x02", endianess=">"),
+        GetSetBytesEntry(value_int=255, value_bytes=b"\x00\xFF", endianess=">"),
+        GetSetBytesEntry(value_int=43690, value_bytes=b"\xAA\xAA", endianess=">"),
+    ]
+    for test_entry in get_set_test_entries_list:
+        _assert_get_set_functions(test_entry.value_bytes, test_entry.value_int, test_entry.endianess, get_uint16, set_uint16)
