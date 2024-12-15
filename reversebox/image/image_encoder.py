@@ -72,14 +72,30 @@ class ImageEncoder:
         bgr565_bytes[1] = (bgr565 >> 8) & 0xFF
         return bgr565_bytes
 
+    def _encode_rgb888_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(3)
+        p[0] = (pixel_int >> 0) & 0xff
+        p[1] = (pixel_int >> 8) & 0xff
+        p[2] = (pixel_int >> 16) & 0xff
+        return p
+
+    def _encode_bgr888_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(3)
+        p[0] = (pixel_int >> 16) & 0xff
+        p[1] = (pixel_int >> 8) & 0xff
+        p[2] = (pixel_int >> 0) & 0xff
+        return p
+
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel)
-        ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
-        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
+        ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
+        ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
+        ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
+        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
     }
 
     indexed_data_formats = {
@@ -109,6 +125,8 @@ class ImageEncoder:
             texture_data = bytearray(img_width * img_height)
         elif bits_per_pixel == 16:
             texture_data = bytearray(img_width * img_height * 2)
+        elif bits_per_pixel == 24:
+            texture_data = bytearray(img_width * img_height * 3)
         elif bits_per_pixel == 32:
             texture_data = bytearray(img_width * img_height * 4)
         else:
@@ -128,6 +146,8 @@ class ImageEncoder:
                 pass
             elif bits_per_pixel == 16:
                 texture_data[i * 2: (i + 1) * 2] = encode_function(self, pixel_int)  # noqa
+            elif bits_per_pixel == 24:
+                texture_data[i * 3: (i + 1) * 3] = encode_function(self, pixel_int)  # noqa
             elif bits_per_pixel == 32:
                 texture_data[i * 4: (i + 1) * 4] = encode_function(self, pixel_int)  # noqa
             else:
