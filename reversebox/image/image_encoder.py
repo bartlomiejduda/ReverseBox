@@ -86,12 +86,32 @@ class ImageEncoder:
         p[2] = (pixel_int >> 0) & 0xff
         return p
 
+    def _encode_rgba4444_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = (pixel_int >> 8) & 0xFF
+        g = (pixel_int >> 16) & 0xFF
+        b = (pixel_int >> 24) & 0xFF
+        a = pixel_int & 0xFF
+
+        r4 = (r >> 4) & 0x0F
+        g4 = (g >> 4) & 0x0F
+        b4 = (b >> 4) & 0x0F
+        a4 = (a >> 4) & 0x0F
+
+        rgba4444 = (r4 << 12) | (g4 << 8) | (b4 << 4) | a4
+
+        p[0] = (rgba4444 >> 8) & 0xFF
+        p[1] = rgba4444 & 0xFF
+        return p
+
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel)
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
+        ImageFormats.RGBA4444: (_encode_rgba4444_pixel, 16),
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
         ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
