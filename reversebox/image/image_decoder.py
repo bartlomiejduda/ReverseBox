@@ -122,7 +122,8 @@ class ImageDecoder:
         p[0] = (((pixel_int >> 11) & 0x1F) * 0xFF // 0x1F)
         p[1] = (((pixel_int >> 6) & 0x1F) * 0xFF // 0x1F)
         p[2] = (((pixel_int >> 1) & 0x1F) * 0xFF // 0x1F)
-        p[3] = (((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F)
+        a = (((pixel_int >> 0) & 0x01) * 0xFF // 0x1F)
+        p[3] = 0xFF if a else 0x00
         return p
 
     def _decode_bgrx5551_pixel(self, pixel_int: int) -> bytes:
@@ -306,10 +307,10 @@ class ImageDecoder:
 
     def _decode_rgba4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        a = (pixel_int >> 12) & 0xff
-        r = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
-        b = (pixel_int >> 0) & 0x0f
+        r = (pixel_int >> 12) & 0xff
+        g = (pixel_int >> 8) & 0x0f
+        b = (pixel_int >> 4) & 0x0f
+        a = (pixel_int >> 0) & 0x0f
 
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
@@ -317,12 +318,24 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
-    def _decode_abgr4444_pixel(self, pixel_int: int) -> bytes:
+    def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = (pixel_int >> 12) & 0xff
         g = (pixel_int >> 8) & 0x0f
         b = (pixel_int >> 4) & 0x0f
-        a = (pixel_int >> 0) & 0x0f
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = 0xFF
+        return p
+
+    def _decode_abgr4444_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        a = (pixel_int >> 12) & 0xff
+        r = (pixel_int >> 8) & 0x0f
+        g = (pixel_int >> 4) & 0x0f
+        b = (pixel_int >> 0) & 0x0f
 
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
@@ -342,18 +355,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    # RGB444
-    def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        r = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
-        b = (pixel_int >> 0) & 0x0f
 
-        p[0] = (r << 4) | (r >> 0)
-        p[1] = (g << 4) | (g >> 0)
-        p[2] = (b << 4) | (b >> 0)
-        p[3] = 0xFF
-        return p
 
     def _decode_bgra4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
