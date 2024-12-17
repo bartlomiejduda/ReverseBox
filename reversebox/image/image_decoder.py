@@ -249,6 +249,30 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    # TODO - fix this, not decoding properly
+    def _decode_rgbm8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        max_range = 65025
+        r = (pixel_int >> 0) & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        m = (pixel_int >> 24) & 0xFF
+
+        r_normalized = r / 255.0
+        g_normalized = g / 255.0
+        b_normalized = b / 255.0
+        m_normalized = m / 255.0
+
+        r_final = int(r_normalized * (m_normalized * max_range) * 255)
+        g_final = int(g_normalized * (m_normalized * max_range) * 255)
+        b_final = int(b_normalized * (m_normalized * max_range) * 255)
+
+        p[0] = min(max(r_final, 0), 255)
+        p[1] = min(max(g_final, 0), 255)
+        p[2] = min(max(b_final, 0), 255)
+        p[3] = 0xFF
+        return p
+
     def _decode_bgra8888_pixel(self, pixel_int: int) -> bytes:  # TODO - fix this?
         p = bytearray(4)
         p[0] = (pixel_int >> 16) & 0xff
@@ -501,6 +525,7 @@ class ImageDecoder:
         ImageFormats.RGBX8888_old: (_decode_rgbx8888_pixel_old, 32, get_uint32),
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
+        ImageFormats.RGBM8888: (_decode_rgbm8888_pixel, 32, get_uint32),
 
         ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
         ImageFormats.BGR48: (_decode_bgr48_pixel, 48, get_uint48),
