@@ -27,6 +27,7 @@ class ImageFormats(Enum):
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
     GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (aliases: Y800 and L8)
+    R8 = "r8"
 
     # 16-bit
     GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
@@ -45,6 +46,7 @@ class ImageFormats(Enum):
     XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
     ABGR1555 = "abgr1555"  # TODO - find samples for this
     XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
+    R16 = "r16"
 
     # 24-bit
     RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB
