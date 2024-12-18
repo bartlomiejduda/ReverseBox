@@ -131,7 +131,7 @@ class ImageEncoder:
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
         ImageFormats.RGBA4444: (_encode_rgba4444_pixel, 16),
-        ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16),
+        ImageFormats.ARGB4444: (_encode_abgr4444_pixel, 16),
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
         ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
