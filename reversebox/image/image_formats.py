@@ -28,6 +28,8 @@ class ImageFormats(Enum):
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
     GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (aliases: Y800 and L8)
     R8 = "r8"
+    G8 = "g8"
+    B8 = "b8"
 
     # 16-bit
     GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
@@ -47,6 +49,8 @@ class ImageFormats(Enum):
     ABGR1555 = "abgr1555"  # TODO - find samples for this
     XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
     R16 = "r16"
+    G16 = "g16"
+    B16 = "b16"
 
     # 24-bit
     RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB
@@ -62,6 +66,9 @@ class ImageFormats(Enum):
     XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
     RGBX8888_old = "rgbx8888_old"  # PIX_FMT_RGB0 / packed RGB 8:8:8, 32bpp, RGB0RGB0...
     RGBM8888 = "rgbm8888"  # (M - brightness multiplier)  TODO - fix this
+    R32 = "r32"
+    G32 = "g32"
+    B32 = "b32"
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B

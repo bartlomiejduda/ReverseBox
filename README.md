@@ -194,6 +194,15 @@ or software researchers).
   - Decode RGBX8888 ✔️
   - Decode XBGR8888 ✔️
   - Decode BGRX8888 ✔️
+  - Decode R8 ✔️
+  - Decode G8 ✔️
+  - Decode B8 ✔️
+  - Decode R16 ✔️
+  - Decode G16 ✔️
+  - Decode B16 ✔️
+  - Decode R32 ✔️
+  - Decode G32 ✔️
+  - Decode B32 ✔️
   - Decode BUMPMAP_SR ✔️
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️

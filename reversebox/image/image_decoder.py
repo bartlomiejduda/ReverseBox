@@ -73,14 +73,6 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_r8_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        p[0] = pixel_int & 0xFF
-        p[1] = 0x00
-        p[2] = 0x00
-        p[3] = 0xFF
-        return p
-
     def _decode_gray8a_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         L = pixel_int & 0xFF
@@ -98,14 +90,6 @@ class ImageDecoder:
         p[0] = L
         p[1] = L
         p[2] = L
-        p[3] = 0xFF
-        return p
-
-    def _decode_r16_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        p[0] = pixel_int & 0xFF
-        p[1] = 0x00
-        p[2] = 0x00
         p[3] = 0xFF
         return p
 
@@ -495,6 +479,30 @@ class ImageDecoder:
         p[3] = pixel_int >> 8
         return p
 
+    def _decode_r_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = pixel_int & 0xFF
+        p[1] = 0x00
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_g_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = pixel_int & 0xFF
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_b_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = 0x00
+        p[2] = pixel_int & 0xFF
+        p[3] = 0xFF
+        return p
+
     # source format is one of the listed below
     # target format is always RGBA8888
     generic_data_formats = {
@@ -510,7 +518,9 @@ class ImageDecoder:
         ImageFormats.BGR332: (_decode_bgr332_pixel, 8, get_uint8),
         ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),  # GRAY, 8bpp
         ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),  # GRAY+ALPHA, 8bpp
-        ImageFormats.R8: (_decode_r8_pixel, 8, get_uint8),
+        ImageFormats.R8: (_decode_r_only_pixel, 8, get_uint8),
+        ImageFormats.G8: (_decode_g_only_pixel, 8, get_uint8),
+        ImageFormats.B8: (_decode_b_only_pixel, 8, get_uint8),
 
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
         ImageFormats.GRAY16: (_decode_gray16_pixel, 16, get_uint16),
@@ -530,7 +540,9 @@ class ImageDecoder:
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
         ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),  # GRAY+ALPHA, 16bpp
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
-        ImageFormats.R16: (_decode_r16_pixel, 16, get_uint16),
+        ImageFormats.R16: (_decode_r_only_pixel, 16, get_uint16),
+        ImageFormats.G16: (_decode_g_only_pixel, 16, get_uint16),
+        ImageFormats.B16: (_decode_b_only_pixel, 16, get_uint16),
 
         ImageFormats.RGB888: (_decode_rgb888_pixel, 24, get_uint24),
         ImageFormats.BGR888: (_decode_bgr888_pixel, 24, get_uint24),
@@ -544,6 +556,9 @@ class ImageDecoder:
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
         ImageFormats.RGBM8888: (_decode_rgbm8888_pixel, 32, get_uint32),
+        ImageFormats.R32: (_decode_r_only_pixel, 32, get_uint32),
+        ImageFormats.G32: (_decode_g_only_pixel, 32, get_uint32),
+        ImageFormats.B32: (_decode_b_only_pixel, 32, get_uint32),
 
         ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
         ImageFormats.BGR48: (_decode_bgr48_pixel, 48, get_uint48),
