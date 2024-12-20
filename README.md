@@ -219,6 +219,7 @@ or software researchers).
   - BC Swizzling/Twiddling ✔️
   - PS2 GS Texture Swizzling/Twiddling ✔️
   - PS2 GS Texture Compression ✔️
+  - RLE TGA compression ✔️
 
 * IO
   - File Reader ✔️
