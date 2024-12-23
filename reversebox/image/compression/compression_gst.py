@@ -6,7 +6,9 @@ License: GPL-3.0 License
 # fmt: off
 
 
-# PS2 GS texture decompression
+# PS2 GS texture compression
+# Used in some EA games e.g. "Cricket 2005" (PS2), "Fight Night Round 3" (PS2) or "FIFA Street" (PS2)
+
 def decompress_gst_image(
     base_data: bytes,
     detail_data: bytes,
