@@ -73,7 +73,9 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
     if image_format in (ImageFormats.RGB121,
                         ImageFormats.N64_CMPR,
                         ImageFormats.N64_I4,
-                        ImageFormats.BC1_DXT1) or "pal4" in image_format.value.lower():
+                        ImageFormats.BC1_DXT1,
+                        ImageFormats.BC4_UNORM,
+                        ) or "pal4" in image_format.value.lower():
         return 4
     elif image_format in (ImageFormats.RGBX2222,
                           ImageFormats.RGBA2222,
@@ -84,8 +86,33 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.N64_I8,
                           ImageFormats.N64_IA4,
                           ImageFormats.BC2_DXT3,
-                          ImageFormats.BC3_DXT5) or "pal8" in image_format.value.lower():
+                          ImageFormats.R8,
+                          ImageFormats.G8,
+                          ImageFormats.B8,
+                          ImageFormats.BC3_DXT5,
+                          ImageFormats.BC5_UNORM,
+                          ImageFormats.BC6H_UF16,
+                          ImageFormats.BC6H_SF16,
+                          ImageFormats.BC7_UNORM,
+                          ImageFormats.GST121,
+                          ImageFormats.GST221,
+                          ImageFormats.GST421,
+                          ImageFormats.GST821,
+                          ImageFormats.GST122,
+                          ImageFormats.GST222,
+                          ImageFormats.GST422,
+                          ImageFormats.GST822,
+                          ) or "pal8" in image_format.value.lower():
         return 8
+    elif image_format in (ImageFormats.YUV410P, ):
+        return 9
+    elif image_format in (ImageFormats.YUV411P,
+                          ImageFormats.YUV411_UYYVYY411,
+                          ImageFormats.YUV420_NV12,
+                          ImageFormats.YUV420_NV21,
+                          ImageFormats.YUV420P,
+                          ):
+        return 12
     elif image_format in (ImageFormats.GRAY8A,
                           ImageFormats.GRAY16,
                           ImageFormats.RGB565,
@@ -104,10 +131,23 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.ABGR1555,
                           ImageFormats.XBGR1555,
                           ImageFormats.N64_RGB5A3,
-                          ImageFormats.N64_IA8) or "pal16" in image_format.value.lower():
+                          ImageFormats.R16,
+                          ImageFormats.G16,
+                          ImageFormats.B16,
+                          ImageFormats.N64_IA8,
+                          ImageFormats.YUV422P,
+                          ImageFormats.YUV422_UYVY,
+                          ImageFormats.YUV422_YUY2,
+                          ImageFormats.YUV440P,
+                          ImageFormats.BUMPMAP_SR,
+                          ) or "pal16" in image_format.value.lower():
         return 16
+    elif image_format in (ImageFormats.YUVA420P, ):
+        return 20
     elif image_format in (ImageFormats.RGB888,
-                          ImageFormats.BGR888,):
+                          ImageFormats.BGR888,
+                          ImageFormats.YUV444P,
+                          ):
         return 24
     elif image_format in (ImageFormats.RGBA8888,
                           ImageFormats.BGRA8888,
@@ -117,10 +157,17 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.RGBX8888_old,
                           ImageFormats.RGBX8888,
                           ImageFormats.BGRX8888,
-                          ImageFormats.N64_RGBA32):
+                          ImageFormats.N64_RGBA32,
+                          ImageFormats.R32,
+                          ImageFormats.G32,
+                          ImageFormats.B32,
+                          ImageFormats.RGBM8888,
+                          ImageFormats.AYUV,
+                          ):
         return 32
     elif image_format in (ImageFormats.RGB48,
-                          ImageFormats.BGR48,):
+                          ImageFormats.BGR48,
+                          ):
         return 48
     else:
         raise Exception(f"Not supported image format! Format: {image_format}")
