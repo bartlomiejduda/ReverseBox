@@ -4,21 +4,15 @@ License: GPL-3.0 License
 """
 
 import struct
-import traceback
 
 from reversebox.common.logger import get_logger
-from reversebox.image.compression.compression_gst import decompress_gst_image
 from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
 from reversebox.image.decoders.compressed_decoder import CompressedImageDecoder
+from reversebox.image.decoders.gst_decoder import GSTImageDecoder
 from reversebox.image.decoders.n64_decoder import N64Decoder
 from reversebox.image.decoders.yuv_decoder import YUVDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from reversebox.image.swizzling.swizzle_gst import (
-    unswizzle_detail1,
-    unswizzle_detail2,
-    unswizzle_gst_base,
-)
 from reversebox.io_files.bytes_handler import BytesHandler
 from reversebox.io_files.bytes_helper_functions import (
     get_uint8,
@@ -599,18 +593,6 @@ class ImageDecoder:
         ImageFormats.PAL16_RGB5A3: (_decode_rgb5A3_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 2)
     }
 
-    gst_data_formats = {
-        # image_format: (block_width, block_height, detail_bpp)
-        ImageFormats.GST121: (1, 2, 1),
-        ImageFormats.GST221: (2, 2, 1),
-        ImageFormats.GST421: (4, 2, 1),
-        ImageFormats.GST821: (8, 2, 1),
-        ImageFormats.GST122: (1, 2, 2),
-        ImageFormats.GST222: (2, 2, 2),
-        ImageFormats.GST422: (4, 2, 2),
-        ImageFormats.GST822: (8, 2, 2),
-    }
-
     def _get_endianess_format(self, endianess: str) -> str:
         if endianess == "little":
             endianess_format = "<"
@@ -726,47 +708,6 @@ class ImageDecoder:
 
         return texture_data
 
-    def _decode_gst(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: tuple, convert_format: ImageFormats, is_swizzled: bool) -> bytes:
-        block_width, block_height, detail_bpp = image_format
-
-        size_of_base: int = (img_width // block_width) * (img_height // block_height)
-        size_of_detail: int = img_width * img_height * detail_bpp // 8
-
-        if size_of_base + size_of_detail != len(image_data):
-            logger.warning(f"Size of image {len(image_data)} is different than combined base and detail size {size_of_base + size_of_detail}!")
-
-        detail_offset: int = (size_of_base + (16 - 1)) & ~(16 - 1)
-
-        base_data: bytes = image_data[:size_of_base]
-        detail_data: bytes = image_data[detail_offset: detail_offset + size_of_detail]
-
-        # unswizzle GST data
-        if is_swizzled:
-            base_data = unswizzle_gst_base(base_data, img_width, img_height, block_width, block_height)
-            if detail_bpp == 2:
-                detail_data = unswizzle_detail2(detail_data, img_width, img_height)
-            else:
-                detail_data = unswizzle_detail1(detail_data, img_width, img_height)
-
-        # decompress GST data
-        decompressed_texture_data: bytes = decompress_gst_image(base_data, detail_data, img_width, img_height, block_width, block_height, detail_bpp)
-
-        # convert indexed image to RGBA to get final result
-        try:
-            output_texture_data = self.decode_indexed_image(
-                decompressed_texture_data,
-                palette_data,
-                img_width,
-                img_height,
-                convert_format
-            )
-        except Exception as error:
-            logger.error(f"Error while decoding GST image! Error: {error}")
-            logger.error(traceback.format_exc())
-            return decompressed_texture_data
-
-        return output_texture_data
-
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
@@ -778,7 +719,9 @@ class ImageDecoder:
         return compressed_decoder.decode_compressed_image_main(image_data, img_width, img_height, image_format)
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
-        return self._decode_gst(image_data, palette_data, img_width, img_height, self.gst_data_formats[image_format], convert_format, is_swizzled)
+        gst_decoder = GSTImageDecoder()
+        decoded_gst_data: bytes = gst_decoder.decode_gst_image_main(image_data, img_width, img_height, image_format, is_swizzled)
+        return self.decode_indexed_image(decoded_gst_data, palette_data, img_width, img_height, convert_format)
 
     def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         yuv_decoder = YUVDecoder()
