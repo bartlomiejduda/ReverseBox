@@ -89,10 +89,10 @@ class ImageEncoder:
     def _encode_rgba4444_pixel(self, pixel_int: int) -> bytearray:
         p = bytearray(2)
 
-        r = (pixel_int >> 8) & 0xFF
-        g = (pixel_int >> 16) & 0xFF
-        b = (pixel_int >> 24) & 0xFF
-        a = pixel_int & 0xFF
+        b = pixel_int & 0xFF
+        a = (pixel_int >> 8) & 0xFF
+        r = (pixel_int >> 16) & 0xFF
+        g = (pixel_int >> 24) & 0xFF
 
         r4 = (r >> 4) & 0x0F
         g4 = (g >> 4) & 0x0F
@@ -105,13 +105,13 @@ class ImageEncoder:
         p[1] = rgba4444 & 0xFF
         return p
 
-    def _encode_abgr4444_pixel(self, pixel_int: int) -> bytearray:
+    def _encode_argb4444_pixel(self, pixel_int: int) -> bytearray:
         p = bytearray(2)
 
-        a = (pixel_int >> 8) & 0xFF
-        r = (pixel_int >> 16) & 0xFF
-        g = (pixel_int >> 24) & 0xFF
-        b = pixel_int & 0xFF
+        a = pixel_int & 0xFF
+        r = (pixel_int >> 8) & 0xFF
+        g = (pixel_int >> 16) & 0xFF
+        b = (pixel_int >> 24) & 0xFF
 
         r4 = (r >> 4) & 0x0F
         g4 = (g >> 4) & 0x0F
@@ -131,7 +131,7 @@ class ImageEncoder:
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
         ImageFormats.RGBA4444: (_encode_rgba4444_pixel, 16),
-        ImageFormats.ARGB4444: (_encode_abgr4444_pixel, 16),
+        ImageFormats.ARGB4444: (_encode_argb4444_pixel, 16),
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
         ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
