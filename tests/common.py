@@ -108,3 +108,14 @@ class ImageDecodeEncodeTestEntry:
     img_height: int
     img_format: ImageFormats
     bpp: Optional[int] = None
+
+
+@dataclass
+class GSTSwizzleTestEntry:
+    img_path: str
+    pal_path: str
+    debug_flag: bool
+    img_width: int
+    img_height: int
+    img_format: ImageFormats
+    conv_format: ImageFormats
