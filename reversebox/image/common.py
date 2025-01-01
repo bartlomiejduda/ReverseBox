@@ -9,7 +9,9 @@ from reversebox.image.image_formats import ImageFormats
 
 
 def convert_bpp_to_bytes_per_pixel(input_bpp: int) -> int:
-    if input_bpp <= 8:
+    if input_bpp <= 0:
+        raise ValueError("Invalid bpp value!")
+    elif input_bpp <= 8:
         return 1
     elif input_bpp <= 16:
         return 2
@@ -19,6 +21,12 @@ def convert_bpp_to_bytes_per_pixel(input_bpp: int) -> int:
         return 4
     else:
         raise Exception("Not supported bpp value!")
+
+
+def convert_bpp_to_bytes_per_pixel_float(input_bpp: int) -> float:
+    if input_bpp <= 0:
+        raise ValueError("Invalid bpp value!")
+    return input_bpp / 8
 
 
 # The stride is the number of bytes from one row of pixels in memory to the next row of pixels in memory.
