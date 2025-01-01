@@ -11,6 +11,11 @@ def convert_int_to_hex_string(input_value: int) -> str:
     return "0x%02X" % int(input_value)
 
 
+# e.g. b'\xE5\xFF' --> 'E5 FF'
+def convert_bytes_to_hex_string(input_bytes: bytes) -> str:
+    return " ".join(f"{byte_value:02x}".upper() for byte_value in input_bytes)
+
+
 def convert_hex_string_to_int(input_string: str) -> int:
     return int(input_string, 16)
 
