@@ -10,13 +10,18 @@ from reversebox.io_files.bytes_helper_functions import set_uint32, set_uint64
 # e.g. Data.hatch archive from "Sonic Galactic" (Demo 2) game
 
 
-def decrypt_hatch_data(f_data: bytes, filename: str, f_size: int) -> bytes:
+def get_hash_for_filename(filename: str) -> int:
+    crc_handler = CRC32Handler()
+    filename_hash: int = crc_handler.calculate_crc32(filename.encode("ascii"))
+    return filename_hash
+
+
+def decrypt_hatch_data(f_data: bytes, filename_hash: int, f_size: int) -> bytes:
     crc_handler = CRC32Handler()
     keyA: bytearray = bytearray(16)
     keyB: bytearray = bytearray(16)
     decrypted_data: bytearray = bytearray(f_data)
 
-    filename_hash: int = crc_handler.calculate_crc32(filename.encode("ascii"))
     encoded_filename_hash: bytes = set_uint32(filename_hash, "<")
     encoded_size_value: bytes = set_uint64(f_size, "<")
     size_hash: int = crc_handler.calculate_crc32(encoded_size_value)
