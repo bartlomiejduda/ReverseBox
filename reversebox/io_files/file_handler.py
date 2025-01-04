@@ -16,18 +16,22 @@ from reversebox.io_files.bytes_helper_functions import (
     get_int16,
     get_int24,
     get_int32,
+    get_int64,
     get_uint8,
     get_uint16,
     get_uint24,
     get_uint32,
+    get_uint64,
     set_int8,
     set_int16,
     set_int24,
     set_int32,
+    set_int64,
     set_uint8,
     set_uint16,
     set_uint24,
     set_uint32,
+    set_uint64,
 )
 
 logger = get_logger(__name__)
@@ -218,6 +222,18 @@ class FileHandler:
         data = self.file.read(4)
         return get_uint32(data, self.endianess)
 
+    def read_int64(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(8)
+        return get_int64(data, self.endianess)
+
+    def read_uint64(self) -> int:
+        self._check_file()
+        self._check_read_mode()
+        data = self.file.read(8)
+        return get_uint64(data, self.endianess)
+
     ###
     ###
     ###
@@ -287,4 +303,16 @@ class FileHandler:
         self._check_file()
         self._check_write_mode()
         self.file.write(set_uint32(value, self.endianess))
+        return True
+
+    def write_int64(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_int64(value, self.endianess))
+        return True
+
+    def write_uint64(self, value: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(set_uint64(value, self.endianess))
         return True
