@@ -350,6 +350,7 @@ Check out list of tools written using ReverseBox:
 - [F-Zero X TEX Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/F-Zero%20X/TEX%20Tool)
 - [TPL Parser](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Mario%20Kart%20WII/TPL%20Parser)
 - [ImageHeat](https://github.com/bartlomiejduda/ImageHeat)
+- [Hatch Engine Archive Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Hatch%20Engine/Hatch%20Engine%20Archive%20Tool)
 - and more...
 
 # Badges
