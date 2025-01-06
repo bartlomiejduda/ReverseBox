@@ -92,6 +92,7 @@ or software researchers).
   - SHA-2 (256 bits) ✔️ <span style="color:yellow">(wrapper only)</span>
   - MD2 ✔️ <span style="color:yellow">(wrapper only)</span>
   - MD5 ✔️ <span style="color:yellow">(wrapper only)</span>
+  - Murmur3 ✔️ <span style="color:yellow">(wrapper only)</span>
   - (game-specific) Hercules (TODO) ❌
   - (game-specific) E-racer (TODO) ❌
 

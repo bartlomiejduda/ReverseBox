@@ -2,6 +2,7 @@ crc==7.1.0
 faker==33.1.0
 hashbase==1.1.5
 lzokay==1.1.8
+mmh3==5.0.1
 numpy==2.1.3
 Pillow==10.4.0
 polib==1.2.0

@@ -56,6 +56,7 @@ class TextHashTestEntry:
     test_string: str
     expected_int: int
     expected_str: str
+    seed: Optional[int] = None
 
 
 @dataclass
@@ -63,6 +64,7 @@ class BytesHashTestEntry:
     test_bytes: bytes
     expected_int: int
     expected_str: str
+    seed: Optional[int] = None
 
 
 @dataclass
