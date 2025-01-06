@@ -1,14 +1,15 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
 
+# Bernstein's DJB2 hash
+# used in EA BIG VIV EB archives to calculate hash from file paths
 class DJB2Handler:
     def __init__(self):
         pass
 
-    # used in EA BIG VIV EB archives to calculate hash from file paths
     @staticmethod
     def calculate_djb2_hash_from_string(input_string: str) -> int:
         h = 5381

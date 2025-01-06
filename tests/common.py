@@ -57,6 +57,7 @@ class TextHashTestEntry:
     expected_int: int
     expected_str: str
     seed: Optional[int] = None
+    prime: Optional[int] = None
 
 
 @dataclass
@@ -65,6 +66,7 @@ class BytesHashTestEntry:
     expected_int: int
     expected_str: str
     seed: Optional[int] = None
+    prime: Optional[int] = None
 
 
 @dataclass
