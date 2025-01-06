@@ -87,6 +87,7 @@ or software researchers).
   - FNV1-64 ✔️
   - FNV1A-32 ✔️
   - FNV1A-64 ✔️
+  - Jenkins one-at-a-time ✔️
   - SDBM ✔️
   - SHA-1 ✔️ <span style="color:yellow">(wrapper only)</span>
   - SHA-2 (256 bits) ✔️ <span style="color:yellow">(wrapper only)</span>
