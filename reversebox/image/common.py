@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -179,3 +179,18 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
         return 48
     else:
         raise Exception(f"Not supported image format! Format: {image_format}")
+
+
+def is_compressed_image_format(image_format: ImageFormats) -> bool:
+    if image_format in (ImageFormats.BC1_DXT1,
+                        ImageFormats.BC2_DXT3,
+                        ImageFormats.BC3_DXT5,
+                        ImageFormats.BC4_UNORM,
+                        ImageFormats.BC5_UNORM,
+                        ImageFormats.BC6H_UF16,
+                        ImageFormats.BC6H_SF16,
+                        ImageFormats.BC7_UNORM,
+                        ImageFormats.N64_CMPR
+                        ):
+        return True
+    return False
