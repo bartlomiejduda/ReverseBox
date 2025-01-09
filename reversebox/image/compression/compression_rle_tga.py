@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -10,6 +10,7 @@ logger = get_logger(__name__)
 # fmt: off
 
 # TGA RLE compression
+# https://en.wikipedia.org/wiki/Truevision_TGA
 # https://www.dca.fee.unicamp.br/~martino/disciplinas/ea978/tgaffs.pdf
 
 

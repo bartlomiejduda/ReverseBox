@@ -95,7 +95,7 @@ class ImageFormats(Enum):
     PAL8_BGRX5551 = "pal8_bgrx5551"
     PAL8_XRGB1555 = "pal8_xrgb1555"  # RGB555 (little endian)
     PAL8_XBGR1555 = "pal8_xbgr1555"  # BGR555 (little endian)
-    PAL8_RGB888 = "pal8_rgb888"
+    PAL8_RGB888 = "pal8_rgb888"  # same as VGA (https://moddingwiki.shikadi.net/wiki/VGA_Palette)
     PAL8_BGR888 = "pal8_bgr888"
     PAL8_RGBX6666 = "pal8_rgbx6666"
     PAL8_IA8 = "pal8_ia8"  # N64_C8 (type 0)
