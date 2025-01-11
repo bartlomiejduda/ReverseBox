@@ -225,6 +225,7 @@ or software researchers).
   - PS2 GS Texture Compression ✔️
   - RLE TGA compression ✔️
   - PackBits (Macintosh RLE) compression ✔️
+  - Executioners RLE compression ✔️
 
 * IO
   - File Reader ✔️
