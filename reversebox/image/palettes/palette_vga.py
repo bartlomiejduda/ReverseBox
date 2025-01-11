@@ -6,6 +6,7 @@ License: GPL-3.0 License
 # fmt: off
 
 # Default VGA Palette
+# https://en.wikipedia.org/wiki/Video_Graphics_Array#Color_palette
 # https://moddingwiki.shikadi.net/wiki/VGA_Palette
 
 vga_colors: list[int] = [
