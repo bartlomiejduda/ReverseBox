@@ -23,6 +23,7 @@ or software researchers).
 
 * Checksum
   - Adler32 ✔️
+  - Cocos2d PVR ✔️
   - Fletcher16 ✔️
   - Fletcher32 ✔️
   - Internet Checksum / IPv4 header checksum ✔️
