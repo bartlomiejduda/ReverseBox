@@ -51,7 +51,7 @@ def _get_time_for_helper_functions(get_func) -> float:
 
 
 @pytest.mark.unittest
-def test_bytes_helper_functions_get_and_set_uint32_performance():
+def test_bytes_helper_functions_get_uint32_performance():
 
     # old logic - basic struct version
     def _function_a_get_uint32(input_bytes: bytes, endianess: str) -> int:
