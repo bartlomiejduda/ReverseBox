@@ -36,11 +36,13 @@ class ImageFormats(Enum):
     GRAY16 = "gray16"  # PIX_FMT_GRAY16LE / PIX_FMT_GRAY16BE / Y, 16bpp
     RGB565 = "rgb565"  # PIX_FMT_RGB565LE / PIX_FMT_RGB565BE / packed RGB 5:6:5, 16bpp
     BGR565 = "bgr565"  # PIX_FMT_BGR565LE / PIX_FMT_BGR565BE / packed BGR 5:6:5, 16bpp
-    RGBA4444 = "rgba4444"  # B4G4R4A4_UNORM
-    RGBX4444 = "rgbx4444"  # PIX_FMT_RGB444LE / PIX_FMT_RGB444BE / packed RGB 4:4:4, 16bpp, alfa bits are ignored (RGB444)
+
+    RGBA4444 = "rgba4444"
+    RGBX4444 = "rgbx4444"
     BGRA4444 = "bgra4444"
-    BGRX4444 = "bgrx4444"  # PIX_FMT_BGR444LE / PIX_FMT_BGR444BE / packed BGR 4:4:4, 16bpp, alfa bits are ignored (BGR444)
-    ARGB4444 = "argb4444"  # A4B4G4R4_UNORM
+    BGRX4444 = "bgrx4444"
+
+    ARGB4444 = "argb4444"
     XRGB4444 = "xrbg4444"
 
     RGBA5551 = "rgba5551"
@@ -48,10 +50,11 @@ class ImageFormats(Enum):
     BGRA5551 = "bgra5551"
     BGRX5551 = "bgrx5551"
 
-    ARGB1555 = "argb1555"  # B5G5R5A1_UNORM
-    XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
-    ABGR1555 = "abgr1555"  # TODO - find samples for this
-    XBGR1555 = "xbgr1555"  # PIX_FMT_BGR555LE / PIX_FMT_BGR555BE / packed BGR 5:5:5, 16bpp, alfa bit is ignored (BGR555)
+    ARGB1555 = "argb1555"
+    XRGB1555 = "xrgb1555"
+    ABGR1555 = "abgr1555"
+    XBGR1555 = "xbgr1555"
+
     R16 = "r16"
     G16 = "g16"
     B16 = "b16"
