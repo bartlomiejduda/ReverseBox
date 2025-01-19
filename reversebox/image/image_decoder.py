@@ -183,7 +183,7 @@ class ImageDecoder:
         p[3] = 0xFF if a else 0x00
         return p
 
-    def _decode_rgb565_pixel(self, pixel_int: int) -> bytes:
+    def _decode_bgr565_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = ((pixel_int >> 11) & 0x1F) * 0xFF // 0x1F
         p[1] = ((pixel_int >> 5) & 0x3F) * 0xFF // 0x3F
@@ -191,7 +191,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_bgr565_pixel(self, pixel_int: int) -> bytes:
+    def _decode_rgb565_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = ((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F
         p[1] = ((pixel_int >> 5) & 0x3F) * 0xFF // 0x3F
