@@ -42,8 +42,12 @@ class ImageFormats(Enum):
     BGRX4444 = "bgrx4444"  # PIX_FMT_BGR444LE / PIX_FMT_BGR444BE / packed BGR 4:4:4, 16bpp, alfa bits are ignored (BGR444)
     ARGB4444 = "argb4444"  # A4B4G4R4_UNORM
     XRGB4444 = "xrbg4444"
+
     RGBA5551 = "rgba5551"
     RGBX5551 = "rgbx5551"
+    BGRA5551 = "bgra5551"
+    BGRX5551 = "bgrx5551"
+
     ARGB1555 = "argb1555"  # B5G5R5A1_UNORM
     XRGB1555 = "xrgb1555"  # PIX_FMT_RGB555LE / PIX_FMT_RGB555BE / packed RGB 5:5:5, 16bpp, alfa bit is ignored (RGB555)
     ABGR1555 = "abgr1555"  # TODO - find samples for this

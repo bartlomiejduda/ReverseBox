@@ -134,6 +134,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.XRGB4444,
                           ImageFormats.RGBA5551,
                           ImageFormats.RGBX5551,
+                          ImageFormats.BGRA5551,
+                          ImageFormats.BGRX5551,
                           ImageFormats.ARGB1555,
                           ImageFormats.XRGB1555,
                           ImageFormats.ABGR1555,
