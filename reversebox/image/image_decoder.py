@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -105,24 +105,24 @@ class ImageDecoder:
 
     def _decode_bgrx5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        r = pixel_int & 0x1F
+        b = pixel_int & 0x1F
         g = (pixel_int >> 5) & 0x1F
-        b = (pixel_int >> 10) & 0x1F
-        p[0] = (b << 3) | (b >> 2)
+        r = (pixel_int >> 10) & 0x1F
+        p[0] = (r << 3) | (r >> 2)
         p[1] = (g << 3) | (g >> 2)
-        p[2] = (r << 3) | (r >> 2)
+        p[2] = (b << 3) | (b >> 2)
         p[3] = 0xFF
         return p
 
     def _decode_bgra5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        r = pixel_int & 0x1F
+        b = pixel_int & 0x1F
         g = (pixel_int >> 5) & 0x1F
-        b = (pixel_int >> 10) & 0x1F
+        r = (pixel_int >> 10) & 0x1F
         a = (pixel_int >> 15) & 0x1
-        p[0] = (b << 3) | (b >> 2)
+        p[0] = (r << 3) | (r >> 2)
         p[1] = (g << 3) | (g >> 2)
-        p[2] = (r << 3) | (r >> 2)
+        p[2] = (b << 3) | (b >> 2)
         p[3] = (0x00 if a == 0 else 0xFF)
         return p
 
@@ -303,25 +303,9 @@ class ImageDecoder:
 
     def _decode_rgbx8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        B = (pixel_int >> 16) & 0xFF
-        G = (pixel_int >> 8) & 0xFF
-        R = (pixel_int >> 0) & 0xFF
-
-        p[0] = R
-        p[1] = G
-        p[2] = B
-        p[3] = 0xFF
-        return p
-
-    def _decode_rgbx8888_pixel_old(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        R = (pixel_int >> 24) & 0xFF
-        G = (pixel_int >> 16) & 0xFF
-        B = (pixel_int >> 8) & 0xFF
-
-        p[0] = R
-        p[1] = G
-        p[2] = B
+        p[0] = (pixel_int >> 0) & 0xFF
+        p[1] = (pixel_int >> 8) & 0xFF
+        p[2] = (pixel_int >> 16) & 0xFF
         p[3] = 0xFF
         return p
 
@@ -330,7 +314,6 @@ class ImageDecoder:
         r = (pixel_int >> 4) & 0x0f
         g = (pixel_int >> 8) & 0x0f
         b = (pixel_int >> 12) & 0xff
-
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -343,7 +326,6 @@ class ImageDecoder:
         r = (pixel_int >> 4) & 0x0f
         g = (pixel_int >> 8) & 0x0f
         b = (pixel_int >> 12) & 0xff
-
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -355,7 +337,6 @@ class ImageDecoder:
         b = (pixel_int >> 4) & 0x0f
         g = (pixel_int >> 8) & 0x0f
         r = (pixel_int >> 12) & 0xff
-
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -368,7 +349,6 @@ class ImageDecoder:
         b = (pixel_int >> 4) & 0x0f
         g = (pixel_int >> 8) & 0x0f
         r = (pixel_int >> 12) & 0xff
-
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -377,10 +357,9 @@ class ImageDecoder:
 
     def _decode_bgrx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        r = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
         b = (pixel_int >> 0) & 0x0f
-
+        g = (pixel_int >> 4) & 0x0f
+        r = (pixel_int >> 8) & 0x0f
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -389,11 +368,10 @@ class ImageDecoder:
 
     def _decode_bgra4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        a = (pixel_int >> 12) & 0xff
-        r = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
         b = (pixel_int >> 0) & 0x0f
-
+        g = (pixel_int >> 4) & 0x0f
+        r = (pixel_int >> 8) & 0x0f
+        a = (pixel_int >> 12) & 0xff
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -402,10 +380,9 @@ class ImageDecoder:
 
     def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        b = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
         r = (pixel_int >> 0) & 0x0f
-
+        g = (pixel_int >> 4) & 0x0f
+        b = (pixel_int >> 8) & 0x0f
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -414,11 +391,10 @@ class ImageDecoder:
 
     def _decode_rgba4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        a = (pixel_int >> 12) & 0x0f
-        b = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
         r = (pixel_int >> 0) & 0x0f
-
+        g = (pixel_int >> 4) & 0x0f
+        b = (pixel_int >> 8) & 0x0f
+        a = (pixel_int >> 12) & 0x0f
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
@@ -438,11 +414,9 @@ class ImageDecoder:
         r = (pixel_int & 0xFFFF)
         g = (pixel_int >> 16) & 0xFFFF
         b = (pixel_int >> 32) & 0xFFFF
-
         r_8bit = (r >> 8) & 0xFF
         g_8bit = (g >> 8) & 0xFF
         b_8bit = (b >> 8) & 0xFF
-
         p[0] = r_8bit
         p[1] = g_8bit
         p[2] = b_8bit
@@ -454,11 +428,9 @@ class ImageDecoder:
         b = (pixel_int & 0xFFFF)
         g = (pixel_int >> 16) & 0xFFFF
         r = (pixel_int >> 32) & 0xFFFF
-
         r_8bit = (r >> 8) & 0xFF
         g_8bit = (g >> 8) & 0xFF
         b_8bit = (b >> 8) & 0xFF
-
         p[0] = r_8bit
         p[1] = g_8bit
         p[2] = b_8bit
@@ -574,7 +546,6 @@ class ImageDecoder:
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
         ImageFormats.BGRA8888: (_decode_bgra8888_pixel, 32, get_uint32),
         ImageFormats.XRGB8888: (_decode_xrgb8888_pixel, 32, get_uint32),
-        ImageFormats.RGBX8888_old: (_decode_rgbx8888_pixel_old, 32, get_uint32),
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
         ImageFormats.RGBM8888: (_decode_rgbm8888_pixel, 32, get_uint32),
