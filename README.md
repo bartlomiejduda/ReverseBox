@@ -160,6 +160,7 @@ or software researchers).
   - Decode PAL16_IA8 ✔️
   - Decode PAL16_RGB565 ✔️
   - Decode PAL16_RGB5A3 ✔️
+  - Decode PAL16_RGBA8888 ✔️
   - Decode N64_RGB5A3 ✔️
   - Decode N64_I4 ✔️
   - Decode N64_I8 ✔️

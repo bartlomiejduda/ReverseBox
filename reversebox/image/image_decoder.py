@@ -325,20 +325,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_rgba4444_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        r = (pixel_int >> 12) & 0xff
-        g = (pixel_int >> 8) & 0x0f
-        b = (pixel_int >> 4) & 0x0f
-        a = (pixel_int >> 0) & 0x0f
-
-        p[0] = (r << 4) | (r >> 0)
-        p[1] = (g << 4) | (g >> 0)
-        p[2] = (b << 4) | (b >> 0)
-        p[3] = (a << 4) | (a >> 0)
-        return p
-
-    def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
+    def _decode_xrgb4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = (pixel_int >> 12) & 0xff
         g = (pixel_int >> 8) & 0x0f
@@ -352,6 +339,31 @@ class ImageDecoder:
 
     def _decode_argb4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
+        r = (pixel_int >> 12) & 0xff
+        g = (pixel_int >> 8) & 0x0f
+        b = (pixel_int >> 4) & 0x0f
+        a = (pixel_int >> 0) & 0x0f
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = (a << 4) | (a >> 0)
+        return p
+
+    def _decode_bgrx4444_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        r = (pixel_int >> 8) & 0x0f
+        g = (pixel_int >> 4) & 0x0f
+        b = (pixel_int >> 0) & 0x0f
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = 0xFF
+        return p
+
+    def _decode_bgra4444_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
         a = (pixel_int >> 12) & 0xff
         r = (pixel_int >> 8) & 0x0f
         g = (pixel_int >> 4) & 0x0f
@@ -363,11 +375,11 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
-    def _decode_xrgb4444_pixel(self, pixel_int: int) -> bytes:
+    def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        r = (pixel_int >> 8) & 0x0f
+        b = (pixel_int >> 8) & 0x0f
         g = (pixel_int >> 4) & 0x0f
-        b = (pixel_int >> 0) & 0x0f
+        r = (pixel_int >> 0) & 0x0f
 
         p[0] = (r << 4) | (r >> 0)
         p[1] = (g << 4) | (g >> 0)
@@ -375,9 +387,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-
-
-    def _decode_bgra4444_pixel(self, pixel_int: int) -> bytes:
+    def _decode_rgba4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         a = (pixel_int >> 12) & 0x0f
         b = (pixel_int >> 8) & 0x0f
@@ -388,19 +398,6 @@ class ImageDecoder:
         p[1] = (g << 4) | (g >> 0)
         p[2] = (b << 4) | (b >> 0)
         p[3] = (a << 4) | (a >> 0)
-        return p
-
-    # BGR444
-    def _decode_bgrx4444_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        b = (pixel_int >> 8) & 0x0f
-        g = (pixel_int >> 4) & 0x0f
-        r = (pixel_int >> 0) & 0x0f
-
-        p[0] = (r << 4) | (r >> 0)
-        p[1] = (g << 4) | (g >> 0)
-        p[2] = (b << 4) | (b >> 0)
-        p[3] = 0xFF
         return p
 
     def _decode_rgbx6666_pixel(self, pixel_int: int) -> bytes:
@@ -595,6 +592,7 @@ class ImageDecoder:
         ImageFormats.PAL16_IA8: (_decode_ia8_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 0)
         ImageFormats.PAL16_RGB565: (_decode_rgb565_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 1)
         ImageFormats.PAL16_RGB5A3: (_decode_rgb5A3_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 2)
+        ImageFormats.PAL16_RGBA8888: (_decode_rgba8888_pixel, 16, 2, get_uint16),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
