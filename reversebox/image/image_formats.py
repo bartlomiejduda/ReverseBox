@@ -44,6 +44,8 @@ class ImageFormats(Enum):
 
     ARGB4444 = "argb4444"
     XRGB4444 = "xrbg4444"
+    ABGR4444 = "abgr4444"
+    XBGR4444 = "xbgr4444"
 
     RGBA5551 = "rgba5551"
     RGBX5551 = "rgbx5551"
