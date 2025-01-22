@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.24.9"
+VERSION_NUM: Final[str] = "0.25.0"
 
 
 def get_long_description() -> str:
@@ -60,7 +60,6 @@ setuptools.setup(
         "crc",
         "hashbase",
         "pillow",
-        "rawutil",
         "mmh3",
     ],
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),

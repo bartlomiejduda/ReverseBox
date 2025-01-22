@@ -10,7 +10,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-import rawutil
 
 from reversebox.io_files.bytes_helper_functions import get_uint32
 from tests.common import GetSetBytesEntry
@@ -56,10 +55,6 @@ def test_bytes_helper_functions_get_uint32_performance():
     # old logic - basic struct version
     def _function_a_get_uint32(input_bytes: bytes, endianess: str) -> int:
         return struct.unpack(endianess + "I", input_bytes)[0]
-
-    # old logic - alternative rawutil version
-    def _function_b_get_uint32(input_bytes: bytes, endianess: str) -> int:
-        return rawutil.unpack(endianess + "I", input_bytes)[0]
 
     # experimental logic - int from bytes
     def _function_c_get_uint32(input_bytes: bytes, endianess: str) -> int:
@@ -108,7 +103,6 @@ def test_bytes_helper_functions_get_uint32_performance():
             raise Exception("Not supported endianess!")
 
     function_a_time = _get_time_for_helper_functions(_function_a_get_uint32)
-    function_b_time = _get_time_for_helper_functions(_function_b_get_uint32)
     function_c_time = _get_time_for_helper_functions(_function_c_get_uint32)
     function_d_time = _get_time_for_helper_functions(_function_d_get_uint32)
     function_e_time = _get_time_for_helper_functions(_function_e_get_uint32)
@@ -118,9 +112,9 @@ def test_bytes_helper_functions_get_uint32_performance():
 
     debug_flag = False
     if debug_flag:
-        left = [1, 2, 3, 4, 5, 6, 7]
-        time_results = [function_a_time, function_b_time, function_c_time, function_d_time, function_e_time, function_f_time, function_g_time]
-        tick_label = ['struct', 'rawutil', 'int', 'numpy', 'bytes1', 'bytes2', 'memory']
+        left = [1, 2, 3, 4, 5, 6]
+        time_results = [function_a_time, function_c_time, function_d_time, function_e_time, function_f_time, function_g_time]
+        tick_label = ['struct', 'int', 'numpy', 'bytes1', 'bytes2', 'memory']
         plt.bar(left, time_results, tick_label=tick_label, width=0.8, color=['green'])
 
         plt.xlabel('')
@@ -129,7 +123,6 @@ def test_bytes_helper_functions_get_uint32_performance():
         plt.show()
 
     assert current_function_time - 0.02 <= function_a_time
-    assert current_function_time - 0.02 <= function_b_time
     assert current_function_time - 0.02 <= function_c_time
     assert current_function_time - 0.02 <= function_d_time
     assert current_function_time - 0.02 <= function_e_time
