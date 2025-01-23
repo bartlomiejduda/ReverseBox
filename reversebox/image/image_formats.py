@@ -118,6 +118,7 @@ class ImageFormats(Enum):
     PAL16_RGB565 = "pal16_rgb565"  # N64_C14X2 (type 1)
     PAL16_RGB5A3 = "pal16_rgb5a3"  # N64_C14X2 (type 2)
     PAL16_RGBA8888 = "pal16_rgba8888"
+    PAL_I8A8_BGRA8888 = "pal_i8a8_bgra8888"
 
     # N64 / WII formats
     N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp

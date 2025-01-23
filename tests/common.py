@@ -112,6 +112,10 @@ class ImageDecodeEncodeTestEntry:
     img_height: int
     img_format: ImageFormats
     bpp: Optional[int] = None
+    palette_offset: Optional[int] = None
+    palette_size: Optional[int] = None
+    image_data_offset: Optional[int] = None
+    image_data_size: Optional[int] = None
 
 
 @dataclass

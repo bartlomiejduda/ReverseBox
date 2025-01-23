@@ -152,7 +152,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.YUV422_YUY2,
                           ImageFormats.YUV440P,
                           ImageFormats.BUMPMAP_SR,
-                          ) or "pal16" in image_format.value.lower():
+                          ) or "pal16" in image_format.value.lower()\
+            or "pal_i8a8" in image_format.value.lower():
         return 16
     elif image_format in (ImageFormats.YUVA420P, ):
         return 20
