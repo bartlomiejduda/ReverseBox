@@ -29,13 +29,13 @@ def test_decode_and_encode_all_generic_images():
 
     image_test_entries = [
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGBA8888),
-        # ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB565),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA8888),
-        # ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB888),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR888),
-        # ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBA4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGBA4444),
-        # ImageDecodeEncodeTestEntry(img_file_path="monkey_ARGB4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.ARGB4444),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ABGR4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.ABGR4444),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA4444),
     ]
 
     for test_entry in image_test_entries:
