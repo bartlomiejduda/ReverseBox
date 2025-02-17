@@ -1,34 +1,59 @@
+"""
+Copyright © 2025  Bartłomiej Duda
+License: GPL-3.0 License
+"""
+
+# Nintendo Switch Swizzling
+
 # fmt: off
-def unswizzle_switch(buffer, width, height, bpb, block_height=16, width_pad=16, height_pad=16):
-    # setup
-    unswizzled_data = bytearray(len(buffer))
-    if width % width_pad or height % height_pad:
-        width_show = width
-        height_show = height
-        width = width_real = ((width + width_pad - 1) // width_pad) * width_pad
-        height = height_real = ((height + height_pad - 1) // height_pad) * height_pad
+
+
+def _convert_switch(input_image_data: bytes, img_width: int, img_height: int,
+                    bytes_per_block: int = 4, block_height: int = 8, width_pad: int = 8, height_pad: int = 8, swizzle_flag: bool = False):
+    # set parameters
+    converted_data = bytearray(len(input_image_data))
+    if img_width % width_pad or img_height % height_pad:
+        width_show = img_width
+        height_show = img_height
+        img_width = width_real = ((img_width + width_pad - 1) // width_pad) * width_pad
+        img_height = height_real = ((img_height + height_pad - 1) // height_pad) * height_pad
     else:
-        width_show = width_real = width
-        height_show = height_real = height
-    image_width_in_gobs = width * bpb // 64
+        width_show = width_real = img_width
+        height_show = height_real = img_height
+    image_width_in_gobs = img_width * bytes_per_block // 64
 
-    # unswizzling
-    for Y in range(height):
-        for X in range(width):
-            Z = Y * width + X
-            gob_address = 0 + (Y // (8 * block_height)) * 512 * block_height * image_width_in_gobs + (X * bpb // 64) * 512 * block_height + (Y % (8 * block_height) // 8) * 512
-            X *= bpb
+    # unswizzling logic
+    for Y in range(img_height):
+        for X in range(img_width):
+            Z = Y * img_width + X
+            gob_address = 0 + (Y // (8 * block_height)) * 512 * block_height * image_width_in_gobs + (X * bytes_per_block // 64) * 512 * block_height + (Y % (8 * block_height) // 8) * 512
+            X *= bytes_per_block
             address = gob_address + ((X % 64) // 32) * 256 + ((Y % 8) // 2) * 64 + ((X % 32) // 16) * 32 + (Y % 2) * 16 + (X % 16)
-            unswizzled_data[Z * bpb:(Z + 1) * bpb] = buffer[address:address + bpb]
+            if not swizzle_flag:
+                converted_data[Z * bytes_per_block:(Z + 1) * bytes_per_block] = input_image_data[address:address + bytes_per_block]
+            else:
+                converted_data[address:address + bytes_per_block] = input_image_data[Z * bytes_per_block:(Z + 1) * bytes_per_block]
 
-    # crop
+    # crop logic
     if width_show != width_real or height_show != height_real:
-        crop = bytearray(width_show * height_show * bpb)
+        crop = bytearray(width_show * height_show * bytes_per_block)
         for Y in range(height_show):
-            offset_in = Y * width_real * bpb
-            offset_out = Y * width_show * bpb
-            crop[offset_out:offset_out + width_show * bpb] = unswizzled_data[offset_in:offset_in + width_show * bpb]
-        unswizzled_data = crop
+            offset_in = Y * width_real * bytes_per_block
+            offset_out = Y * width_show * bytes_per_block
+            if not swizzle_flag:
+                crop[offset_out:offset_out + width_show * bytes_per_block] = converted_data[offset_in:offset_in + width_show * bytes_per_block]
+            else:
+                crop[offset_in:offset_in + width_show * bytes_per_block] = converted_data[offset_out:offset_out + width_show * bytes_per_block]
+        converted_data = crop
 
-    return unswizzled_data
-# fmt: on
+    return converted_data
+
+
+def unswizzle_switch(input_image_data: bytes, img_width: int, img_height: int,
+                     bytes_per_block: int = 4, block_height: int = 8, width_pad: int = 8, height_pad: int = 8) -> bytes:
+    return _convert_switch(input_image_data, img_width, img_height, bytes_per_block, block_height, width_pad, height_pad, False)
+
+
+def swizzle_switch(input_image_data: bytes, img_width: int, img_height: int,
+                   bytes_per_block: int = 4, block_height: int = 8, width_pad: int = 8, height_pad: int = 8) -> bytes:
+    return _convert_switch(input_image_data, img_width, img_height, bytes_per_block, block_height, width_pad, height_pad, True)
