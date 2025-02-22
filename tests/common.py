@@ -119,6 +119,13 @@ class ImageDecodeEncodeTestEntry:
 
 
 @dataclass
+class ImagePerformanceTestEntry:
+    test_id: int
+    img_format: ImageFormats
+    execution_time: float
+
+
+@dataclass
 class GSTSwizzleTestEntry:
     img_path: str
     pal_path: str
