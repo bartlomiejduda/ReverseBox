@@ -695,12 +695,12 @@ class ImageDecoder:
                         decoded_bytes[0] = output_bytes[0] * alpha_value_int // 255
                         decoded_bytes[1] = output_bytes[1] * alpha_value_int // 255
                         decoded_bytes[2] = output_bytes[2] * alpha_value_int // 255
-                        decoded_bytes[3] = output_bytes[3] * alpha_value_int // 255
+                        decoded_bytes[3] = alpha_value_int
                     else:
                         decoded_bytes[0] = output_bytes[0]
                         decoded_bytes[1] = output_bytes[1]
                         decoded_bytes[2] = output_bytes[2]
-                        decoded_bytes[3] = output_bytes[3]
+                        decoded_bytes[3] = alpha_value_int
 
                     texture_data[i * 4:(i + 1) * 4] = decoded_bytes
                 else:
