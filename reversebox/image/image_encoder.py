@@ -139,9 +139,10 @@ class ImageEncoder:
     }
 
     indexed_data_formats = {
+        # TODO - redefine this
         # image_format: (encode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
-        ImageFormats.PAL4_RGBA8888: (_encode_rgba8888_pixel, 4, 4, get_uint32),
-        ImageFormats.PAL8_RGBA8888: (_encode_rgba8888_pixel, 8, 4, get_uint32),
+        # ImageFormats.PAL4_RGBA8888: (_encode_rgba8888_pixel, 4, 4, get_uint32),
+        # ImageFormats.PAL8_RGBA8888: (_encode_rgba8888_pixel, 8, 4, get_uint32),
 
     }
 

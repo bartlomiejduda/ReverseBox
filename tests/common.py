@@ -111,6 +111,7 @@ class ImageDecodeEncodeTestEntry:
     img_width: int
     img_height: int
     img_format: ImageFormats
+    pal_format: Optional[ImageFormats] = None
     bpp: Optional[int] = None
     palette_offset: Optional[int] = None
     palette_size: Optional[int] = None
@@ -134,3 +135,4 @@ class GSTSwizzleTestEntry:
     img_height: int
     img_format: ImageFormats
     conv_format: ImageFormats
+    conv_pal_format: ImageFormats

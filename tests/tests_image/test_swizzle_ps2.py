@@ -32,7 +32,8 @@ def test_ps2_unswizzle_and_swizzle_8bit():
     img_width = 256
     img_height = 128
     bpp = 8
-    image_format = ImageFormats.PAL8_RGBA8888
+    image_format = ImageFormats.PAL8
+    pal_format = ImageFormats.RGBA8888
 
     unswizzled_file_data = unswizzle_ps2(
         swizzled_file_data, img_width, img_height, bpp
@@ -45,7 +46,7 @@ def test_ps2_unswizzle_and_swizzle_8bit():
         wrapper = PillowWrapper()
         unswizzled_palette_data = unswizzle_ps2_palette(palette_data)
         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format
+            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format, pal_format
         )
         pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()
@@ -73,7 +74,8 @@ def test_ps2_unswizzle_and_swizzle_4bit():
     img_width = 256
     img_height = 128
     bpp = 4
-    image_format = ImageFormats.PAL4_RGBA8888
+    image_format = ImageFormats.PAL4
+    pal_format = ImageFormats.RGBA8888
 
     unswizzled_file_data = unswizzle_ps2_ea_4bit(
         swizzled_file_data, img_width, img_height, bpp
@@ -86,7 +88,7 @@ def test_ps2_unswizzle_and_swizzle_4bit():
         wrapper = PillowWrapper()
         unswizzled_palette_data = unswizzle_ps2_palette(palette_data)
         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format
+            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format, pal_format
         )
         pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()

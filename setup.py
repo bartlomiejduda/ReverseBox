@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.25.6"
+VERSION_NUM: Final[str] = "0.26.0"
 
 
 def get_long_description() -> str:
@@ -36,6 +36,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Development Status :: 4 - Beta",
         "Topic :: Software Development",
         "Topic :: System :: Archiving :: Compression",

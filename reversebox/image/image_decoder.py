@@ -6,6 +6,7 @@ License: GPL-3.0 License
 import struct
 
 from reversebox.common.logger import get_logger
+from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
 from reversebox.image.decoders.compressed_decoder import CompressedImageDecoder
 from reversebox.image.decoders.gst_decoder import GSTImageDecoder
@@ -558,40 +559,11 @@ class ImageDecoder:
     }
 
     indexed_data_formats = {
-        # image_format: (decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
-        ImageFormats.PAL4_RGBX5551: (_decode_rgbx5551_pixel, 4, 2, get_uint16),
-        ImageFormats.PAL4_BGRX5551: (_decode_bgrx5551_pixel, 4, 2, get_uint16),
-        ImageFormats.PAL4_XRGB1555: (_decode_xrgb1555_pixel, 4, 2, get_uint16),  # RGB555 (little endian)
-        ImageFormats.PAL4_XBGR1555: (_decode_xbgr1555_pixel, 4, 2, get_uint16),  # BGR555 (little endian)
-        ImageFormats.PAL4_RGB888: (_decode_rgb888_pixel, 4, 3, get_uint24),
-        ImageFormats.PAL4_BGR888: (_decode_bgr888_pixel, 4, 3, get_uint24),
-        ImageFormats.PAL4_RGBA8888: (_decode_rgba8888_pixel, 4, 4, get_uint32),
-        ImageFormats.PAL4_BGRA8888: (_decode_bgra8888_pixel, 4, 4, get_uint32),
-        ImageFormats.PAL4_IA8: (_decode_ia8_pixel, 4, 2, get_uint16),  # N64_C4 (type 0)
-        ImageFormats.PAL4_RGB565: (_decode_rgb565_pixel, 4, 2, get_uint16),  # N64_C4 (type 1)
-        ImageFormats.PAL4_RGB5A3: (_decode_rgb5A3_pixel, 4, 2, get_uint16),  # N64_C4 (type 2)
-        ImageFormats.PAL4_GRAY8: (_decode_gray8_pixel, 4, 1, get_uint8),
-
-        ImageFormats.PAL8_RGBX2222: (_decode_rgbx2222_pixel, 8, 1, get_uint8),
-        ImageFormats.PAL8_RGBX5551: (_decode_rgbx5551_pixel, 8, 2, get_uint16),
-        ImageFormats.PAL8_BGRX5551: (_decode_bgrx5551_pixel, 8, 2, get_uint16),
-        ImageFormats.PAL8_XRGB1555: (_decode_xrgb1555_pixel, 8, 2, get_uint16),  # RGB555 (little endian)
-        ImageFormats.PAL8_XBGR1555: (_decode_xbgr1555_pixel, 8, 2, get_uint16),  # BGR555 (little endian)
-        ImageFormats.PAL8_RGB888: (_decode_rgb888_pixel, 8, 3, get_uint24),
-        ImageFormats.PAL8_BGR888: (_decode_bgr888_pixel, 8, 3, get_uint24),
-        ImageFormats.PAL8_RGBX6666: (_decode_rgbx6666_pixel, 8, 3, get_uint24),
-        ImageFormats.PAL8_IA8: (_decode_ia8_pixel, 8, 2, get_uint16),  # N64_C8 (type 0)
-        ImageFormats.PAL8_RGB565: (_decode_rgb565_pixel, 8, 2, get_uint16),  # N64_C8 (type 1)
-        ImageFormats.PAL8_RGB5A3: (_decode_rgb5A3_pixel, 8, 2, get_uint16),  # N64_C8 (type 2)
-        ImageFormats.PAL8_RGBA8888: (_decode_rgba8888_pixel, 8, 4, get_uint32),
-        ImageFormats.PAL8_BGRA8888: (_decode_bgra8888_pixel, 8, 4, get_uint32),
-        ImageFormats.PAL8_GRAY8: (_decode_gray8_pixel, 8, 1, get_uint8),
-
-        ImageFormats.PAL16_IA8: (_decode_ia8_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 0)
-        ImageFormats.PAL16_RGB565: (_decode_rgb565_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 1)
-        ImageFormats.PAL16_RGB5A3: (_decode_rgb5A3_pixel, 16, 2, get_uint16),  # N64_C14X2 (type 2)
-        ImageFormats.PAL16_RGBA8888: (_decode_rgba8888_pixel, 16, 2, get_uint16),
-        ImageFormats.PAL_I8A8_BGRA8888: (_decode_bgra8888_pixel, 16, 4, get_uint32),
+        # image_format: bits_per_pixel
+        ImageFormats.PAL4: 4,
+        ImageFormats.PAL8: 8,
+        ImageFormats.PAL16: 16,
+        ImageFormats.PAL_I8A8: 16,
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -664,8 +636,10 @@ class ImageDecoder:
         return texture_data
 
     def _decode_indexed(self, image_data: bytes, palette_data: bytes, img_width: int,
-                        img_height: int, image_format: ImageFormats, image_endianess: str, palette_endianess: str) -> bytes:
-        decode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function = self.indexed_data_formats[image_format]
+                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str) -> bytes:
+        img_bits_per_pixel = self.indexed_data_formats[image_format]
+        decode_function, pal_bits_per_pixel, palette_entry_read_function = self.generic_data_formats[palette_format]
+        palette_entry_size: int = convert_bpp_to_bytes_per_pixel(pal_bits_per_pixel)
         image_handler = BytesHandler(image_data)
         palette_handler = BytesHandler(palette_data)
         texture_data = bytearray(img_width * img_height * 4)
@@ -681,7 +655,7 @@ class ImageDecoder:
             palette_offset += palette_entry_size
             palette_data_ints.append(palette_entry_int)
 
-        if bits_per_pixel == 16:
+        if img_bits_per_pixel == 16:
             for i in range(img_width * img_height):
                 if "pal_i8a8" in image_format.value.lower():
                     palette_index: bytes = image_handler.get_bytes(image_offset, 1)
@@ -708,13 +682,13 @@ class ImageDecoder:
                     palette_index_int = struct.unpack(image_endianess_format + "H", palette_index)[0]
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 2
-        elif bits_per_pixel == 8:
+        elif img_bits_per_pixel == 8:
             for i in range(img_width * img_height):
                 palette_index = image_handler.get_bytes(image_offset, 1)
                 palette_index_int = struct.unpack(image_endianess_format + "B", palette_index)[0]
                 texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 1
-        elif bits_per_pixel == 4:
+        elif img_bits_per_pixel == 4:
             for i in range(0, img_width * img_height, 2):
                 palette_index = image_handler.get_bytes(image_offset, 1)
                 palette_index_int = struct.unpack(image_endianess_format + "B", palette_index)[0]
@@ -733,17 +707,17 @@ class ImageDecoder:
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
-    def decode_indexed_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> bytes:
-        return self._decode_indexed(image_data, palette_data, img_width, img_height, image_format, image_endianess, palette_endianess)
+    def decode_indexed_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> bytes:
+        return self._decode_indexed(image_data, palette_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess)
 
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         compressed_decoder = CompressedImageDecoder()
         return compressed_decoder.decode_compressed_image_main(image_data, img_width, img_height, image_format)
 
-    def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, is_swizzled: bool = True) -> bytes:
+    def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, convert_pal_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         gst_decoder = GSTImageDecoder()
         decoded_gst_data: bytes = gst_decoder.decode_gst_image_main(image_data, img_width, img_height, image_format, is_swizzled)
-        return self.decode_indexed_image(decoded_gst_data, palette_data, img_width, img_height, convert_format)
+        return self.decode_indexed_image(decoded_gst_data, palette_data, img_width, img_height, convert_format, convert_pal_format)
 
     def decode_yuv_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         yuv_decoder = YUVDecoder()

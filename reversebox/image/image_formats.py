@@ -83,42 +83,10 @@ class ImageFormats(Enum):
     BGR48 = "bgr48"  # PIX_FMT_BGR48LE / PIX_FMT_BGR48BE / packed RGB 16:16:16, 48bpp, 16B, 16G, 16R
 
     # Indexed Formats
-    # 4-bit
-    PAL4_RGBX5551 = "pal4_rgbx5551"
-    PAL4_BGRX5551 = "pal4_bgrx5551"
-    PAL4_XRGB1555 = "pal4_xrgb1555"  # RGB555 (little endian)
-    PAL4_XBGR1555 = "pal4_xbgr1555"  # BGR555 (little endian)
-    PAL4_RGB888 = "pal4_rgb888"
-    PAL4_BGR888 = "pal4_bgr888"
-    PAL4_RGBA8888 = "pal4_rgba8888"
-    PAL4_BGRA8888 = "pal4_bgra8888"
-    PAL4_IA8 = "pal4_ia8"  # N64_C4 (type 0)
-    PAL4_RGB565 = "pal4_rgb565"  # N64_C4 (type 1)
-    PAL4_RGB5A3 = "pal4_rgb5a3"  # N64_C4 (type 2)
-    PAL4_GRAY8 = "pal4_gray8"
-
-    # 8-bit
-    PAL8_RGBX2222 = "pal8_rgbx2222"
-    PAL8_RGBX5551 = "pal8_rgbx5551"
-    PAL8_BGRX5551 = "pal8_bgrx5551"
-    PAL8_XRGB1555 = "pal8_xrgb1555"  # RGB555 (little endian)
-    PAL8_XBGR1555 = "pal8_xbgr1555"  # BGR555 (little endian)
-    PAL8_RGB888 = "pal8_rgb888"  # same as VGA (https://moddingwiki.shikadi.net/wiki/VGA_Palette)
-    PAL8_BGR888 = "pal8_bgr888"
-    PAL8_RGBX6666 = "pal8_rgbx6666"
-    PAL8_IA8 = "pal8_ia8"  # N64_C8 (type 0)
-    PAL8_RGB565 = "pal8_rgb565"  # N64_C8 (type 1)
-    PAL8_RGB5A3 = "pal8_rgb5a3"  # N64_C8 (type 2)
-    PAL8_RGBA8888 = "pal8_rgba8888"
-    PAL8_BGRA8888 = "pal8_bgra8888"  # PIX_FMT_PAL8 / 8 bit with PIX_FMT_RGB32 palette
-    PAL8_GRAY8 = "pal8_gray8"
-
-    # 16-bit
-    PAL16_IA8 = "pal16_ia8"  # N64_C14X2 (type 0)
-    PAL16_RGB565 = "pal16_rgb565"  # N64_C14X2 (type 1)
-    PAL16_RGB5A3 = "pal16_rgb5a3"  # N64_C14X2 (type 2)
-    PAL16_RGBA8888 = "pal16_rgba8888"
-    PAL_I8A8_BGRA8888 = "pal_i8a8_bgra8888"
+    PAL4 = "pal4"
+    PAL8 = "pal8"
+    PAL16 = "pal16"
+    PAL_I8A8 = "pal_i8a8"
 
     # N64 / WII formats
     N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp

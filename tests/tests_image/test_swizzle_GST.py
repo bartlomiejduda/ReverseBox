@@ -28,11 +28,12 @@ from tests.common import GSTSwizzleTestEntry
 def test_gst_unswizzle_and_swizzle():
     gst_test_entries = [
         GSTSwizzleTestEntry(img_path="swizzle_GST121.bin", pal_path="swizzle_GST121.pal", debug_flag=False,
-                            img_width=256, img_height=128, img_format=ImageFormats.GST121, conv_format=ImageFormats.PAL8_BGRA8888),
+                            img_width=256, img_height=128, img_format=ImageFormats.GST121,
+                            conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888),
 
         GSTSwizzleTestEntry(img_path="swizzle_GST122.bin", pal_path="swizzle_GST122.pal", debug_flag=False,
                             img_width=256, img_height=128, img_format=ImageFormats.GST122,
-                            conv_format=ImageFormats.PAL8_BGRA8888)
+                            conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888)
         ]
 
     for test_entry in gst_test_entries:
@@ -68,7 +69,7 @@ def test_gst_unswizzle_and_swizzle():
             image_decoder = ImageDecoder()
             wrapper = PillowWrapper()
             decoded_image_data: bytes = image_decoder.decode_gst_image(swizzled_file_data, palette_data, test_entry.img_width, test_entry.img_height,
-                                                                       test_entry.img_format, test_entry.conv_format, True)
+                                                                       test_entry.img_format, test_entry.conv_format, test_entry.conv_pal_format, True)
             pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, test_entry.img_width, test_entry.img_height)
             pil_image.show()
         # debug end #################################################################################################
