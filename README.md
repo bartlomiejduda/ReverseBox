@@ -137,7 +137,6 @@ or software researchers).
   - Decode PAL16 ✔️
   - Decode PAL_I8A8 ✔️
   - Decode N64_RGB5A3 ✔️
-  - Decode PAL_I8A8 ✔️
   - Decode N64_I4 ✔️
   - Decode N64_I8 ✔️
   - Decode N64_IA4 ✔️
