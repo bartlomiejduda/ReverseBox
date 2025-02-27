@@ -132,35 +132,10 @@ or software researchers).
   - Decode/Encode BGRA8888 ✔️
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
-  - Decode PAL4_RGBX5551 ✔️
-  - Decode PAL4_BGRX5551 ✔️
-  - Decode PAL4_XRGB1555 ✔️
-  - Decode PAL4_XBGR1555 ✔️
-  - Decode PAL4_RGB888 ✔️
-  - Decode PAL4_BGR888 ✔️
-  - Decode PAL4_IA8 ✔️
-  - Decode PAL4_RGB565 ✔️
-  - Decode PAL4_RGB5A3 ✔️
-  - Decode PAL4_RGBA8888 ✔️
-  - Decode PAL4_BGRA8888 ✔️
-  - Decode PAL4_RGB5A3 ✔️
-  - Decode PAL8_RGBX2222 ✔️
-  - Decode PAL8_RGBX5551 ✔️
-  - Decode PAL8_BGRX5551 ✔️
-  - Decode PAL8_XRGB1555 ✔️
-  - Decode PAL8_XBGR1555 ✔️
-  - Decode PAL8_RGB888 ✔️
-  - Decode PAL8_BGR888 ✔️
-  - Decode PAL8_RGBX6666 ✔️
-  - Decode PAL8_IA8 ✔️
-  - Decode PAL8_RGB565 ✔️
-  - Decode PAL8_RGB5A3 ✔️
-  - Decode PAL8_RGBA8888 ✔️
-  - Decode PAL8_BGRA8888 ✔️
-  - Decode PAL16_IA8 ✔️
-  - Decode PAL16_RGB565 ✔️
-  - Decode PAL16_RGB5A3 ✔️
-  - Decode PAL16_RGBA8888 ✔️
+  - Decode PAL4 ✔️
+  - Decode PAL8 ✔️
+  - Decode PAL16 ✔️
+  - Decode PAL_I8A8 ✔️
   - Decode N64_RGB5A3 ✔️
   - Decode PAL_I8A8 ✔️
   - Decode N64_I4 ✔️
