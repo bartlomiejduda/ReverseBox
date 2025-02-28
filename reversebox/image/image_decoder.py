@@ -440,17 +440,17 @@ class ImageDecoder:
 
     def _decode_i4_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        p[0] = pixel_int * 0x11
-        p[1] = pixel_int * 0x11
-        p[2] = pixel_int * 0x11
+        p[0] = (pixel_int * 0x11) & 0xFF
+        p[1] = (pixel_int * 0x11) & 0xFF
+        p[2] = (pixel_int * 0x11) & 0xFF
         p[3] = 0xFF
         return p
 
     def _decode_i8_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        p[0] = pixel_int
-        p[1] = pixel_int
-        p[2] = pixel_int
+        p[0] = pixel_int & 0xFF
+        p[1] = pixel_int & 0xFF
+        p[2] = pixel_int & 0xFF
         p[3] = 0xFF
         return p
 
