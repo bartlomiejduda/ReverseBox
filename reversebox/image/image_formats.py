@@ -87,6 +87,7 @@ class ImageFormats(Enum):
     PAL8 = "pal8"
     PAL16 = "pal16"
     PAL_I8A8 = "pal_i8a8"
+    PAL32 = "pal32"
 
     # N64 / WII formats
     N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp

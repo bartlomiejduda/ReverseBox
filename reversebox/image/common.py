@@ -83,7 +83,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                         ImageFormats.N64_I4,
                         ImageFormats.BC1_DXT1,
                         ImageFormats.BC4_UNORM,
-                        ) or "pal4" in image_format.value.lower():
+                        ImageFormats.PAL4,
+                        ):
         return 4
     elif image_format in (ImageFormats.RGBX2222,
                           ImageFormats.RGBA2222,
@@ -110,7 +111,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GST222,
                           ImageFormats.GST422,
                           ImageFormats.GST822,
-                          ) or "pal8" in image_format.value.lower():
+                          ImageFormats.PAL8,
+                          ):
         return 8
     elif image_format in (ImageFormats.YUV410P, ):
         return 9
@@ -152,8 +154,9 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.YUV422_YUY2,
                           ImageFormats.YUV440P,
                           ImageFormats.BUMPMAP_SR,
-                          ) or "pal16" in image_format.value.lower()\
-            or "pal_i8a8" in image_format.value.lower():
+                          ImageFormats.PAL16,
+                          ImageFormats.PAL_I8A8,
+                          ):
         return 16
     elif image_format in (ImageFormats.YUVA420P, ):
         return 20
@@ -175,6 +178,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.B32,
                           ImageFormats.RGBM8888,
                           ImageFormats.AYUV,
+                          ImageFormats.PAL32,
                           ):
         return 32
     elif image_format in (ImageFormats.RGB48,
