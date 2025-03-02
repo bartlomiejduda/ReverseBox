@@ -656,7 +656,7 @@ class ImageDecoder:
             palette_offset += palette_entry_size
             palette_data_ints.append(palette_entry_int)
 
-        if img_bits_per_pixel == 4:
+        if img_bits_per_pixel == 4:  # e.g. PAL4
             for i in range(0, img_width * img_height, 2):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
@@ -669,17 +669,23 @@ class ImageDecoder:
                 else:
                     raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                 image_offset += 1
-        elif img_bits_per_pixel == 8:
+        elif img_bits_per_pixel == 8:  # e.g. PAL8
             for i in range(img_width * img_height):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
                 texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 1
-        elif img_bits_per_pixel == 16:
+        elif img_bits_per_pixel == 16:  # e.g. PAL16
             for i in range(img_width * img_height):
                 if image_format is ImageFormats.PAL_I8A8:
-                    palette_index: bytes = image_handler.get_bytes(image_offset, 1)
-                    alpha_value: bytes = image_handler.get_bytes(image_offset+1, 1)
+                    if image_endianess == "little":
+                        palette_index: bytes = image_handler.get_bytes(image_offset, 1)
+                        alpha_value: bytes = image_handler.get_bytes(image_offset+1, 1)
+                    elif image_endianess == "big":
+                        palette_index: bytes = image_handler.get_bytes(image_offset+1, 1)
+                        alpha_value: bytes = image_handler.get_bytes(image_offset, 1)
+                    else:
+                        raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                     palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
                     alpha_value_int: int = struct.unpack(image_endianess_format + "B", alpha_value or b'\x00')[0]
                     output_bytes: bytes = decode_function(self, palette_data_ints[palette_index_int])  # noqa
@@ -698,13 +704,23 @@ class ImageDecoder:
 
                     texture_data[i * 4:(i + 1) * 4] = decoded_bytes
                 else:
-                    palette_index: bytes = image_handler.get_bytes(image_offset, 1)  # PAL16 = I8P8
+                    if image_endianess == "little":
+                        palette_index: bytes = image_handler.get_bytes(image_offset, 1)
+                    elif image_endianess == "big":
+                        palette_index: bytes = image_handler.get_bytes(image_offset+1, 1)
+                    else:
+                        raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                     palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 2
-        elif img_bits_per_pixel == 32:
+        elif img_bits_per_pixel == 32:  # e.g. PAL32
             for i in range(img_width * img_height):
-                palette_index: bytes = image_handler.get_bytes(image_offset, 1)  # PAL32 = I8P24
+                if image_endianess == "little":
+                    palette_index: bytes = image_handler.get_bytes(image_offset, 1)
+                elif image_endianess == "big":
+                    palette_index: bytes = image_handler.get_bytes(image_offset+3, 1)
+                else:
+                    raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
                 texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 4
