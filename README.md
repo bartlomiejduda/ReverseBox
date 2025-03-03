@@ -98,6 +98,7 @@ or software researchers).
   - Murmur3 ✔️ <span style="color:yellow">(wrapper only)</span>
   - (game-specific) Hercules (TODO) ❌
   - (game-specific) E-racer (TODO) ❌
+  - (game-specific) Pivotal Games DAT Hash ✔️
 
 * Image
   - Decode RGB121 ✔️
