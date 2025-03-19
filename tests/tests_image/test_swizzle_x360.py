@@ -49,6 +49,7 @@ def test_x360_unswizzle_and_swizzle():
         unswizzled_file_data, img_width, img_height, block_pixel_size=4, texel_byte_pitch=8
     )
 
+    assert len(swizzled_file_data) == len(reswizzled_file_data)
     assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
@@ -100,6 +101,7 @@ def test_x360_unswizzle_and_swizzle_mt_framework_tex():
         texel_byte_pitch=16,
     )
 
+    assert len(swizzled_file_data) == len(reswizzled_file_data)
     assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
@@ -151,6 +153,7 @@ def test_x360_unswizzle_and_swizzle_fairy_with_big_boobs():
     #     texel_byte_pitch=8,
     # )
 
+    # assert len(swizzled_file_data) == len(reswizzled_file_data)
     # assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     # assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     # assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]

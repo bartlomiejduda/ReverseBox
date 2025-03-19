@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -46,12 +46,14 @@ def test_decompress_and_compress_packbits():
         pil_image.show()
     # debug end #################################################################################################
 
+    assert len(decompressed_file_data) == len(re_decompressed_file_data)
     assert decompressed_file_data[:100] == re_decompressed_file_data[:100]
     assert decompressed_file_data[1000:1100] == re_decompressed_file_data[1000:1100]
     assert decompressed_file_data[3000:3100] == re_decompressed_file_data[3000:3100]
     assert decompressed_file_data[-100:] == re_decompressed_file_data[-100:]
 
     # TODO - compressed data not identical, is it correct?
+    # assert len(compressed_file_data) == len(recompressed_file_data)
     # assert compressed_file_data[:100] == recompressed_file_data[:100]
     # assert compressed_file_data[1000:1100] == recompressed_file_data[1000:1100]
     # assert compressed_file_data[3000:3100] == recompressed_file_data[3000:3100]

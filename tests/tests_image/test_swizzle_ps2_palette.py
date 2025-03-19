@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -29,6 +29,7 @@ def test_ps2_palette_unswizzle_and_swizzle():
     unswizzled_palette_data = unswizzle_ps2_palette(swizzled_palette_data)
     reswizzled_palette_data = swizzle_ps2_palette(unswizzled_palette_data)
 
+    assert len(swizzled_palette_data) == len(reswizzled_palette_data)
     assert swizzled_palette_data == reswizzled_palette_data
     assert swizzled_palette_data != unswizzled_palette_data
 
@@ -39,7 +40,6 @@ def test_ps2_palette_unswizzle_and_swizzle_for_randomly_generated_palette():
         random_palette_data = generate_random_palette()
         unswizzled_palette_data = unswizzle_ps2_palette(random_palette_data)
         reswizzled_palette_data = swizzle_ps2_palette(unswizzled_palette_data)
+        assert len(random_palette_data) == len(reswizzled_palette_data)
         assert random_palette_data == reswizzled_palette_data
         assert random_palette_data != unswizzled_palette_data
-
-# fmt: on

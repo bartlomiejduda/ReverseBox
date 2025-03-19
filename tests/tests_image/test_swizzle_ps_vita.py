@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -48,7 +48,8 @@ def test_ps_vita_unswizzle_and_swizzle():
 
     reswizzled_file_data = swizzle_psvita_dreamcast(unswizzled_file_data, img_width, img_height, bpp)
 
-    assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    assert len(swizzled_file_data) == len(reswizzled_file_data)
+    assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
     assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
@@ -86,7 +87,8 @@ def test_ps_vita_unswizzle_and_swizzle_tex_all():
 
     # reswizzled_file_data = swizzle_psvita_dreamcast(unswizzled_file_data, img_width, img_height, bpp)
     #
-    # assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    # assert len(swizzled_file_data) == len(reswizzled_file_data)
+    # assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     # assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     # assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
     # assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
@@ -123,7 +125,8 @@ def test_ps_vita_unswizzle_and_swizzle_monkey_dxt5():
 
     # reswizzled_file_data = swizzle_psvita_dreamcast(unswizzled_file_data, img_width, img_height, bpp)
     #
-    # assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    # assert len(swizzled_file_data) == len(reswizzled_file_data)
+    # assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     # assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     # assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
     # assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]

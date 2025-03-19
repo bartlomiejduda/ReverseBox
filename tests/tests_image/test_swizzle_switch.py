@@ -45,7 +45,8 @@ def test_nintendo_switch_unswizzle_and_swizzle():
 
     reswizzled_file_data = swizzle_switch(unswizzled_file_data, img_width, img_height)
 
-    assert swizzled_file_data[:10] == reswizzled_file_data[:10]
+    assert len(swizzled_file_data) == len(reswizzled_file_data)
+    assert swizzled_file_data[:100] == reswizzled_file_data[:100]
     assert swizzled_file_data[1000:1100] == reswizzled_file_data[1000:1100]
     assert swizzled_file_data[3000:3100] == reswizzled_file_data[3000:3100]
     assert swizzled_file_data[-100:] == reswizzled_file_data[-100:]
