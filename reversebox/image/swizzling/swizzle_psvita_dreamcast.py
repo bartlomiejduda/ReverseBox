@@ -1,11 +1,14 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
+import numpy as np
+
 # fmt: off
 
-# Morton Order Texture Swizzling (+ rotated by 90 degrees for console's CPU)
+# Dreamcast and PS Vita Texture Swizzling
+# Morton Order (+ rotate by 90 degrees)
 # https://en.wikipedia.org/wiki/Z-order_curve
 # https://dreamcast.wiki/Twiddling
 
@@ -17,16 +20,14 @@ License: GPL-3.0 License
 # - Senran Kagura: Shinovi Versus (PS Vita) (*.GXT)
 
 
-def bsr(x: int) -> int:
+def bsr(value: int) -> int:
     """bit scan reverse"""
-    if x == 0:
-        raise ValueError("bsr is undefined for 0")
-    return x.bit_length() - 1
+    return int(np.floor(np.log2(value))) if value > 0 else 0
 
 
 def enclosing_power_of_2(x: int) -> int:
-    """find power of 2 equal or bigger than x"""
-    return 1 << bsr(x + (x-1))
+    """find the smallest power of 2 equal or bigger than x"""
+    return 1 << int(np.ceil(np.log2(x)))
 
 
 def align(value: int, alignment: int) -> int:
@@ -35,20 +36,20 @@ def align(value: int, alignment: int) -> int:
 
 
 def get_morton_index_psvita_dreamcast(x: int, y: int, width: int, height: int) -> int:
-    logW = bsr(width)
-    logH = bsr(height)
-    d = min(logW, logH)
-    index = 0
+    log_w = bsr(width)
+    log_h = bsr(height)
+    d = min(log_w, log_h)
+    m = 0
 
     for i in range(d):
-        index |= ((x & (1 << i)) << (i + 1)) | ((y & (1 << i)) << i)
+        m |= ((x & (1 << i)) << (i + 1)) | ((y & (1 << i)) << i)
 
     if width < height:
-        index |= ((y & ~(width - 1)) << d)
+        m |= ((y & ~(width - 1)) << d)
     else:
-        index |= ((x & ~(height - 1)) << d)
+        m |= ((x & ~(height - 1)) << d)
 
-    return index
+    return m
 
 
 def _convert_psvita_dreamcast_4bpp(pixel_data: bytes, img_width: int, img_height: int, swizzle_flag: bool) -> bytes:
@@ -95,16 +96,15 @@ def _convert_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int
     pixel_size = bpp // 8
 
     oy = 0
-    dest_offset = 0
     for y in range(img_height):
         ox = 0
         for x in range(img_width):
             src_offset = (ox + oy) * pixel_size
+            dest_offset = (y * img_width + x) * pixel_size
             if not swizzle_flag:
                 converted_data[dest_offset:dest_offset + pixel_size] = pixel_data[src_offset:src_offset + pixel_size]
             else:
                 converted_data[src_offset:src_offset + pixel_size] = pixel_data[dest_offset:dest_offset + pixel_size]
-            dest_offset += pixel_size
 
             ox = (ox - mx) & mx
         oy = (oy - my) & my
