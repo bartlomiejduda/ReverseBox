@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.27.1"
+VERSION_NUM: Final[str] = "0.27.2"
 
 
 def get_long_description() -> str:

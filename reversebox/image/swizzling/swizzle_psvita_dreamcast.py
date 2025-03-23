@@ -3,7 +3,7 @@ Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-import numpy as np
+from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # fmt: off
 
@@ -11,6 +11,11 @@ import numpy as np
 # Morton Order (+ rotate by 90 degrees)
 # https://en.wikipedia.org/wiki/Z-order_curve
 # https://dreamcast.wiki/Twiddling
+
+# Swizzling modes:
+# block_width_height=1 --> linear formats
+# block_width_height=4 --> BC formats, 4x4 blocks
+# block_width_height=8 --> BC formats, 8x8 blocks
 
 # Same algorithm is used in Dreamcast and PS Vita consoles
 # I've seen it used in Dreamcast DTEX files and in PS Vita GXT files
@@ -20,105 +25,50 @@ import numpy as np
 # - Senran Kagura: Shinovi Versus (PS Vita) (*.GXT)
 
 
-def bsr(value: int) -> int:
-    """bit scan reverse"""
-    return int(np.floor(np.log2(value))) if value > 0 else 0
+def calculate_morton_index_psvita_dreamcast(p: int, width: int, height: int) -> int:
+    ddx = 1
+    ddy = width
+    q = 0
+
+    for i in range(16):
+        height >>= 1
+        if height:
+            if p & 1:
+                q |= ddy
+            p >>= 1
+        ddy <<= 1
+        if width >> 1:
+            if p & 1:
+                q |= ddx
+            p >>= 1
+        ddx <<= 1
+
+    return q
 
 
-def enclosing_power_of_2(x: int) -> int:
-    """find the smallest power of 2 equal or bigger than x"""
-    return 1 << int(np.ceil(np.log2(x)))
-
-
-def align(value: int, alignment: int) -> int:
-    """power of two alignment"""
-    return (value + (alignment - 1)) & ~(alignment - 1)
-
-
-def get_morton_index_psvita_dreamcast(x: int, y: int, width: int, height: int) -> int:
-    log_w = bsr(width)
-    log_h = bsr(height)
-    d = min(log_w, log_h)
-    m = 0
-
-    for i in range(d):
-        m |= ((x & (1 << i)) << (i + 1)) | ((y & (1 << i)) << i)
-
-    if width < height:
-        m |= ((y & ~(width - 1)) << d)
-    else:
-        m |= ((x & ~(height - 1)) << d)
-
-    return m
-
-
-def _convert_psvita_dreamcast_4bpp(pixel_data: bytes, img_width: int, img_height: int, swizzle_flag: bool) -> bytes:
+def _convert_morton_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height, swizzle_flag: bool) -> bytes:
+    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
+    block_data_size: int = bytes_per_pixel * block_width_height * block_width_height
     converted_data: bytearray = bytearray(len(pixel_data))
-    mx = get_morton_index_psvita_dreamcast(img_width - 1, 0, img_width, img_height)
-    my = get_morton_index_psvita_dreamcast(0, img_height - 1, img_width, img_height)
+    img_height //= block_width_height
+    img_width //= block_width_height
+    source_index: int = 0
 
-    line_stride = align(img_width, 2)
-
-    oy = 0
-    for y in range(img_height):
-        ox = 0
-        for x in range(img_width):
-            if not swizzle_flag:
-                src_ofs_n = ox + oy
-                tgt_ofs_n = y * line_stride + x
-            else:
-                src_ofs_n = y * line_stride + x
-                tgt_ofs_n = ox + oy
-
-            src_ofs = src_ofs_n >> 1
-            tgt_ofs = tgt_ofs_n >> 1
-
-            src_shift = (src_ofs_n & 1) << 2
-            dst_shift = (tgt_ofs_n & 1) << 2
-
-            n = (pixel_data[src_ofs] >> src_shift) & 0xF
-            converted_data[tgt_ofs] = (converted_data[tgt_ofs] & (0xF0 >> dst_shift)) | (n << dst_shift)
-
-            ox = (ox - mx) & mx
-        oy = (oy - my) & my
+    for t in range(img_width * img_height):
+        index = calculate_morton_index_psvita_dreamcast(t, img_width, img_height)
+        destination_index = block_data_size * index
+        if not swizzle_flag:
+            converted_data[destination_index:destination_index + block_data_size] = pixel_data[source_index:source_index + block_data_size]
+        else:
+            converted_data[source_index:source_index + block_data_size] = pixel_data[destination_index:destination_index + block_data_size]
+        source_index += block_data_size
 
     return converted_data
 
 
-def _convert_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
-    converted_data: bytearray = bytearray(len(pixel_data))
-    width_pow2 = enclosing_power_of_2(img_width)
-    height_pow2 = enclosing_power_of_2(img_height)
-
-    mx = get_morton_index_psvita_dreamcast(width_pow2 - 1, 0, width_pow2, height_pow2)
-    my = get_morton_index_psvita_dreamcast(0, height_pow2 - 1, width_pow2, height_pow2)
-
-    pixel_size = bpp // 8
-
-    oy = 0
-    for y in range(img_height):
-        ox = 0
-        for x in range(img_width):
-            src_offset = (ox + oy) * pixel_size
-            dest_offset = (y * img_width + x) * pixel_size
-            if not swizzle_flag:
-                converted_data[dest_offset:dest_offset + pixel_size] = pixel_data[src_offset:src_offset + pixel_size]
-            else:
-                converted_data[src_offset:src_offset + pixel_size] = pixel_data[dest_offset:dest_offset + pixel_size]
-
-            ox = (ox - mx) & mx
-        oy = (oy - my) & my
-
-    return converted_data
+def unswizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height: int = 1) -> bytes:
+    return _convert_morton_psvita_dreamcast(pixel_data, img_width, img_height, bpp, block_width_height, False)
 
 
-def unswizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
-    if bpp == 4:
-        return _convert_psvita_dreamcast_4bpp(pixel_data, img_width, img_height, False)
-    return _convert_psvita_dreamcast(pixel_data, img_width, img_height, bpp, False)
-
-
-def swizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
-    if bpp == 4:
-        return _convert_psvita_dreamcast_4bpp(pixel_data, img_width, img_height, True)
-    return _convert_psvita_dreamcast(pixel_data, img_width, img_height, bpp, True)
+def swizzle_psvita_dreamcast(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height: int = 1) -> bytes:
+    return _convert_morton_psvita_dreamcast(pixel_data, img_width, img_height, bpp, block_width_height, True)

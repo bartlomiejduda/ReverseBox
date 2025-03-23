@@ -33,9 +33,7 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
     bpp = 8
     image_format = ImageFormats.GRAY8
 
-    unswizzled_file_data = unswizzle_psvita_dreamcast(
-        swizzled_file_data, img_width, img_height, bpp
-    )
+    unswizzled_file_data = unswizzle_psvita_dreamcast(swizzled_file_data, img_width, img_height, bpp, block_width_height=1)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -49,9 +47,7 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_psvita_dreamcast(
-        unswizzled_file_data, img_width, img_height, bpp
-    )
+    reswizzled_file_data = swizzle_psvita_dreamcast(unswizzled_file_data, img_width, img_height, bpp, block_width_height=1)
 
     assert len(swizzled_file_data) == len(reswizzled_file_data)
     assert swizzled_file_data[:100] == reswizzled_file_data[:100]
