@@ -110,8 +110,9 @@ or software researchers).
   - Decode BGRX332 (BGR8) ✔️
   - Decode/Encode RGB565 ✔️
   - Decode/Encode BGR565 ✔️
-  - Decode RGBX5551 ✔️
-  - Decode RGBA5551 ✔️
+  - Decode/Encode RGBX5551 ✔️
+  - Decode/Encode RGBT5551 ✔️
+  - Decode/Encode RGBA5551 ✔️
   - Decode BGRA5551 ✔️
   - Decode BGRX5551 ✔️
   - Decode RGB888 (RGB24) ✔️
@@ -127,7 +128,7 @@ or software researchers).
   - Decode ARGB1555 ✔️
   - Decode ABGR1555 ✔️
   - Decode XBGR1555 ✔️
-  - Decode ARGB8888 ✔️
+  - Decode/Encode ARGB8888 ✔️
   - Decode ABGR8888 ✔️
   - Decode/Encode RGBA8888 ✔️
   - Decode/Encode BGRA8888 ✔️

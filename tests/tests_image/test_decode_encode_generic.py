@@ -40,6 +40,10 @@ def test_decode_and_encode_all_generic_images():
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR888),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ABGR4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.ABGR4444),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA4444.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA4444),
+        ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBA5551_128x128.bin", debug_flag=False, img_width=128, img_height=128, img_format=ImageFormats.RGBA5551),
+        ImageDecodeEncodeTestEntry(img_file_path="ea_sample_ARGB8888_256x28.bin", debug_flag=False, img_width=256, img_height=28, img_format=ImageFormats.ARGB8888),
+        # ImageDecodeEncodeTestEntry(img_file_path="<sample needed>", debug_flag=True, img_width=256, img_height=128, img_format=ImageFormats.RGBX5551),
+        ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBT5551_512x256.bin", debug_flag=False, img_width=512, img_height=256, img_format=ImageFormats.RGBT5551),
     ]
 
     performance_test_entries: List[ImagePerformanceTestEntry] = []

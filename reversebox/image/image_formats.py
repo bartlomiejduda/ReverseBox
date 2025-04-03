@@ -49,6 +49,7 @@ class ImageFormats(Enum):
 
     RGBA5551 = "rgba5551"
     RGBX5551 = "rgbx5551"
+    RGBT5551 = "rgbt5551"  # with transparency and tranluciency
     BGRA5551 = "bgra5551"
     BGRX5551 = "bgrx5551"
 

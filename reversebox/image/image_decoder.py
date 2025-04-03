@@ -138,6 +138,25 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    def _decode_rgbt5551_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        r = pixel_int & 0x1F
+        g = (pixel_int >> 5) & 0x1F
+        b = (pixel_int >> 10) & 0x1F
+        p[0] = (r << 3) | (r >> 2)
+        p[1] = (g << 3) | (g >> 2)
+        p[2] = (b << 3) | (b >> 2)
+
+        if pixel_int & 0x8000:  # translucient
+            a = 0x80
+        elif pixel_int == 0:  # transparent
+            a = 0x00
+        else:  # opaque
+            a = 0xFF
+
+        p[3] = a
+        return p
+
     def _decode_rgba5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -518,6 +537,7 @@ class ImageDecoder:
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),
+        ImageFormats.RGBT5551: (_decode_rgbt5551_pixel, 16, get_uint16),
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
         ImageFormats.BGRA5551: (_decode_bgra5551_pixel, 16, get_uint16),
         ImageFormats.BGRX5551: (_decode_bgrx5551_pixel, 16, get_uint16),

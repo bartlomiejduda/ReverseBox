@@ -40,6 +40,14 @@ class ImageEncoder:
         p[3] = (pixel_int >> 24) & 0xff
         return p
 
+    def _encode_argb8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int >> 24) & 0xff
+        p[1] = (pixel_int >> 0) & 0xff
+        p[2] = (pixel_int >> 8) & 0xff
+        p[3] = (pixel_int >> 16) & 0xff
+        return p
+
     def _encode_bgr565_pixel(self, pixel_int: int) -> bytearray:
         r = (pixel_int >> 0) & 0xFF
         g = (pixel_int >> 8) & 0xFF
@@ -124,6 +132,69 @@ class ImageEncoder:
         p[1] = (bgra4444 >> 8) & 0xFF
         return p
 
+    def _encode_rgba5551_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = pixel_int & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        a = (pixel_int >> 24) & 0xFF
+
+        r5 = r >> 3
+        g5 = g >> 3
+        b5 = b >> 3
+        a1 = 1 if a >= 128 else 0
+
+        rgba5551 = (a1 << 15) | (b5 << 10) | (g5 << 5) | r5
+
+        p[0] = rgba5551 & 0xFF
+        p[1] = (rgba5551 >> 8) & 0xFF
+        return p
+
+    def _encode_rgbx5551_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = pixel_int & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+
+        r5 = r >> 3
+        g5 = g >> 3
+        b5 = b >> 3
+        a1 = 0xFF
+
+        rgbx5551 = (a1 << 15) | (b5 << 10) | (g5 << 5) | r5
+
+        p[0] = rgbx5551 & 0xFF
+        p[1] = (rgbx5551 >> 8) & 0xFF
+        return p
+
+    def _encode_rgbt5551_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = pixel_int & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        a = (pixel_int >> 24) & 0xFF
+
+        r5 = r >> 3
+        g5 = g >> 3
+        b5 = b >> 3
+
+        rgbt5551 = (b5 << 10) | (g5 << 5) | r5
+
+        if a < 25*255//100:  # transparent
+            rgbt5551 = 0
+        elif a >= 75*255//100:  # opaque
+            if not rgbt5551:
+                rgbt5551 = (1 << 10)
+        else:  # translucient
+            rgbt5551 |= 0x8000
+
+        p[0] = rgbt5551 & 0xFF
+        p[1] = (rgbt5551 >> 8) & 0xFF
+        return p
+
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
@@ -132,10 +203,14 @@ class ImageEncoder:
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
         ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16),
         ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16),
+        ImageFormats.RGBA5551: (_encode_rgba5551_pixel, 16),
+        ImageFormats.RGBX5551: (_encode_rgbx5551_pixel, 16),
+        ImageFormats.RGBT5551: (_encode_rgbt5551_pixel, 16),
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
         ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
         ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
+        ImageFormats.ARGB8888: (_encode_argb8888_pixel, 32),
     }
 
     indexed_data_formats = {
