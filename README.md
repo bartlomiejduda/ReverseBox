@@ -113,7 +113,7 @@ or software researchers).
   - Decode/Encode RGBX5551 ✔️
   - Decode/Encode RGBT5551 ✔️
   - Decode/Encode RGBA5551 ✔️
-  - Decode BGRA5551 ✔️
+  - Decode/Encode BGRA5551 ✔️
   - Decode BGRX5551 ✔️
   - Decode RGB888 (RGB24) ✔️
   - Decode BGR888 (BGR24) ✔️

@@ -151,6 +151,25 @@ class ImageEncoder:
         p[1] = (rgba5551 >> 8) & 0xFF
         return p
 
+    def _encode_bgra5551_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = pixel_int & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        a = (pixel_int >> 24) & 0xFF
+
+        r5 = r >> 3
+        g5 = g >> 3
+        b5 = b >> 3
+        a1 = 1 if a >= 128 else 0
+
+        rgba5551 = (a1 << 15) | (r5 << 10) | (g5 << 5) | b5
+
+        p[0] = rgba5551 & 0xFF
+        p[1] = (rgba5551 >> 8) & 0xFF
+        return p
+
     def _encode_rgbx5551_pixel(self, pixel_int: int) -> bytearray:
         p = bytearray(2)
 
@@ -204,6 +223,7 @@ class ImageEncoder:
         ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16),
         ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16),
         ImageFormats.RGBA5551: (_encode_rgba5551_pixel, 16),
+        ImageFormats.BGRA5551: (_encode_bgra5551_pixel, 16),
         ImageFormats.RGBX5551: (_encode_rgbx5551_pixel, 16),
         ImageFormats.RGBT5551: (_encode_rgbt5551_pixel, 16),
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24),

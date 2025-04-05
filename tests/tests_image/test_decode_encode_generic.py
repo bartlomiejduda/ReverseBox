@@ -44,6 +44,7 @@ def test_decode_and_encode_all_generic_images():
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_ARGB8888_256x28.bin", debug_flag=False, img_width=256, img_height=28, img_format=ImageFormats.ARGB8888),
         # ImageDecodeEncodeTestEntry(img_file_path="<sample needed>", debug_flag=True, img_width=256, img_height=128, img_format=ImageFormats.RGBX5551),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBT5551_512x256.bin", debug_flag=False, img_width=512, img_height=256, img_format=ImageFormats.RGBT5551),
+        ImageDecodeEncodeTestEntry(img_file_path="ea_sample_BGRA5551_32x32.bin", debug_flag=False, img_width=32, img_height=32, img_format=ImageFormats.BGRA5551),
     ]
 
     performance_test_entries: List[ImagePerformanceTestEntry] = []
