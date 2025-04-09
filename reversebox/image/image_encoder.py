@@ -3,7 +3,7 @@ Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-from typing import Tuple
+from typing import Dict, List, Tuple
 
 from reversebox.common.logger import get_logger
 from reversebox.image.common import (
@@ -13,7 +13,15 @@ from reversebox.image.common import (
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
-from reversebox.io_files.bytes_helper_functions import get_uint32
+from reversebox.io_files.bytes_helper_functions import (
+    get_uint16,
+    get_uint24,
+    get_uint32,
+    set_uint8,
+    set_uint16,
+    set_uint24,
+    set_uint32,
+)
 
 logger = get_logger(__name__)
 
@@ -221,28 +229,20 @@ class ImageEncoder:
     # source format is always RGBA8888
     # target format is one of the listed below
     generic_data_formats = {
-        # image_format: (encode_function, bits_per_pixel)
-        ImageFormats.RGB565: (_encode_rgb565_pixel, 16),
-        ImageFormats.BGR565: (_encode_bgr565_pixel, 16),
-        ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16),
-        ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16),
-        ImageFormats.RGBA5551: (_encode_rgba5551_pixel, 16),
-        ImageFormats.BGRA5551: (_encode_bgra5551_pixel, 16),
-        ImageFormats.RGBX5551: (_encode_rgbx5551_pixel, 16),
-        ImageFormats.RGBT5551: (_encode_rgbt5551_pixel, 16),
-        ImageFormats.RGB888: (_encode_rgb888_pixel, 24),
-        ImageFormats.BGR888: (_encode_bgr888_pixel, 24),
-        ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32),
-        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32),
-        ImageFormats.ARGB8888: (_encode_argb8888_pixel, 32),
-    }
-
-    indexed_data_formats = {
-        # TODO - redefine this
-        # image_format: (encode_function, bits_per_pixel, palette_entry_size, palette_entry_read_function)
-        # ImageFormats.PAL4_RGBA8888: (_encode_rgba8888_pixel, 4, 4, get_uint32),
-        # ImageFormats.PAL8_RGBA8888: (_encode_rgba8888_pixel, 8, 4, get_uint32),
-
+        # image_format: (encode_function, bits_per_pixel, read_function, write_function)
+        ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.RGBA5551: (_encode_rgba5551_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.BGRA5551: (_encode_bgra5551_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.RGBX5551: (_encode_rgbx5551_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.RGBT5551: (_encode_rgbt5551_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.RGB888: (_encode_rgb888_pixel, 24, get_uint24, set_uint24),
+        ImageFormats.BGR888: (_encode_bgr888_pixel, 24, get_uint24, set_uint24),
+        ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32, get_uint32, set_uint32),
+        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32, get_uint32, set_uint24),
+        ImageFormats.ARGB8888: (_encode_argb8888_pixel, 32, get_uint32, set_uint24),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -255,7 +255,7 @@ class ImageEncoder:
         return endianess_format
 
     def _encode_generic(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str) -> bytes:
-        encode_function, bits_per_pixel = self.generic_data_formats[image_format]
+        encode_function, bits_per_pixel, _, _ = self.generic_data_formats[image_format]
         image_handler = BytesHandler(image_data)
         source_image_bytes_per_pixel = 4  # always 4 for RGBA8888
 
@@ -297,11 +297,12 @@ class ImageEncoder:
 
     def _encode_indexed(self, image_data: bytes, img_width: int,
                         img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str) -> Tuple[bytes, bytes]:
-        encode_function, palette_bpp = self.generic_data_formats[image_format]
+        encode_function, palette_bpp, read_function, write_function = self.generic_data_formats[palette_format]
         image_bpp: int = get_bpp_for_image_format(image_format)
-        # palette_bpp: int = get_bpp_for_image_format(palette_format)
+        palette_bpp: int = get_bpp_for_image_format(palette_format)
         palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
-        # image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
+        image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
+        image_endianess_format: str = self._get_endianess_format(image_endianess)
 
         # prepare empty bytearray for output data
         if image_bpp == 4:
@@ -327,7 +328,8 @@ class ImageEncoder:
         if image_bpp == 8:
             number_of_pixels: int = len(encoded_intermediate_image) // palette_bytes_per_pixel
             for i in range(number_of_pixels):
-                pixel_int: int = encode_function(self, encoded_intermediate_image[i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel])
+                pixel_bytes: bytes = encoded_intermediate_image[i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel]
+                pixel_int: int = read_function(pixel_bytes, image_endianess_format)
                 pixel_int_values.append(pixel_int)
         else:
             raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
@@ -346,14 +348,38 @@ class ImageEncoder:
             raise Exception(f"Not supported max colors count for unique_colors={unique_colors_count}")  # TODO - support other formats like PAL16
 
         palette_data: bytearray = bytearray(max_colors_count * palette_bytes_per_pixel)
-        # TODO
 
-        # image_offset: int = 0
-        # palette_offset: int = 0
-        # image_endianess_format: str = self._get_endianess_format(image_endianess)
-        # palette_endianess_format: str = self._get_endianess_format(palette_endianess)
+        # palette preparation (get unique values for palette)
+        pixel_check_list: List[int] = []
+        pixel_map: Dict[int, int] = {}
+        pal_entry_number: int = 0
+        for pixel_value in pixel_int_values:
+            if pixel_value not in pixel_check_list:
+                pixel_map[pixel_value] = pal_entry_number
+                pal_entry_number += 1
+            pixel_check_list.append(pixel_value)
 
-        # TODO
+        # encode palette
+        pal_entry_number = 0
+        for map_entry_key, map_entry_value in pixel_map.items():
+            pal_entry_bytes: bytes = write_function(map_entry_key, image_endianess_format)
+            palette_data[pal_entry_number * palette_bytes_per_pixel: (pal_entry_number + 1) * palette_bytes_per_pixel] = pal_entry_bytes
+            pal_entry_number += 1
+
+        # encode indices
+        img_entry_number: int = 0
+        for pixel_int_value in pixel_int_values:
+            pal_entry_number: int = pixel_map[pixel_int_value]
+
+            if image_bpp == 4:
+                raise Exception("Not supported!")
+            elif image_bpp == 8:  # PAL8
+                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = set_uint8(pal_entry_number, image_endianess_format)
+            else:
+                raise Exception("Not supported!")
+
+            img_entry_number += 1
+
         return texture_data, palette_data
 
     def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
