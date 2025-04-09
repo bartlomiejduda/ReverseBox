@@ -111,6 +111,7 @@ class ImageDecodeEncodeTestEntry:
     img_width: int
     img_height: int
     img_format: ImageFormats
+    pal_file_path: Optional[str] = None
     pal_format: Optional[ImageFormats] = None
     bpp: Optional[int] = None
     palette_offset: Optional[int] = None

@@ -6,6 +6,10 @@ License: GPL-3.0 License
 from typing import Tuple
 
 from reversebox.common.logger import get_logger
+from reversebox.image.common import (
+    convert_bpp_to_bytes_per_pixel,
+    get_bpp_for_image_format,
+)
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
@@ -250,8 +254,8 @@ class ImageEncoder:
             raise Exception("Wrong endianess!")
         return endianess_format
 
-    def _encode_generic(self, image_data: bytes, img_width: int, img_height: int, image_format: tuple, image_endianess: str) -> bytes:
-        encode_function, bits_per_pixel = image_format
+    def _encode_generic(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str) -> bytes:
+        encode_function, bits_per_pixel = self.generic_data_formats[image_format]
         image_handler = BytesHandler(image_data)
         source_image_bytes_per_pixel = 4  # always 4 for RGBA8888
 
@@ -292,11 +296,58 @@ class ImageEncoder:
         return texture_data
 
     def _encode_indexed(self, image_data: bytes, img_width: int,
-                        img_height: int, image_format: tuple, image_endianess: str, palette_endianess: str) -> Tuple[bytes, bytes]:
-        # encode_function, bits_per_pixel, palette_entry_size, palette_entry_write_function = image_format
-        # image_handler = BytesHandler(image_data)
-        texture_data = bytearray(img_width * img_height * 4)
-        palette_data = bytearray(img_width * img_height * 4)  # TODO
+                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str) -> Tuple[bytes, bytes]:
+        encode_function, palette_bpp = self.generic_data_formats[image_format]
+        image_bpp: int = get_bpp_for_image_format(image_format)
+        # palette_bpp: int = get_bpp_for_image_format(palette_format)
+        palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
+        # image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
+
+        # prepare empty bytearray for output data
+        if image_bpp == 4:
+            texture_data = bytearray(img_width * img_height // 2)
+        elif image_bpp == 8:
+            texture_data = bytearray(img_width * img_height)
+        elif image_bpp == 16:
+            texture_data = bytearray(img_width * img_height * 2)
+        elif image_bpp == 24:
+            texture_data = bytearray(img_width * img_height * 3)
+        elif image_bpp == 32:
+            texture_data = bytearray(img_width * img_height * 4)
+        else:
+            raise Exception(f"[1] Image_bits_per_pixel={image_bpp} not supported!")
+
+        # encode to intermediate image
+        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess)  # RGBA8888
+
+        # get pixels from intermediate image
+        pixel_int_values: list[int] = []
+        if image_bpp == 4:
+            raise Exception("Not supported 4 bpp!")  # TODO - support PAL4
+        if image_bpp == 8:
+            number_of_pixels: int = len(encoded_intermediate_image) // palette_bytes_per_pixel
+            for i in range(number_of_pixels):
+                pixel_int: int = encode_function(self, encoded_intermediate_image[i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel])
+                pixel_int_values.append(pixel_int)
+        else:
+            raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
+
+        # get number of unique colors
+        unique_colors_count: int = len(set(pixel_int_values))
+
+        # get max number of colors
+        if unique_colors_count <= 4:  # PAL2 (4-color)
+            max_colors_count = 4
+        elif unique_colors_count <= 16:  # PAL4 (16-color)
+            max_colors_count = 16
+        elif unique_colors_count <= 256:  # PAL8 (256-color)
+            max_colors_count = 256
+        else:
+            raise Exception(f"Not supported max colors count for unique_colors={unique_colors_count}")  # TODO - support other formats like PAL16
+
+        palette_data: bytearray = bytearray(max_colors_count * palette_bytes_per_pixel)
+        # TODO
+
         # image_offset: int = 0
         # palette_offset: int = 0
         # image_endianess_format: str = self._get_endianess_format(image_endianess)
@@ -306,7 +357,7 @@ class ImageEncoder:
         return texture_data, palette_data
 
     def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
-        return self._encode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
+        return self._encode_generic(image_data, img_width, img_height, image_format, image_endianess)
 
-    def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
-        return self._encode_indexed(image_data, img_width, img_height, self.indexed_data_formats[image_format], image_endianess, palette_endianess)
+    def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
+        return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess)
