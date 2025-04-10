@@ -307,14 +307,14 @@ from reversebox.image.pillow_wrapper import PillowWrapper
 
 
 def show_img():
-    with open("image_data.bin", "rb") as f:
+    with open("image_data_dxt1_64x64.bin", "rb") as f:
         image_data = f.read()
 
     img_width: int = 64
     img_height: int = 64
     decoder = ImageDecoder()
     wrapper = PillowWrapper()
-    converted_data: bytes = decoder.decode_compressed_image(image_data, img_width, img_height, ImageFormats.DXT1)
+    converted_data: bytes = decoder.decode_compressed_image(image_data, img_width, img_height, ImageFormats.BC1_DXT1)
     pil_image = wrapper.get_pillow_image_from_rgba8888_data(converted_data, img_width, img_height)
     pil_image.show()
 
