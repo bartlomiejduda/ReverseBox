@@ -323,9 +323,7 @@ class ImageEncoder:
 
         # get pixels from intermediate image
         pixel_int_values: list[int] = []
-        if image_bpp == 4:
-            raise Exception("Not supported 4 bpp!")  # TODO - support PAL4
-        if image_bpp == 8:
+        if image_bpp in (4, 8):
             number_of_pixels: int = len(encoded_intermediate_image) // palette_bytes_per_pixel
             for i in range(number_of_pixels):
                 pixel_bytes: bytes = encoded_intermediate_image[i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel]
@@ -368,17 +366,25 @@ class ImageEncoder:
 
         # encode indices
         img_entry_number: int = 0
-        for pixel_int_value in pixel_int_values:
-            pal_entry_number: int = pixel_map[pixel_int_value]
 
-            if image_bpp == 4:
-                raise Exception("Not supported!")
-            elif image_bpp == 8:  # PAL8
-                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = set_uint8(pal_entry_number, image_endianess_format)
-            else:
-                raise Exception("Not supported!")
+        if image_bpp == 4:  # PAL4
+            for i in range(0, len(pixel_int_values), 2):
+                pal_entry_number_1: int = pixel_map[pixel_int_values[i]]
+                pal_entry_number_2: int = pixel_map[pixel_int_values[i+1]]
+                pal_entry_combined: int = (pal_entry_number_1 << 4) | pal_entry_number_2
+                pixel_bytes: bytes = set_uint8(pal_entry_combined, image_endianess_format)
+                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
+                img_entry_number += 1
 
-            img_entry_number += 1
+        elif image_bpp == 8:  # PAL8
+            for pixel_int_value in pixel_int_values:
+                pal_entry_number: int = pixel_map[pixel_int_value]
+                pixel_bytes: bytes = set_uint8(pal_entry_number, image_endianess_format)
+                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
+                img_entry_number += 1
+
+        else:
+            raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
 
         return texture_data, palette_data
 

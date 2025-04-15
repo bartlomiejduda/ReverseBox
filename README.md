@@ -134,8 +134,8 @@ or software researchers).
   - Decode/Encode BGRA8888 ✔️
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
-  - Decode PAL4 ✔️
-  - Decode PAL8 ✔️
+  - Decode/Encode PAL4 ✔️
+  - Decode/Encode PAL8 ✔️
   - Decode PAL16 ✔️
   - Decode PAL32 ✔️
   - Decode PAL_I8A8 ✔️
@@ -334,7 +334,6 @@ Check out list of tools written using ReverseBox:
 - [EA Graphics Manager](https://github.com/bartlomiejduda/EA-Graphics-Manager)
 - [Acclaim TRE Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Acclaim/Acclaim_TRE_Tool)
 - [F-Zero X TEX Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/F-Zero%20X/TEX%20Tool)
-- [TPL Parser](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Mario%20Kart%20WII/TPL%20Parser)
 - [ImageHeat](https://github.com/bartlomiejduda/ImageHeat)
 - [Hatch Engine Archive Tool](https://github.com/bartlomiejduda/Tools/tree/master/NEW%20Tools/Hatch%20Engine/Hatch%20Engine%20Archive%20Tool)
 - [ReverseBox Demo](https://github.com/bartlomiejduda/Tools/tree/master/ReverseBox_Demo)
