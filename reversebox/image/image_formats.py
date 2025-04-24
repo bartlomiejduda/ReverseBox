@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -26,14 +26,17 @@ class ImageFormats(Enum):
     RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
-    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (aliases: Y800 and L8)
+    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (Y800 / L8 / Luminance 8-bit)
+    ALPHA8 = "alpha8"  # (A8 / Alpha 8-bit)
+    LA44 = "la44"  # (LA4 / L4A4 / Luminance 4-bit and Alpha 4-bit)
     R8 = "r8"
     G8 = "g8"
     B8 = "b8"
 
     # 16-bit
-    GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88)
+    GRAY8A = "gray8a"  # PIX_FMT_GRAY8A / 8bit gray, 8bit alpha (LA88 / LA8 / Luminance 8-bit and Alpha 8-bit)
     GRAY16 = "gray16"  # PIX_FMT_GRAY16LE / PIX_FMT_GRAY16BE / Y, 16bpp
+    RG88 = "rg88"  # RG8
     RGB565 = "rgb565"  # PIX_FMT_RGB565LE / PIX_FMT_RGB565BE / packed RGB 5:6:5, 16bpp
     BGR565 = "bgr565"  # PIX_FMT_BGR565LE / PIX_FMT_BGR565BE / packed BGR 5:6:5, 16bpp
 

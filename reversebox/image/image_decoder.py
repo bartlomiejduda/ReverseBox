@@ -60,14 +60,36 @@ class ImageDecoder:
         p[3] = ((pixel_int >> 6) & 3) * 85
         return p
 
+    # L8 (Luminance 8-bit)
     def _decode_gray8_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        p[0] = pixel_int & 255
-        p[1] = pixel_int & 255
-        p[2] = pixel_int & 255
+        p[0] = pixel_int & 0xFF
+        p[1] = pixel_int & 0xFF
+        p[2] = pixel_int & 0xFF
         p[3] = 0xFF
         return p
 
+    # A8 (Alpha 8-bit)
+    def _decode_alpha8_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0xFF
+        p[1] = 0xFF
+        p[2] = 0xFF
+        p[3] = pixel_int & 0xFF
+        return p
+
+    # LA4 (Luminance 4-bit and Alpha 4-bit)
+    def _decode_la44_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        L = (pixel_int & 0x0F) * 0x11
+        A = (pixel_int >> 4) * 0x11
+        p[0] = L
+        p[1] = L
+        p[2] = L
+        p[3] = A
+        return p
+
+    # LA88 / LA8 (Luminance 8-bit and Alpha 8-bit)
     def _decode_gray8a_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         L = pixel_int & 0xFF
@@ -85,6 +107,17 @@ class ImageDecoder:
         p[0] = L
         p[1] = L
         p[2] = L
+        p[3] = 0xFF
+        return p
+
+    # RG8
+    def _decode_rg88_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        R = pixel_int & 0xFF
+        G = (pixel_int >> 8) & 0xFF
+        p[0] = R
+        p[1] = G
+        p[2] = 0x00
         p[3] = 0xFF
         return p
 
@@ -522,6 +555,8 @@ class ImageDecoder:
 
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
+        ImageFormats.ALPHA8: (_decode_alpha8_pixel, 8, get_uint8),
+        ImageFormats.LA44: (_decode_la44_pixel, 8, get_uint8),
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB332: (_decode_rgb332_pixel, 8, get_uint8),
@@ -534,6 +569,7 @@ class ImageDecoder:
 
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
         ImageFormats.GRAY16: (_decode_gray16_pixel, 16, get_uint16),
+        ImageFormats.RG88: (_decode_rg88_pixel, 16, get_uint16),
         ImageFormats.RGB565: (_decode_rgb565_pixel, 16, get_uint16),
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),

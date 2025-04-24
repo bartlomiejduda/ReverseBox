@@ -106,6 +106,8 @@ or software researchers).
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
   - Decode GRAY8 ✔️
+  - Decode ALPHA8 ✔️
+  - Decode LA44 ✔️
   - Decode RGBX332 (RGB8) ✔️
   - Decode BGRX332 (BGR8) ✔️
   - Decode/Encode RGB565 ✔️
@@ -176,6 +178,7 @@ or software researchers).
   - Decode AYUV ✔️
   - Decode GRAY8A (LA88) ✔️
   - Decode GRAY16 ✔️
+  - Decode RG88 ✔️
   - Decode XRGB8888 ✔️
   - Decode RGBX8888 ✔️
   - Decode XBGR8888 ✔️

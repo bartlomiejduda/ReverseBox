@@ -1,11 +1,13 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
 # Nintendo 3DS Swizzling
-# Should occur in some MT Framework games on 3DS
-# Also occurs in "Mario & Luigi: Superstar Saga + Bowser's Minions" (3DS)
+# Can occur in:
+# - some MT Framework games on 3DS
+# - "Mario & Luigi: Superstar Saga + Bowser's Minions" (3DS)
+# - BFLIM image files
 
 # fmt: off
 

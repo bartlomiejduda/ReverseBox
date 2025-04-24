@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -132,6 +132,7 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
 
 
 # special "type 3" 4-bit swizzle/unswizzle function used in SSH files from EA PS2 games
+# e.g. used in BloodRayne 1 (PS2),
 def _convert_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
     if bpp != 4:
         raise Exception(f"Not supported bpp={bpp} for EA swizzle!")
