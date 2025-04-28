@@ -67,6 +67,7 @@ or software researchers).
   - Refpack (EA Games) ✔️ <span style="color:yellow">(wrapper only)</span>
   - RNC (TODO) ❌
   - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
+  - (game-specific) Re:Tiyoruga DAT compression ✔️
 
 * Encryption
   - AES (TODO) ❌
