@@ -3,10 +3,7 @@ Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-import ctypes
-from ctypes import byref, c_char
-
-from reversebox.common.common import get_dll_path
+from reversebox.image.swizzling.swizzle_ps2_ea_4bit import ea_swizzle4, ea_unswizzle4
 from reversebox.io_files.bytes_handler import BytesHandler
 
 # fmt: off
@@ -131,26 +128,16 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
     return converted_data
 
 
-# special "type 3" 4-bit swizzle/unswizzle function used in SSH files from EA PS2 games
-# e.g. used in BloodRayne 1 (PS2),
 def _convert_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_flag: bool) -> bytes:
     if bpp != 4:
         raise Exception(f"Not supported bpp={bpp} for EA swizzle!")
 
-    converted_data_size: int = len(image_data)
-    converted_data_buffer = (c_char * converted_data_size)()
+    if not swizzle_flag:
+        converted_data = ea_unswizzle4(image_data, img_width, img_height)
+    else:
+        converted_data = ea_swizzle4(image_data, img_width, img_height)
 
-    try:
-        ea_swizzle_dll_path: str = get_dll_path("ea_swizzle.dll")
-        ea_swizzle_dll_file = ctypes.CDLL(ea_swizzle_dll_path)
-        if not swizzle_flag:
-            ea_swizzle_dll_file.unswizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
-        else:
-            ea_swizzle_dll_file.swizzle4(image_data, byref(converted_data_buffer), img_width, img_height)
-    except Exception as error:
-        raise Exception(f"Error while unswizzling data! Error: {error}")
-
-    return bytes(bytearray(converted_data_buffer)[:converted_data_size])
+    return bytes(converted_data)
 
 
 def unswizzle_ps2_ea_4bit(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
