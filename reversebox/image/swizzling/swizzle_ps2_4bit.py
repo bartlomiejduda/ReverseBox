@@ -7,7 +7,7 @@ License: GPL-3.0 License
 
 
 # PS2 4-bit swizzle algorithm
-# special "type 3" 4-bit swizzle/unswizzle function
+
 # Used in:
 # - EA Games (e.g. SSH files from Cricket 2005 (PS2))
 # - BloodRayne 1 (PS2)
@@ -145,7 +145,7 @@ def _unswizzle4_convert_page(width: int, height: int, input_page_data: bytes) ->
     return output_page_data
 
 
-def ea_unswizzle4(input_data: bytes, img_width: int, img_height: int) -> bytes:
+def _ps2_unswizzle4(input_data: bytes, img_width: int, img_height: int) -> bytes:
     output_data: bytearray = bytearray(len(input_data))
     n_page_w: int = (img_width - 1) // PSMT4_PAGE_WIDTH + 1
     n_page_h: int = (img_height - 1) // PSMT4_PAGE_HEIGHT + 1
@@ -309,7 +309,7 @@ def _swizzle4_convert_page(width: int, height: int, input_page_data: bytes) -> b
     return output_page_data
 
 
-def ea_swizzle4(input_data: bytes, width: int, height: int) -> bytes:
+def _ps2_swizzle4(input_data: bytes, width: int, height: int) -> bytes:
     output_data: bytearray = bytearray(len(input_data))
     n_page_w: int = (width - 1) // PSMT4_PAGE_WIDTH + 1
     n_page_h: int = (height - 1) // PSMT4_PAGE_HEIGHT + 1
