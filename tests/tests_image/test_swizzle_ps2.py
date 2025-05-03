@@ -272,17 +272,17 @@ def test_ps2_unswizzle_and_swizzle_suba_swizzle_8bit():
 
 
 @pytest.mark.imagetest
-def test_ps2_unswizzle_and_swizzle_suba_swizzle_4bit():
-    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_suba_4bit_data.bin")
-    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_suba_4bit_pal.bin")
+def test_ps2_unswizzle_and_swizzle_suba_swizzle_16bit():
+    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_suba_16bit_data.bin")
+    palette_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_suba_16bit_pal.bin")
 
     swizzled_file_data = open(swizzled_file_path, "rb").read()
     palette_data = open(palette_file_path, "rb").read()
 
-    img_width = 256 * 2
+    img_width = 256
     img_height = 256 * 2
-    bpp = 8
-    image_format = ImageFormats.PAL8
+    bpp = 16
+    image_format = ImageFormats.PAL4
     pal_format = ImageFormats.RGB888
 
     unswizzled_file_data = unswizzle_ps2(

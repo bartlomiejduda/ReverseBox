@@ -12,6 +12,43 @@ License: GPL-3.0 License
 # - ezSwizzle program
 
 
+def _ps2_suba_swizzle_16bit(input_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
+    converted_data: bytearray = bytearray(len(input_data))
+
+    for y in range(height):
+        for x in range(width):
+
+            page_x = x & (~0x3f)
+            page_y = y & (~0x3f)
+
+            pages_horz = (width + 63) // 64
+            pages_vert = (height + 63) // 64
+
+            page_number = (page_y // 64) * pages_horz + (page_x // 64)
+
+            page32_y = (page_number // pages_vert) * 32
+            page32_x = (page_number % pages_vert) * 64
+
+            page_location = (page32_y * height + page32_x) * 2
+
+            loc_x = x & 0x3f
+            loc_y = y & 0x3f
+
+            block_location = (loc_x & (~0xf)) * height + (loc_y & (~0x7)) * 2
+            column_location = ((y & 0x7) * height + (x & 0x7)) * 2
+
+            short_num = (x >> 3) & 1  # 0 or 1
+
+            dest_index = page_location + block_location + column_location + short_num
+
+            if swizzle_flag:
+                converted_data[dest_index] = input_data[y * width + x]
+            else:
+                converted_data[y * width + x] = input_data[dest_index]
+
+    return converted_data
+
+
 def _ps2_suba_swizzle_8bit(input_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(input_data))
 
@@ -34,7 +71,6 @@ def _ps2_suba_swizzle_8bit(input_data: bytes, width: int, height: int, swizzle_f
     return converted_data
 
 
-# TODO - not working? No way to test it properly...
 def _ps2_suba_swizzle_4bit(input_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data = bytearray(len(input_data))
 

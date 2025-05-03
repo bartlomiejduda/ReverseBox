@@ -7,6 +7,7 @@ from reversebox.image.swizzling.swizzle_ps2_4bit import _ps2_swizzle4, _ps2_unsw
 from reversebox.image.swizzling.swizzle_ps2_suba import (
     _ps2_suba_swizzle_4bit,
     _ps2_suba_swizzle_8bit,
+    _ps2_suba_swizzle_16bit,
 )
 from reversebox.io_files.bytes_handler import BytesHandler
 
@@ -161,7 +162,10 @@ def unswizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int, 
         else:  # type 1/2
             return _convert_ps2_8bit(image_data, img_width, img_height, False)
     elif bpp in (15, 16):
-        return _convert_ps2_16bit(image_data, img_width, img_height, False)
+        if swizzle_type == 3:
+            return _ps2_suba_swizzle_16bit(image_data, img_width, img_height, False)
+        else:  # type 1/2
+            return _convert_ps2_16bit(image_data, img_width, img_height, False)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 unswizzle!")
 
@@ -182,6 +186,9 @@ def swizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int, sw
         else:  # type 1/2
             return _convert_ps2_8bit(image_data, img_width, img_height, True)
     elif bpp in (15, 16):
-        return _convert_ps2_16bit(image_data, img_width, img_height, True)
+        if swizzle_type == 3:
+            return _ps2_suba_swizzle_16bit(image_data, img_width, img_height, True)
+        else:  # type 1/2
+            return _convert_ps2_16bit(image_data, img_width, img_height, True)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 swizzle!")
