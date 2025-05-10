@@ -204,6 +204,7 @@ or software researchers).
   - XBOX 360 Swizzling/Twiddling ✔️
   - GameCube/WII Swizzling/Twiddling ✔️
   - Switch Swizzling/Twiddling ✔️
+  - WII U Swizzling/Twiddling ✔️
   - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
   - Dreamcast Swizzling/Twiddling (Morton Order) ✔️
   - BC Swizzling/Twiddling ✔️
