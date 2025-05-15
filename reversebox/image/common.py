@@ -206,3 +206,64 @@ def is_compressed_image_format(image_format: ImageFormats) -> bool:
                         ):
         return True
     return False
+
+
+def get_block_data_size(img_format: ImageFormats) -> int:
+    if img_format in (ImageFormats.BC1_DXT1, ImageFormats.BC4_UNORM):
+        return 8
+    elif img_format in (ImageFormats.BC2_DXT3,
+                        ImageFormats.BC3_DXT5,
+                        ImageFormats.BC5_UNORM,
+                        ImageFormats.BC6H_UF16,
+                        ImageFormats.BC6H_SF16,
+                        ImageFormats.BC7_UNORM,
+                        ):
+        return 16
+    else:
+        return 1
+
+
+def calculate_aligned_value(value: int, multiple: int) -> int:
+    return ((value + multiple - 1) // multiple) * multiple
+
+
+def align_data(input_bytes: bytes, img_width: int, img_height: int, align_value: int, block_data_size: int) -> bytes:
+    if block_data_size == 1:  # linear data
+        return input_bytes
+
+    aligned_w: int = calculate_aligned_value(img_width, align_value)
+    aligned_h: int = calculate_aligned_value(img_height, align_value)
+    block_w: int = aligned_w // 4
+    block_h: int = aligned_h // 4
+
+    orig_block_w = img_width // 4
+    orig_block_h = img_height // 4
+
+    aligned_data: bytearray = bytearray(block_w * block_h * block_data_size)
+
+    for y in range(orig_block_h):
+        src_offset = y * orig_block_w * block_data_size
+        dst_offset = y * block_w * block_data_size
+        aligned_data[dst_offset: dst_offset + (orig_block_w * block_data_size)] = input_bytes[src_offset: src_offset + (orig_block_w * block_data_size)]
+
+    return aligned_data
+
+
+# TODO - check if this works properly...
+def unalign_data(aligned_bytes: bytes, img_width: int, img_height: int, align_value: int, block_data_size: int) -> bytes:
+    if block_data_size == 1:  # linear data
+        return aligned_bytes
+
+    aligned_w: int = calculate_aligned_value(img_width, align_value)
+    block_w: int = aligned_w // 4
+    orig_block_w: int = img_width // 4
+    orig_block_h: int = img_height // 4
+
+    output_bytes = bytearray(orig_block_w * orig_block_h * block_data_size)
+
+    for y in range(orig_block_h):
+        src_offset = y * block_w * block_data_size
+        dst_offset = y * orig_block_w * block_data_size
+        output_bytes[dst_offset: dst_offset + (orig_block_w * block_data_size)] = aligned_bytes[src_offset: src_offset + (orig_block_w * block_data_size)]
+
+    return output_bytes
