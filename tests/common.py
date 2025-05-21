@@ -118,6 +118,7 @@ class ImageDecodeEncodeTestEntry:
     palette_size: Optional[int] = None
     image_data_offset: Optional[int] = None
     image_data_size: Optional[int] = None
+    max_colors_count: Optional[int] = None
 
 
 @dataclass

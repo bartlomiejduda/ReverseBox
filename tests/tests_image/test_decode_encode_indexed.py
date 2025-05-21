@@ -34,12 +34,12 @@ def test_decode_and_encode_all_indexed_images():
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_PAL8_RGBA8888_150x300.bin",
                                    pal_file_path="ea_sample_PAL8_RGBA8888_150x300_palette.bin",
                                    debug_flag=False, img_width=150, img_height=300, bpp=8,
-                                   img_format=ImageFormats.PAL8, pal_format=ImageFormats.RGBA8888,
+                                   img_format=ImageFormats.PAL8, pal_format=ImageFormats.RGBA8888, max_colors_count=256,
                                    palette_offset=0, palette_size=1024, image_data_offset=0, image_data_size=45000),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_PAL4_RGBA8888_256x256.bin",
                                    pal_file_path="ea_sample_PAL4_RGBA8888_256x256_palette.bin",
                                    debug_flag=False, img_width=256, img_height=256, bpp=4,
-                                   img_format=ImageFormats.PAL4, pal_format=ImageFormats.RGBA8888,
+                                   img_format=ImageFormats.PAL4, pal_format=ImageFormats.RGBA8888, max_colors_count=16,
                                    palette_offset=0, palette_size=64, image_data_offset=0, image_data_size=32768),
     ]
 
@@ -60,7 +60,7 @@ def test_decode_and_encode_all_indexed_images():
         assert len(encoded_image_data) == test_entry.image_data_size  # not expected buffer size after reading data!
 
         decoded_image_data: bytes = image_decoder.decode_indexed_image(encoded_image_data, encoded_palette_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, test_entry.pal_format)
-        re_encoded_image_data, re_encoded_palette_data = image_encoder.encode_indexed_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, test_entry.pal_format)
+        re_encoded_image_data, re_encoded_palette_data = image_encoder.encode_indexed_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, test_entry.pal_format, max_color_count=test_entry.max_colors_count)
         re_decoded_image_data: bytes = image_decoder.decode_indexed_image(re_encoded_image_data, re_encoded_palette_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, test_entry.pal_format)
 
         # debug start ###############################################################################################
