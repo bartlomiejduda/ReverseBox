@@ -320,13 +320,15 @@ class ImageEncoder:
         else:
             raise Exception(f"[1] Image_bits_per_pixel={image_bpp} not supported!")
 
-        # encode to intermediate image
-        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess)  # RGBA8888
+        texture_data_expected_size: int = len(texture_data)
 
-        # colour quantization
-        pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(encoded_intermediate_image, img_width, img_height)
-        pillow_img = pillow_img.quantize(colors=max_colors_count, method=2).convert("RGBA")
-        encoded_intermediate_image = pillow_img.tobytes()
+        # colour quantization and dithering
+        pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
+        pillow_img = pillow_img.quantize(colors=max_colors_count, method=2).convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)
+        image_data = pillow_img.tobytes()
+
+        # encode to intermediate image (e.g. RGBA8888 -> RGB565)
+        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess)
 
         # get pixels from intermediate image
         pixel_int_values: list[int] = []
@@ -350,6 +352,7 @@ class ImageEncoder:
             raise Exception(f"Not supported aligned colors count for max_colors_count={max_colors_count}")  # TODO - support other formats like PAL16
 
         palette_data: bytearray = bytearray(aligned_colors_count * palette_bytes_per_pixel)
+        palette_data_expected_size: int = len(palette_data)
 
         # palette preparation (get unique values for palette)
         pixel_check_list: List[int] = []
@@ -370,7 +373,6 @@ class ImageEncoder:
 
         # encode indices
         img_entry_number: int = 0
-
         if image_bpp == 4:  # PAL4
             for i in range(0, len(pixel_int_values), 2):
                 pal_entry_number_1: int = pixel_map[pixel_int_values[i]]
@@ -389,6 +391,13 @@ class ImageEncoder:
 
         else:
             raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
+
+        # final checks
+        if len(palette_data) > palette_data_expected_size or len(palette_data) > 1024:
+            raise Exception("Error! Palette data too big!")
+
+        if len(texture_data) > texture_data_expected_size:
+            raise Exception("Error! Texture data too big!")
 
         return texture_data, palette_data
 

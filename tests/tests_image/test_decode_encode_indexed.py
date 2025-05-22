@@ -79,14 +79,3 @@ def test_decode_and_encode_all_indexed_images():
         assert len(encoded_palette_data) > 0
         assert len(re_encoded_palette_data) > 0
         assert len(encoded_palette_data) == len(re_encoded_palette_data)
-
-        # TODO - add more asserts
-        # assert decoded_image_data[:100] == re_decoded_image_data[:100]
-        # assert decoded_image_data[1000:1100] == re_decoded_image_data[1000:1100]
-        # assert decoded_image_data[3000:3100] == re_decoded_image_data[3000:3100]
-        # assert decoded_image_data[-100:] == re_decoded_image_data[-100:]
-        #
-        # assert encoded_image_data[:100] == re_encoded_image_data[:100]
-        # assert encoded_image_data[1000:1100] == re_encoded_image_data[1000:1100]
-        # assert encoded_image_data[3000:3100] == re_encoded_image_data[3000:3100]
-        # assert encoded_image_data[-100:] == re_encoded_image_data[-100:]
