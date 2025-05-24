@@ -20,9 +20,6 @@ def swap_byte_order_x360(image_data: bytes) -> bytes:
 
 
 def swap_byte_order_gamecube(image_data: bytes, img_width: int, img_height: int) -> bytes:
-    if len(image_data) % 8 != 0:
-        raise ValueError("The data must be a multiple of 8 bytes (the size of one BC block)")
-
     bw: int = img_width // 4
     bh: int = img_height // 4
     block_size: int = 8
