@@ -1,22 +1,13 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
+
+from reversebox.image.byte_swap import swap_byte_order_x360
 
 # Xbox 360 Texture Swizzling
 
 # fmt: off
-
-
-def _swap_byte_order(image_data: bytes) -> bytes:
-    if len(image_data) % 2 != 0:
-        raise Exception("Data size must be a multiple of 2 bytes!")
-
-    swapped_data: bytearray = bytearray()
-    for i in range(0, len(image_data), 2):
-        group = image_data[i: i + 2]
-        swapped_data.extend(group[::-1])
-    return swapped_data
 
 
 def _xg_address_2d_tiled_x(block_offset: int, width_in_blocks: int, texel_byte_pitch: int) -> int:
@@ -74,12 +65,12 @@ def _convert_x360_image_data(image_data: bytes, image_width: int, image_height: 
 
 
 def unswizzle_x360(image_data: bytes, img_width: int, img_height: int, block_pixel_size: int = 4, texel_byte_pitch: int = 8) -> bytes:
-    swapped_data: bytes = _swap_byte_order(image_data)
+    swapped_data: bytes = swap_byte_order_x360(image_data)
     unswizzled_data: bytes = _convert_x360_image_data(swapped_data, img_width, img_height, block_pixel_size, texel_byte_pitch, False)
     return unswizzled_data
 
 
 def swizzle_x360(image_data: bytes, img_width: int, img_height: int, block_pixel_size: int = 4, texel_byte_pitch: int = 8) -> bytes:
-    swapped_data: bytes = _swap_byte_order(image_data)
+    swapped_data: bytes = swap_byte_order_x360(image_data)
     swizzled_data: bytes = _convert_x360_image_data(swapped_data, img_width, img_height, block_pixel_size, texel_byte_pitch, True)
     return swizzled_data
