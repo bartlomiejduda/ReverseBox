@@ -124,7 +124,7 @@ or software researchers).
   - Decode RGBA4444 ✔️
   - Decode ABGR4444 ✔️
   - Decode XBGR4444 ✔️
-  - Decode RGBX4444 ✔️
+  - Decode/Encode RGBX4444 ✔️
   - Decode BGRA4444 ✔️
   - Decode BGRX4444 ✔️
   - Decode XRGB1555 ✔️

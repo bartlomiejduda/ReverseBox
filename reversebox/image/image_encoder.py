@@ -146,6 +146,25 @@ class ImageEncoder:
         p[1] = (bgra4444 >> 8) & 0xFF
         return p
 
+    def _encode_rgbx4444_pixel(self, pixel_int: int) -> bytearray:
+        p = bytearray(2)
+
+        r = pixel_int & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        x = (pixel_int >> 24) & 0xFF
+
+        r4 = (r >> 4) & 0x0F
+        g4 = (g >> 4) & 0x0F
+        b4 = (b >> 4) & 0x0F
+        x4 = (x >> 4) & 0x0F
+
+        rgbx4444 = (x4 << 12) | (b4 << 8) | (g4 << 4) | r4
+
+        p[0] = rgbx4444 & 0xFF
+        p[1] = (rgbx4444 >> 8) & 0xFF
+        return p
+
     def _encode_rgba5551_pixel(self, pixel_int: int) -> bytearray:
         p = bytearray(2)
 
@@ -236,6 +255,7 @@ class ImageEncoder:
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.RGBX4444: (_encode_rgbx4444_pixel, 16, get_uint16, set_uint16),
         ImageFormats.RGBA5551: (_encode_rgba5551_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGRA5551: (_encode_bgra5551_pixel, 16, get_uint16, set_uint16),
         ImageFormats.RGBX5551: (_encode_rgbx5551_pixel, 16, get_uint16, set_uint16),

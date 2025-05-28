@@ -39,7 +39,7 @@ def fill_data_with_padding(input_data: bytes, padding_length: int) -> bytes:
 # e.g. "aaa" and 5 --> "aaa\x00\x00"
 def fill_data_with_padding_to_desired_length(
     input_data: bytes, desired_padding_length: int
-):
+) -> bytes:
     if len(input_data) > desired_padding_length:
         raise Exception("Data too big or desired padding too low!")
     elif len(input_data) == desired_padding_length:
