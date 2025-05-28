@@ -152,7 +152,7 @@ class ImageEncoder:
         r = pixel_int & 0xFF
         g = (pixel_int >> 8) & 0xFF
         b = (pixel_int >> 16) & 0xFF
-        x = (pixel_int >> 24) & 0xFF
+        x = 0xFF
 
         r4 = (r >> 4) & 0x0F
         g4 = (g >> 4) & 0x0F
