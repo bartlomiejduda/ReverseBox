@@ -399,7 +399,10 @@ class ImageEncoder:
             for i in range(0, len(pixel_int_values), 2):
                 pal_entry_number_1: int = pixel_map[pixel_int_values[i]]
                 pal_entry_number_2: int = pixel_map[pixel_int_values[i+1]]
-                pal_entry_combined: int = ((pal_entry_number_1 << 4) | pal_entry_number_2) & 0xFF
+                if palette_endianess == "little":
+                    pal_entry_combined: int = ((pal_entry_number_2 << 4) | pal_entry_number_1) & 0xFF
+                else:
+                    pal_entry_combined: int = ((pal_entry_number_1 << 4) | pal_entry_number_2) & 0xFF
                 pixel_bytes: bytes = set_uint8(pal_entry_combined, image_endianess_format)
                 texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
                 img_entry_number += 1
