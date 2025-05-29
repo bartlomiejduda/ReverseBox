@@ -344,7 +344,9 @@ class ImageEncoder:
 
         # colour quantization and dithering
         pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
-        pillow_img = pillow_img.quantize(colors=max_colors_count, method=2).convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)
+        unique_colors_count: int = len(set(pillow_img.getdata()))
+        if unique_colors_count > max_colors_count:
+            pillow_img = pillow_img.quantize(colors=max_colors_count, method=2).convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)
         image_data = pillow_img.tobytes()
 
         # encode to intermediate image (e.g. RGBA8888 -> RGB565)
