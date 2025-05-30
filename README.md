@@ -149,13 +149,13 @@ or software researchers).
   - Decode N64_IA8 ✔️
   - Decode N64_RGBA32 ✔️
   - Decode N64_CMPR ✔️
-  - Decode BC1/DXT1 ✔️
-  - Decode BC2/DXT3 ✔️
-  - Decode BC3/DXT5 ✔️
-  - Decode BC4 ✔️
-  - Decode BC5 ✔️
-  - Decode BC6 ✔️
-  - Decode BC7 ✔️
+  - Decode/Encode BC1/DXT1 ✔️
+  - Decode/Encode BC2/DXT3 ✔️
+  - Decode/Encode BC3/DXT5 ✔️
+  - Decode/Encode BC4 ✔️
+  - Decode/Encode BC5 ✔️
+  - Decode/Encode BC6 ✔️
+  - Decode/Encode BC7 ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

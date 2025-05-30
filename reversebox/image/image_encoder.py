@@ -12,6 +12,9 @@ from reversebox.image.common import (
     convert_bpp_to_bytes_per_pixel,
     get_bpp_for_image_format,
 )
+from reversebox.image.decoders.compressed_decoder_encoder import (
+    CompressedImageDecoderEncoder,
+)
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
@@ -431,3 +434,6 @@ class ImageEncoder:
 
     def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
         return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess, max_color_count)
+
+    def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)

@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -22,6 +22,7 @@ from reversebox.image.image_formats import ImageFormats
 logger = get_logger(__name__)
 
 # fmt: off
+# mypy: ignore-errors
 
 
 class DXGIImage(Structure):
@@ -38,7 +39,7 @@ class DXGIImage(Structure):
     ]
 
 
-class CompressedImageDecoder:
+class CompressedImageDecoderEncoder:
     """
     Decoder for any compressed images like BC1/DXT1, BC2/DXT2 etc.
     """
@@ -91,15 +92,19 @@ class CompressedImageDecoder:
         else:
             raise Exception(f"Not supported image format! Image_format: {image_format}")
 
-    def _decode_directxtex_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+    def _convert_directxtex_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, encode_flag: bool) -> bytes:
         """
         Function used for decoding compressed BC formats
         """
         dll_path: str = get_dll_path("DirectXTex.dll")
-        input_format_number: int = self._get_dxgi_format_number(image_format)
-        output_format_number: int = self._get_dxgi_format_number(ImageFormats.RGBA8888)
+        if encode_flag:
+            input_format_number: int = self._get_dxgi_format_number(ImageFormats.RGBA8888)
+            output_format_number: int = self._get_dxgi_format_number(image_format)
+        else:
+            input_format_number: int = self._get_dxgi_format_number(image_format)
+            output_format_number: int = self._get_dxgi_format_number(ImageFormats.RGBA8888)
 
-        # calculating pitch logic
+        # calculating pitch params
         c_input_format_number = c_int(input_format_number)
         c_output_format_number = c_int(output_format_number)
         c_image_width = c_int(img_width)
@@ -109,6 +114,10 @@ class CompressedImageDecoder:
         c_input_slice_pitch = c_long(0)
         c_output_slice_pitch = c_long(0)
         c_flags = c_int(0)
+
+        # encode params
+        c_threshold = ctypes.c_float(0.5)
+        c_nullptr = (c_uint8 * 100)()
 
         try:
             dll_file = ctypes.CDLL(dll_path)
@@ -122,10 +131,16 @@ class CompressedImageDecoder:
         input_dxgi_image: DXGIImage = self._init_dxgi_image(img_width, img_height, input_format_number, c_input_row_pitch.value, c_input_slice_pitch.value, image_data)
         output_dxgi_image: DXGIImage = self._init_dxgi_image(img_width, img_height, output_format_number, c_output_row_pitch.value, c_output_slice_pitch.value, b'')
 
-        # decompressing image logic
+        # decompressing/compressing image logic
         try:
             dll_file = ctypes.CDLL(dll_path)
-            h_result = dll_file.DecompressBC(ctypes.byref(input_dxgi_image), ctypes.byref(output_dxgi_image))
+
+            if encode_flag:
+                h_result = dll_file.CompressBC(ctypes.byref(input_dxgi_image), ctypes.byref(output_dxgi_image),
+                                               c_flags, c_flags,
+                                               c_threshold, c_nullptr)
+            else:
+                h_result = dll_file.DecompressBC(ctypes.byref(input_dxgi_image), ctypes.byref(output_dxgi_image))
         except Exception as error:
             raise Exception(f"Error while decoding compressed data! Error: {error}")
 
@@ -137,7 +152,7 @@ class CompressedImageDecoder:
         return decoded_data
 
     def decode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        """
-        Main decoder function
-        """
-        return self._decode_directxtex_image(image_data, img_width, img_height, image_format)
+        return self._convert_directxtex_image(image_data, img_width, img_height, image_format, False)
+
+    def encode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        return self._convert_directxtex_image(image_data, img_width, img_height, image_format, True)

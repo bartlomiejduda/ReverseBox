@@ -8,7 +8,9 @@ import struct
 from reversebox.common.logger import get_logger
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
-from reversebox.image.decoders.compressed_decoder import CompressedImageDecoder
+from reversebox.image.decoders.compressed_decoder_encoder import (
+    CompressedImageDecoderEncoder,
+)
 from reversebox.image.decoders.gst_decoder import GSTImageDecoder
 from reversebox.image.decoders.n64_decoder import N64Decoder
 from reversebox.image.decoders.yuv_decoder import YUVDecoder
@@ -792,8 +794,7 @@ class ImageDecoder:
         return self._decode_indexed(image_data, palette_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess)
 
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        compressed_decoder = CompressedImageDecoder()
-        return compressed_decoder.decode_compressed_image_main(image_data, img_width, img_height, image_format)
+        return CompressedImageDecoderEncoder().decode_compressed_image_main(image_data, img_width, img_height, image_format)
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, convert_pal_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         gst_decoder = GSTImageDecoder()
