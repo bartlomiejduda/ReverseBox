@@ -42,7 +42,7 @@ class DXGIImage(Structure):
 
 class CompressedImageDecoderEncoder:
     """
-    Decoder for any compressed images like BC1/DXT1, BC2/DXT2 etc.
+    Decoder/Encoder for any compressed images like BC1/DXT1, BC2/DXT2 etc.
     """
 
     def __init__(self):
@@ -95,7 +95,7 @@ class CompressedImageDecoderEncoder:
 
     def _convert_directxtex_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, encode_flag: bool) -> bytes:
         """
-        Function used for decoding compressed BC formats
+        Function used for decoding/encoding compressed BC formats
         """
         dll_path: str = get_dll_path("DirectXTex.dll")
         if encode_flag:
@@ -149,11 +149,11 @@ class CompressedImageDecoderEncoder:
             raise Exception(f"DLL decompression failed! H_result: {h_result}")
 
         if encode_flag:
-            decoded_data_size: int = get_bc_image_data_size(img_height, img_width, image_format)
+            converted_data_size: int = get_bc_image_data_size(img_height, img_width, image_format)
         else:
-            decoded_data_size: int = img_height * img_width * 4
-        decoded_data = bytearray((c_uint8 * decoded_data_size).from_address(ctypes.addressof(output_dxgi_image.pixels.contents)))
-        return decoded_data
+            converted_data_size: int = img_height * img_width * 4
+        converted_data = bytearray((c_uint8 * converted_data_size).from_address(ctypes.addressof(output_dxgi_image.pixels.contents)))
+        return converted_data
 
     def decode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return self._convert_directxtex_image(image_data, img_width, img_height, image_format, False)
