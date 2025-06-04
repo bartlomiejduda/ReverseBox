@@ -17,6 +17,7 @@ from ctypes import (
 
 from reversebox.common.common import get_dll_path
 from reversebox.common.logger import get_logger
+from reversebox.image.common import get_bc_image_data_size
 from reversebox.image.image_formats import ImageFormats
 
 logger = get_logger(__name__)
@@ -147,7 +148,10 @@ class CompressedImageDecoderEncoder:
         if h_result != 0:
             raise Exception(f"DLL decompression failed! H_result: {h_result}")
 
-        decoded_data_size: int = img_height * img_width * 4
+        if encode_flag:
+            decoded_data_size: int = get_bc_image_data_size(img_height, img_width, image_format)
+        else:
+            decoded_data_size: int = img_height * img_width * 4
         decoded_data = bytearray((c_uint8 * decoded_data_size).from_address(ctypes.addressof(output_dxgi_image.pixels.contents)))
         return decoded_data
 

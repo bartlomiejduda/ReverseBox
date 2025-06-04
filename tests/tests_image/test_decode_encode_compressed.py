@@ -36,11 +36,11 @@ def test_decode_and_encode_all_compressed_images():
     for test_entry in image_test_entries:
 
         bin_file = open(_get_test_image_path(test_entry.img_file_path), "rb")
-        image_file_data = bin_file.read()
+        encoded_image_data = bin_file.read()
 
-        decoded_image_data: bytes = image_decoder.decode_compressed_image(image_file_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
-        encoded_image_data: bytes = image_encoder.encode_compressed_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
-        re_decoded_image_data: bytes = image_decoder.decode_compressed_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        decoded_image_data: bytes = image_decoder.decode_compressed_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        re_encoded_image_data: bytes = image_encoder.encode_compressed_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        re_decoded_image_data: bytes = image_decoder.decode_compressed_image(re_encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
 
         # debug start ###############################################################################################
         if test_entry.debug_flag:
@@ -48,8 +48,9 @@ def test_decode_and_encode_all_compressed_images():
             pil_image.show()
         # debug end #################################################################################################
 
-        assert len(image_file_data) > 0
-        assert len(decoded_image_data) > 0
         assert len(encoded_image_data) > 0
+        assert len(decoded_image_data) > 0
+        assert len(re_encoded_image_data) > 0
         assert len(re_decoded_image_data) > 0
         assert len(decoded_image_data) == len(re_decoded_image_data)
+        assert len(encoded_image_data) == len(re_encoded_image_data)

@@ -223,6 +223,10 @@ def get_block_data_size(img_format: ImageFormats) -> int:
         return 1
 
 
+def get_bc_image_data_size(image_height: int, image_width: int, image_format: ImageFormats) -> int:
+    return ((image_height + 3) // 4) * ((image_width + 3) // 4) * get_block_data_size(image_format)
+
+
 def calculate_aligned_value(value: int, multiple: int) -> int:
     return ((value + multiple - 1) // multiple) * multiple
 
