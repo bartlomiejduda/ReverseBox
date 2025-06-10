@@ -13,6 +13,9 @@ from reversebox.image.decoders.compressed_decoder_encoder import (
 )
 from reversebox.image.decoders.gst_decoder import GSTImageDecoder
 from reversebox.image.decoders.n64_decoder import N64Decoder
+from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
+    PvrTexlibImageDecoderEncoder,
+)
 from reversebox.image.decoders.yuv_decoder import YUVDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -795,6 +798,9 @@ class ImageDecoder:
 
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().decode_compressed_image_main(image_data, img_width, img_height, image_format)
+
+    def decode_pvrtexlib_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        return PvrTexlibImageDecoderEncoder().decode_compressed_image_main(image_data, img_width, img_height, image_format)
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, convert_pal_format: ImageFormats, is_swizzled: bool = True) -> bytes:
         gst_decoder = GSTImageDecoder()

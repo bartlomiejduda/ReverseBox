@@ -15,6 +15,9 @@ from reversebox.image.common import (
 from reversebox.image.decoders.compressed_decoder_encoder import (
     CompressedImageDecoderEncoder,
 )
+from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
+    PvrTexlibImageDecoderEncoder,
+)
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
@@ -437,3 +440,6 @@ class ImageEncoder:
 
     def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)
+
+    def encode_pvrtexlib_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
+        return PvrTexlibImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)

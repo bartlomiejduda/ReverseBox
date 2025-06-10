@@ -111,6 +111,9 @@ class ImageFormats(Enum):
     BC6H_UF16 = "bc6h_uf16"
     BC6H_SF16 = "bc6h_sf16"
     BC7_UNORM = "bc7_unorm"
+    ASTC_4x4 = "ASTC_4x4"
+    ASTC_5x4 = "ASTC_5x4"
+    ASTC_5x5 = "ASTC_5x5"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"
