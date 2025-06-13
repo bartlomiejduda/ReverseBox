@@ -3,8 +3,6 @@ Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-from typing import List
-
 import pytest
 
 from reversebox.image.common import get_bpp_for_image_format, is_compressed_image_format
@@ -15,13 +13,8 @@ from reversebox.image.image_formats import ImageFormats
 
 @pytest.mark.imagetest
 def test_common_get_bpp_for_image_format():
-    excluded_image_formats: List[ImageFormats] = [ImageFormats.ASTC_4x4,
-                                                  ImageFormats.ASTC_5x4,
-                                                  ImageFormats.ASTC_5x5
-                                                  ]
-
     for image_format in ImageFormats:
-        if image_format not in excluded_image_formats:
+        if "ASTC" not in image_format.value:
             bpp: int = get_bpp_for_image_format(image_format)
             assert bpp
             assert bpp > 0

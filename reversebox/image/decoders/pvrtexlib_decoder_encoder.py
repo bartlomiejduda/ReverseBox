@@ -21,6 +21,7 @@ pvrtexlib_format_mapping: dict[ImageFormats, int] = {
         ImageFormats.ASTC_4x4: 48,
         ImageFormats.ASTC_5x4: 70,
         ImageFormats.ASTC_5x5: 49,
+        ImageFormats.ASTC_6x5: 71,
     }
 
 
@@ -46,7 +47,7 @@ class PvrTexlibImageDecoderEncoder:
         """
         Function used for decoding/encoding compressed PvrTexlib formats
         """
-        dll_path: str = get_dll_path("TexWrapper.dll")
+        dll_path: str = get_dll_path("PVRTexLibWrapper.dll")
 
         input_format_number: int = self._get_pvrtexlib_format_number(image_format)
         output_buffer_size: int = img_height * img_width * 4

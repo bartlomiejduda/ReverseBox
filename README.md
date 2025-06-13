@@ -156,9 +156,10 @@ or software researchers).
   - Decode/Encode BC5 ✔️
   - Decode/Encode BC6 ✔️
   - Decode/Encode BC7 ✔️
-  - Decode/Encode ASTC_4x4
-  - Decode/Encode ASTC_5x4
-  - Decode/Encode ASTC_5x5
+  - Decode/Encode ASTC_4x4 ✔️
+  - Decode/Encode ASTC_5x4 ✔️
+  - Decode/Encode ASTC_5x5 ✔️
+  - Decode/Encode ASTC_6x5 ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

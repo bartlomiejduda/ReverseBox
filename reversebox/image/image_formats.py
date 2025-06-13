@@ -114,6 +114,7 @@ class ImageFormats(Enum):
     ASTC_4x4 = "ASTC_4x4"
     ASTC_5x4 = "ASTC_5x4"
     ASTC_5x5 = "ASTC_5x5"
+    ASTC_6x5 = "ASTC_6x5"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"
