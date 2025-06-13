@@ -160,6 +160,16 @@ or software researchers).
   - Decode/Encode ASTC_5x4 ✔️
   - Decode/Encode ASTC_5x5 ✔️
   - Decode/Encode ASTC_6x5 ✔️
+  - Decode/Encode ASTC_6x6 ✔️
+  - Decode/Encode ASTC_8x5 ✔️
+  - Decode/Encode ASTC_8x6 ✔️
+  - Decode/Encode ASTC_8x8 ✔️
+  - Decode/Encode ASTC_10x5 ✔️
+  - Decode/Encode ASTC_10x6 ✔️
+  - Decode/Encode ASTC_10x8 ✔️
+  - Decode/Encode ASTC_10x10 ✔️
+  - Decode/Encode ASTC_12x10 ✔️
+  - Decode/Encode ASTC_12x12 ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

@@ -32,7 +32,16 @@ def test_decode_and_encode_all_pvrtexlib_images():
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_5x4.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_5x4),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_5x5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_5x5),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_6x5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_6x5),
-
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_6x6.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_6x6),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_8x5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_8x5),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_8x6.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_8x6),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_8x8.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_8x8),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_10x5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_10x5),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_10x6.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_10x6),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_10x8.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_10x8),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_10x10.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_10x10),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_12x10.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_12x10),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_12x12.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_12x12),
     ]
 
     for test_entry in image_test_entries:

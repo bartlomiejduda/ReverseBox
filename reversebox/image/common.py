@@ -114,7 +114,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GST422,
                           ImageFormats.GST822,
                           ImageFormats.PAL8,
-                          ):
+                          ) or "ASTC" in image_format.value:
         return 8
     elif image_format in (ImageFormats.YUV410P, ):
         return 9

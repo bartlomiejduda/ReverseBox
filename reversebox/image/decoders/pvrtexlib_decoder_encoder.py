@@ -22,6 +22,16 @@ pvrtexlib_format_mapping: dict[ImageFormats, int] = {
         ImageFormats.ASTC_5x4: 70,
         ImageFormats.ASTC_5x5: 49,
         ImageFormats.ASTC_6x5: 71,
+        ImageFormats.ASTC_6x6: 50,
+        ImageFormats.ASTC_8x5: 72,
+        ImageFormats.ASTC_8x6: 73,
+        ImageFormats.ASTC_8x8: 57,
+        ImageFormats.ASTC_10x5: 74,
+        ImageFormats.ASTC_10x6: 75,
+        ImageFormats.ASTC_10x8: 76,
+        ImageFormats.ASTC_10x10: 52,
+        ImageFormats.ASTC_12x10: 77,
+        ImageFormats.ASTC_12x12: 53,
     }
 
 

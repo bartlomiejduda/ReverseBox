@@ -14,11 +14,10 @@ from reversebox.image.image_formats import ImageFormats
 @pytest.mark.imagetest
 def test_common_get_bpp_for_image_format():
     for image_format in ImageFormats:
-        if "ASTC" not in image_format.value:
-            bpp: int = get_bpp_for_image_format(image_format)
-            assert bpp
-            assert bpp > 0
-            assert bpp < 100
+        bpp: int = get_bpp_for_image_format(image_format)
+        assert bpp
+        assert bpp > 0
+        assert bpp < 100
 
 
 @pytest.mark.imagetest

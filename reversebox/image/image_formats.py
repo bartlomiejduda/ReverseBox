@@ -115,6 +115,16 @@ class ImageFormats(Enum):
     ASTC_5x4 = "ASTC_5x4"
     ASTC_5x5 = "ASTC_5x5"
     ASTC_6x5 = "ASTC_6x5"
+    ASTC_6x6 = "ASTC_6x6"
+    ASTC_8x5 = "ASTC_8x5"
+    ASTC_8x6 = "ASTC_8x6"
+    ASTC_8x8 = "ASTC_8x8"
+    ASTC_10x5 = "ASTC_10x5"
+    ASTC_10x6 = "ASTC_10x6"
+    ASTC_10x8 = "ASTC_10x8"
+    ASTC_10x10 = "ASTC_10x10"
+    ASTC_12x10 = "ASTC_12x10"
+    ASTC_12x12 = "ASTC_12x12"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"
