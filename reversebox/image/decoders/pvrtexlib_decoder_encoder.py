@@ -17,21 +17,20 @@ logger = get_logger(__name__)
 
 
 pvrtexlib_format_mapping: dict[ImageFormats, int] = {
-        ImageFormats.RGB565: 7,
-        ImageFormats.ASTC_4x4: 48,
-        ImageFormats.ASTC_5x4: 70,
-        ImageFormats.ASTC_5x5: 49,
-        ImageFormats.ASTC_6x5: 71,
-        ImageFormats.ASTC_6x6: 50,
-        ImageFormats.ASTC_8x5: 72,
-        ImageFormats.ASTC_8x6: 73,
-        ImageFormats.ASTC_8x8: 57,
-        ImageFormats.ASTC_10x5: 74,
-        ImageFormats.ASTC_10x6: 75,
-        ImageFormats.ASTC_10x8: 76,
-        ImageFormats.ASTC_10x10: 52,
-        ImageFormats.ASTC_12x10: 77,
-        ImageFormats.ASTC_12x12: 53,
+        ImageFormats.ASTC_4x4: 60,
+        ImageFormats.ASTC_5x4: 61,
+        ImageFormats.ASTC_5x5: 62,
+        ImageFormats.ASTC_6x5: 63,
+        ImageFormats.ASTC_6x6: 64,
+        ImageFormats.ASTC_8x5: 65,
+        ImageFormats.ASTC_8x6: 66,
+        ImageFormats.ASTC_8x8: 67,
+        ImageFormats.ASTC_10x5: 68,
+        ImageFormats.ASTC_10x6: 69,
+        ImageFormats.ASTC_10x8: 70,
+        ImageFormats.ASTC_10x10: 71,
+        ImageFormats.ASTC_12x10: 72,
+        ImageFormats.ASTC_12x12: 73,
     }
 
 
@@ -65,7 +64,6 @@ class PvrTexlibImageDecoderEncoder:
         c_format_number = c_int(input_format_number)
         c_image_width = c_int(img_width)
         c_image_height = c_int(img_height)
-        c_comp_level = c_int(1)
 
         input_buffer = create_string_buffer(bytes(image_data))
         c_input_buffer = cast(input_buffer, POINTER(c_uint8))  # buffer with input image data
@@ -79,7 +77,6 @@ class PvrTexlibImageDecoderEncoder:
                     c_input_buffer,
                     c_output_buffer,
                     c_format_number,
-                    c_comp_level,
                     c_image_width,
                     c_image_height
                 )
