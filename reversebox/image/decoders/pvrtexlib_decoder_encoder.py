@@ -17,6 +17,36 @@ logger = get_logger(__name__)
 
 
 pvrtexlib_format_mapping: dict[ImageFormats, int] = {
+        ImageFormats.PVRTCI_2bpp_RGB: 10,
+        ImageFormats.PVRTCI_2bpp_RGBA: 11,
+        ImageFormats.PVRTCI_4bpp_RGB: 12,
+        ImageFormats.PVRTCI_4bpp_RGBA: 13,
+        ImageFormats.PVRTCII_2bpp: 14,
+        ImageFormats.PVRTCII_4bpp: 15,
+        ImageFormats.ETC1: 16,
+
+        ImageFormats.BC1_DXT1: 20,
+        ImageFormats.DXT2: 21,
+        ImageFormats.BC2_DXT3: 22,
+        ImageFormats.DXT4: 23,
+        ImageFormats.BC3_DXT5: 24,
+
+        ImageFormats.BC4_UNORM: 33,
+        ImageFormats.BC5_UNORM: 34,
+
+        ImageFormats.YUV422_UYVY: 40,
+        ImageFormats.YUV422_YUY2: 41,
+
+        ImageFormats.BW1bpp: 50,
+        ImageFormats.SharedExponentR9G9B9E5: 51,
+        ImageFormats.RGBG8888: 52,
+        ImageFormats.GRGB8888: 53,
+        ImageFormats.ETC2_RGB: 54,
+        ImageFormats.ETC2_RGBA: 55,
+        ImageFormats.ETC2_RGB_A1: 56,
+        ImageFormats.EAC_R11: 57,
+        ImageFormats.EAC_RG11: 58,
+
         ImageFormats.ASTC_4x4: 60,
         ImageFormats.ASTC_5x4: 61,
         ImageFormats.ASTC_5x5: 62,
@@ -31,6 +61,23 @@ pvrtexlib_format_mapping: dict[ImageFormats, int] = {
         ImageFormats.ASTC_10x10: 71,
         ImageFormats.ASTC_12x10: 72,
         ImageFormats.ASTC_12x12: 73,
+
+        ImageFormats.ASTC_3x3x3: 80,
+        ImageFormats.ASTC_4x3x3: 81,
+        ImageFormats.ASTC_4x4x3: 82,
+        ImageFormats.ASTC_4x4x4: 83,
+        ImageFormats.ASTC_5x4x4: 84,
+        ImageFormats.ASTC_5x5x4: 85,
+        ImageFormats.ASTC_5x5x5: 86,
+        ImageFormats.ASTC_6x5x5: 87,
+        ImageFormats.ASTC_6x6x5: 88,
+        ImageFormats.ASTC_6x6x6: 89,
+
+        ImageFormats.BASISU_ETC1S: 100,
+        ImageFormats.BASISU_UASTC: 101,
+
+        ImageFormats.RGBM: 102,
+        ImageFormats.RGBD: 103
     }
 
 

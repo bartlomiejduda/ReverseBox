@@ -96,7 +96,9 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.LA44,
                           ImageFormats.N64_I8,
                           ImageFormats.N64_IA4,
+                          ImageFormats.DXT2,
                           ImageFormats.BC2_DXT3,
+                          ImageFormats.DXT4,
                           ImageFormats.R8,
                           ImageFormats.G8,
                           ImageFormats.B8,
@@ -114,7 +116,13 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GST422,
                           ImageFormats.GST822,
                           ImageFormats.PAL8,
-                          ) or "ASTC" in image_format.value:
+                          ImageFormats.BW1bpp,
+                          ImageFormats.SharedExponentR9G9B9E5,
+                          ) or "ASTC" in image_format.value\
+        or "PVRTC" in image_format.value\
+        or "ETC" in image_format.value\
+        or "EAC" in image_format.value\
+           or "BASISU" in image_format.value:
         return 8
     elif image_format in (ImageFormats.YUV410P, ):
         return 9
@@ -183,6 +191,10 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.RGBM8888,
                           ImageFormats.AYUV,
                           ImageFormats.PAL32,
+                          ImageFormats.RGBG8888,
+                          ImageFormats.GRGB8888,
+                          ImageFormats.RGBM,
+                          ImageFormats.RGBD
                           ):
         return 32
     elif image_format in (ImageFormats.RGB48,

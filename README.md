@@ -150,12 +150,30 @@ or software researchers).
   - Decode N64_RGBA32 ✔️
   - Decode N64_CMPR ✔️
   - Decode/Encode BC1/DXT1 ✔️
+  - Decode/Encode DXT2 ✔️
   - Decode/Encode BC2/DXT3 ✔️
+  - Decode/Encode DXT4 ✔️
   - Decode/Encode BC3/DXT5 ✔️
   - Decode/Encode BC4 ✔️
   - Decode/Encode BC5 ✔️
   - Decode/Encode BC6 ✔️
   - Decode/Encode BC7 ✔️
+  - Decode/Encode PVRTCI_2bpp_RGB ✔️
+  - Decode/Encode PVRTCI_2bpp_RGBA ✔️
+  - Decode/Encode PVRTCI_4bpp_RGB ✔️
+  - Decode/Encode PVRTCI_4bpp_RGBA ✔️
+  - Decode/Encode PVRTCII_2bpp ✔️
+  - Decode/Encode PVRTCII_4bpp ✔️
+  - Decode/Encode ETC1 ✔️
+  - Decode/Encode BW1bpp ✔️
+  - Decode/Encode SharedExponentR9G9B9E5 ✔️
+  - Decode/Encode RGBG8888 ✔️
+  - Decode/Encode GRGB8888 ✔️
+  - Decode/Encode ETC2_RGB ✔️
+  - Decode/Encode ETC2_RGBA ✔️
+  - Decode/Encode ETC2_RGB_A1 ✔️
+  - Decode/Encode EAC_R11 ✔️
+  - Decode/Encode EAC_RG11 ✔️
   - Decode/Encode ASTC_4x4 ✔️
   - Decode/Encode ASTC_5x4 ✔️
   - Decode/Encode ASTC_5x5 ✔️
@@ -170,6 +188,20 @@ or software researchers).
   - Decode/Encode ASTC_10x10 ✔️
   - Decode/Encode ASTC_12x10 ✔️
   - Decode/Encode ASTC_12x12 ✔️
+  - Decode/Encode ASTC_3x3x3 ✔️
+  - Decode/Encode ASTC_4x3x3 ✔️
+  - Decode/Encode ASTC_4x4x3 ✔️
+  - Decode/Encode ASTC_4x4x4 ✔️
+  - Decode/Encode ASTC_5x4x4 ✔️
+  - Decode/Encode ASTC_5x5x4 ✔️
+  - Decode/Encode ASTC_5x5x5 ✔️
+  - Decode/Encode ASTC_6x5x5 ✔️
+  - Decode/Encode ASTC_6x6x5 ✔️
+  - Decode/Encode ASTC_6x6x6 ✔️
+  - Decode/Encode BASISU_ETC1S ✔️
+  - Decode/Encode BASISU_UASTC ✔️
+  - Decode/Encode RGBM ✔️
+  - Decode/Encode RGBD ✔️
   - Decode GST121 ✔️
   - Decode GST221 ✔️
   - Decode GST421 ✔️

@@ -104,13 +104,35 @@ class ImageFormats(Enum):
 
     # compressed Formats
     BC1_DXT1 = "bc1_dxt1"
+    DXT2 = "dxt2"
     BC2_DXT3 = "bc2_dxt3"
+    DXT4 = "dxt4"
     BC3_DXT5 = "bc3_dxt5"
     BC4_UNORM = "bc4_unorm"
     BC5_UNORM = "bc5_unorm"
     BC6H_UF16 = "bc6h_uf16"
     BC6H_SF16 = "bc6h_sf16"
     BC7_UNORM = "bc7_unorm"
+
+    # PVRTexLib formats
+    PVRTCI_2bpp_RGB = "PVRTCI_2bpp_RGB"
+    PVRTCI_2bpp_RGBA = "PVRTCI_2bpp_RGBA"
+    PVRTCI_4bpp_RGB = "PVRTCI_4bpp_RGB"
+    PVRTCI_4bpp_RGBA = "PVRTCI_4bpp_RGBA"
+    PVRTCII_2bpp = "PVRTCII_2bpp"
+    PVRTCII_4bpp = "PVRTCII_4bpp"
+    ETC1 = "ETC1"
+
+    BW1bpp = "BW1bpp"
+    SharedExponentR9G9B9E5 = "SharedExponentR9G9B9E5"
+    RGBG8888 = "RGBG8888"
+    GRGB8888 = "GRGB8888"
+    ETC2_RGB = "ETC2_RGB"
+    ETC2_RGBA = "ETC2_RGBA"
+    ETC2_RGB_A1 = "ETC2_RGB_A1"
+    EAC_R11 = "EAC_R11"
+    EAC_RG11 = "EAC_RG11"
+
     ASTC_4x4 = "ASTC_4x4"
     ASTC_5x4 = "ASTC_5x4"
     ASTC_5x5 = "ASTC_5x5"
@@ -125,6 +147,22 @@ class ImageFormats(Enum):
     ASTC_10x10 = "ASTC_10x10"
     ASTC_12x10 = "ASTC_12x10"
     ASTC_12x12 = "ASTC_12x12"
+
+    ASTC_3x3x3 = "ASTC_3x3x3"
+    ASTC_4x3x3 = "ASTC_4x3x3"
+    ASTC_4x4x3 = "ASTC_4x4x3"
+    ASTC_4x4x4 = "ASTC_4x4x4"
+    ASTC_5x4x4 = "ASTC_5x4x4"
+    ASTC_5x5x4 = "ASTC_5x5x4"
+    ASTC_5x5x5 = "ASTC_5x5x5"
+    ASTC_6x5x5 = "ASTC_6x5x5"
+    ASTC_6x6x5 = "ASTC_6x6x5"
+    ASTC_6x6x6 = "ASTC_6x6x6"
+
+    BASISU_ETC1S = "BASISU_ETC1S"
+    BASISU_UASTC = "BASISU_UASTC"
+    RGBM = "RGBM"
+    RGBD = "RGBD"
 
     # PS2 GS Texture Formats
     GST121 = "gst121"
