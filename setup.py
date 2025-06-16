@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.43.0"
+VERSION_NUM: Final[str] = "0.43.1"
 
 
 def get_long_description() -> str:
@@ -54,7 +54,7 @@ setuptools.setup(
     "RGB, swizzle, swizzling, morton, twiddle, twiddling, texture, UYVY, YUY2, NV21, NV12, RGBA, RGBA8888, RGB565, RGBA8, BGR, "
     "grayscale, graphics, color, pixel, convert, converting, YUV, RAW, PSP, PS1, PS2, PS3, PS4, XBOX, X360, gamecube, dreamcast, "
     "BC, BC1, BC2, BC3, BC4, BC5, BC6, BC7, DXT1, DXT2, DXT3, PackBits, RLE, Macintosh, Jenkins, murmur, murmur3, one-at-a-time, "
-    "additive, ASTC, ETC1, ETC2",
+    "additive, ASTC, ETC1, ETC2, DXT2, DXT4, EAC, BASISU, PVRTCI, UASTC, RGBM, RGBD",
     python_requires=">=3.6",
     install_requires=[
         "lzokay",

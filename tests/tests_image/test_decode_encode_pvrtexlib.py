@@ -42,6 +42,8 @@ def test_decode_and_encode_all_pvrtexlib_images():
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_10x10.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_10x10),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_12x10.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_12x10),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_ASTC_12x12.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ASTC_12x12),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_ETC1.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.ETC1),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBM.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.RGBM),
     ]
 
     for test_entry in image_test_entries:
