@@ -259,6 +259,7 @@ or software researchers).
   - RLE TGA compression ✔️
   - PackBits (Macintosh RLE) compression ✔️
   - Executioners RLE compression ✔️
+  - Generating mipmaps ✔️
 
 * IO
   - File Reader ✔️

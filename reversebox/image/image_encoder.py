@@ -282,7 +282,7 @@ class ImageEncoder:
             raise Exception("Wrong endianess!")
         return endianess_format
 
-    def _encode_generic(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str) -> bytes:
+    def _encode_generic_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str) -> bytes:
         encode_function, bits_per_pixel, _, _ = self.generic_data_formats[image_format]
         image_handler = BytesHandler(image_data)
         source_image_bytes_per_pixel = 4  # always 4 for RGBA8888
@@ -323,8 +323,29 @@ class ImageEncoder:
 
         return texture_data
 
+    def _encode_generic(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str, number_of_mipmaps: int) -> bytes:
+        # main image logic
+        encoded_texture_data: bytes = self._encode_generic_image(image_data, img_width, img_height, image_format, image_endianess)
+
+        # mipmaps logic
+        if number_of_mipmaps > 0:
+            base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(
+                image_data, img_width, img_height
+            )
+            mip_width: int = img_width
+            mip_height: int = img_height
+            for i in range(number_of_mipmaps):
+                mip_width //= 2
+                mip_height //= 2
+                mip_pillow_img: Image = base_img.resize((mip_width, mip_height))
+                mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
+                encoded_mipmap_data: bytes = self._encode_generic_image(mip_rgba_data, mip_width, mip_height, image_format, image_endianess)
+                encoded_texture_data += encoded_mipmap_data
+
+        return encoded_texture_data
+
     def _encode_indexed(self, image_data: bytes, img_width: int,
-                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str, max_colors_count: int) -> Tuple[bytes, bytes]:
+                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str, max_colors_count: int, number_of_mipmaps: int) -> Tuple[bytes, bytes]:
         encode_function, palette_bpp, read_function, write_function = self.generic_data_formats[palette_format]
         image_bpp: int = get_bpp_for_image_format(image_format)
         palette_bpp: int = get_bpp_for_image_format(palette_format)
@@ -356,7 +377,7 @@ class ImageEncoder:
         image_data = pillow_img.tobytes()
 
         # encode to intermediate image (e.g. RGBA8888 -> RGB565)
-        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess)
+        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0)
 
         # get pixels from intermediate image
         pixel_int_values: list[int] = []
@@ -432,11 +453,11 @@ class ImageEncoder:
 
         return texture_data, palette_data
 
-    def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
-        return self._encode_generic(image_data, img_width, img_height, image_format, image_endianess)
+    def encode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little", number_of_mipmaps: int = 0) -> bytes:
+        return self._encode_generic(image_data, img_width, img_height, image_format, image_endianess, number_of_mipmaps)
 
-    def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little", palette_endianess: str = "little") -> Tuple[bytes, bytes]:
-        return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess, max_color_count)
+    def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little", palette_endianess: str = "little", number_of_mipmaps: int = 0) -> Tuple[bytes, bytes]:
+        return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
 
     def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)

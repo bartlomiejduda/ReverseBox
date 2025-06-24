@@ -32,7 +32,7 @@ def test_decode_and_encode_all_generic_images():
     wrapper = PillowWrapper()
 
     image_test_entries = [
-        ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGBA8888),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGBA8888, number_of_mipmaps=0),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA8888),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB565),
@@ -46,7 +46,6 @@ def test_decode_and_encode_all_generic_images():
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBT5551_512x256.bin", debug_flag=False, img_width=512, img_height=256, img_format=ImageFormats.RGBT5551),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_BGRA5551_32x32.bin", debug_flag=False, img_width=32, img_height=32, img_format=ImageFormats.BGRA5551),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBX4444_240x136.bin", debug_flag=False, img_width=240, img_height=136, img_format=ImageFormats.RGBX4444),
-
     ]
 
     performance_test_entries: List[ImagePerformanceTestEntry] = []
@@ -60,7 +59,7 @@ def test_decode_and_encode_all_generic_images():
         encoded_image_data = bin_file.read()
         bin_file.close()
         decoded_image_data: bytes = image_decoder.decode_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
-        re_encoded_image_data: bytes = image_encoder.encode_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        re_encoded_image_data: bytes = image_encoder.encode_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps)
         re_decoded_image_data: bytes = image_decoder.decode_image(re_encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
 
         # performance test logic start ###################################################################################
