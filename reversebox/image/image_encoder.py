@@ -11,6 +11,7 @@ from reversebox.common.logger import get_logger
 from reversebox.image.common import (
     convert_bpp_to_bytes_per_pixel,
     get_bpp_for_image_format,
+    get_linear_image_data_size,
 )
 from reversebox.image.decoders.compressed_decoder_encoder import (
     CompressedImageDecoderEncoder,
@@ -344,30 +345,8 @@ class ImageEncoder:
 
         return encoded_texture_data
 
-    def _encode_indexed(self, image_data: bytes, img_width: int,
-                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str, max_colors_count: int, number_of_mipmaps: int) -> Tuple[bytes, bytes]:
-        encode_function, palette_bpp, read_function, write_function = self.generic_data_formats[palette_format]
-        image_bpp: int = get_bpp_for_image_format(image_format)
-        palette_bpp: int = get_bpp_for_image_format(palette_format)
-        palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
-        image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
-        image_endianess_format: str = self._get_endianess_format(image_endianess)
-
-        # prepare empty bytearray for output data
-        if image_bpp == 4:
-            texture_data = bytearray(img_width * img_height // 2)
-        elif image_bpp == 8:
-            texture_data = bytearray(img_width * img_height)
-        elif image_bpp == 16:
-            texture_data = bytearray(img_width * img_height * 2)
-        elif image_bpp == 24:
-            texture_data = bytearray(img_width * img_height * 3)
-        elif image_bpp == 32:
-            texture_data = bytearray(img_width * img_height * 4)
-        else:
-            raise Exception(f"[1] Image_bits_per_pixel={image_bpp} not supported!")
-
-        texture_data_expected_size: int = len(texture_data)
+    def _encode_indexed_get_intermediate_image(self, image_data: bytes, img_width: int, img_height: int,
+                                               palette_format: ImageFormats, image_endianess: str, max_colors_count: int) -> bytes:
 
         # colour quantization and dithering
         pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
@@ -377,18 +356,88 @@ class ImageEncoder:
         image_data = pillow_img.tobytes()
 
         # encode to intermediate image (e.g. RGBA8888 -> RGB565)
-        encoded_intermediate_image: bytes = self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0)
+        return self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0)
 
-        # get pixels from intermediate image
+    def _encode_indexed_calculate_output_size(self, image_bpp: int, img_width: int, img_height: int) -> int:
+        if image_bpp == 4:
+            return img_width * img_height // 2
+        elif image_bpp == 8:
+            return img_width * img_height
+        elif image_bpp == 16:
+            return img_width * img_height * 2
+        elif image_bpp == 24:
+            return img_width * img_height * 3
+        elif image_bpp == 32:
+            return img_width * img_height * 4
+        else:
+            raise Exception(f"[1] Image_bits_per_pixel={image_bpp} not supported!")
+
+    def _encode_indexed_encode_indices(self, image_bpp: int, pixel_int_values: list[int], pixel_map: Dict[int, int], palette_endianess: str,
+                                       image_endianess_format: str, image_bytes_per_pixel: int, texture_data: bytes):
+        img_entry_number: int = 0
+        if image_bpp == 4:  # PAL4
+            for i in range(0, len(pixel_int_values), 2):
+                pal_entry_number_1: int = pixel_map[pixel_int_values[i]]
+                pal_entry_number_2: int = pixel_map[pixel_int_values[i+1]]
+                if palette_endianess == "little":
+                    pal_entry_combined: int = ((pal_entry_number_2 << 4) | pal_entry_number_1) & 0xFF
+                else:
+                    pal_entry_combined: int = ((pal_entry_number_1 << 4) | pal_entry_number_2) & 0xFF
+                pixel_bytes: bytes = set_uint8(pal_entry_combined, image_endianess_format)
+                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
+                img_entry_number += 1
+
+        elif image_bpp == 8:  # PAL8
+            for pixel_int_value in pixel_int_values:
+                pal_entry_number: int = pixel_map[pixel_int_value]
+                pixel_bytes: bytes = set_uint8(pal_entry_number, image_endianess_format)
+                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
+                img_entry_number += 1
+
+        else:
+            raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
+
+        return texture_data
+
+    def _encode_indexed_get_pixel_int_values(self, image_bpp: int, encoded_intermediate_image: bytes, palette_bytes_per_pixel: int,
+                                             read_function, image_endianess_format: str) -> list[int]:
         pixel_int_values: list[int] = []
         if image_bpp in (4, 8):
             number_of_pixels: int = len(encoded_intermediate_image) // palette_bytes_per_pixel
             for i in range(number_of_pixels):
-                pixel_bytes: bytes = encoded_intermediate_image[i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel]
+                pixel_bytes: bytes = encoded_intermediate_image[
+                                     i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel]
                 pixel_int: int = read_function(pixel_bytes, image_endianess_format)
                 pixel_int_values.append(pixel_int)
         else:
             raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
+
+        return pixel_int_values
+
+    def _encode_indexed(self, image_data: bytes, img_width: int,
+                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str, max_colors_count: int, number_of_mipmaps: int) -> Tuple[bytes, bytes]:
+        encode_function, palette_bpp, read_function, write_function = self.generic_data_formats[palette_format]
+        image_bpp: int = get_bpp_for_image_format(image_format)
+        palette_bpp: int = get_bpp_for_image_format(palette_format)
+        palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
+        image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
+        image_endianess_format: str = self._get_endianess_format(image_endianess)
+        texture_data: bytes = b''
+
+        # prepare empty bytearray for output data
+        main_texture_data = bytearray(self._encode_indexed_calculate_output_size(image_bpp, img_width, img_height))
+        main_texture_data_expected_size: int = len(main_texture_data)
+
+        # get intermediate image
+        encoded_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(image_data, img_width, img_height,
+                                                                                        palette_format, image_endianess, max_colors_count)
+        expected_encoded_intermediate_image_size: int = get_linear_image_data_size(get_bpp_for_image_format(palette_format), img_width, img_height)
+        if len(encoded_intermediate_image) != expected_encoded_intermediate_image_size:
+            raise Exception("Error! Wrong intermediate image data size!")
+
+        # get pixels from intermediate image
+        pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp, encoded_intermediate_image, palette_bytes_per_pixel,
+                                                                                read_function, image_endianess_format)
 
         # get aligned number of colors
         if max_colors_count <= 4:  # PAL2 (4-color)
@@ -420,36 +469,46 @@ class ImageEncoder:
             palette_data[pal_entry_number * palette_bytes_per_pixel: (pal_entry_number + 1) * palette_bytes_per_pixel] = pal_entry_bytes
             pal_entry_number += 1
 
-        # encode indices
-        img_entry_number: int = 0
-        if image_bpp == 4:  # PAL4
-            for i in range(0, len(pixel_int_values), 2):
-                pal_entry_number_1: int = pixel_map[pixel_int_values[i]]
-                pal_entry_number_2: int = pixel_map[pixel_int_values[i+1]]
-                if palette_endianess == "little":
-                    pal_entry_combined: int = ((pal_entry_number_2 << 4) | pal_entry_number_1) & 0xFF
-                else:
-                    pal_entry_combined: int = ((pal_entry_number_1 << 4) | pal_entry_number_2) & 0xFF
-                pixel_bytes: bytes = set_uint8(pal_entry_combined, image_endianess_format)
-                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
-                img_entry_number += 1
+        # encode indices for main texture
+        main_texture_data: bytes = self._encode_indexed_encode_indices(image_bpp, pixel_int_values, pixel_map, palette_endianess,
+                                                                       image_endianess_format, image_bytes_per_pixel, main_texture_data)
+        texture_data += main_texture_data
 
-        elif image_bpp == 8:  # PAL8
-            for pixel_int_value in pixel_int_values:
-                pal_entry_number: int = pixel_map[pixel_int_value]
-                pixel_bytes: bytes = set_uint8(pal_entry_number, image_endianess_format)
-                texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pixel_bytes
-                img_entry_number += 1
+        # mipmaps logic
+        if number_of_mipmaps > 0:
+            base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
+            mip_width: int = img_width
+            mip_height: int = img_height
+            for i in range(number_of_mipmaps):
+                mip_width //= 2
+                mip_height //= 2
+                mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=Image.Resampling.NEAREST)
+                mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
+                mipmap_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(mip_rgba_data, mip_width,
+                                                                                               mip_height, palette_format,
+                                                                                               image_endianess, max_colors_count)
+                mipmap_pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
+                                                                                               mipmap_intermediate_image,
+                                                                                               palette_bytes_per_pixel,
+                                                                                               read_function,
+                                                                                               image_endianess_format)
 
-        else:
-            raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
+                mipmap_texture_data = bytearray(self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height))
+                mipmap_texture_data_expected_size: int = len(mipmap_texture_data)
+                mipmap_texture_data: bytes = self._encode_indexed_encode_indices(image_bpp, mipmap_pixel_int_values, pixel_map, palette_endianess,
+                                                                                 image_endianess_format, image_bytes_per_pixel, mipmap_texture_data)
+
+                if len(mipmap_texture_data) != mipmap_texture_data_expected_size:
+                    raise Exception("Error! Wrong size of mipmap data!")
+
+                texture_data += mipmap_texture_data
 
         # final checks
-        if len(palette_data) > palette_data_expected_size or len(palette_data) > 1024:
-            raise Exception("Error! Palette data too big!")
+        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
+            raise Exception("Error! Wrong size of palette data!")
 
-        if len(texture_data) > texture_data_expected_size:
-            raise Exception("Error! Texture data too big!")
+        if len(main_texture_data) != main_texture_data_expected_size:
+            raise Exception("Error! Wrong size of main texture data!")
 
         return texture_data, palette_data
 

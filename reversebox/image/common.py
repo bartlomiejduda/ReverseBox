@@ -283,3 +283,13 @@ def unalign_data(aligned_bytes: bytes, img_width: int, img_height: int, align_va
         output_bytes[dst_offset: dst_offset + (orig_block_w * block_data_size)] = aligned_bytes[src_offset: src_offset + (orig_block_w * block_data_size)]
 
     return output_bytes
+
+
+def get_linear_image_data_size(image_bpp: int, image_width: int, image_height: int) -> int:
+    if image_bpp == 4:
+        return (image_width * image_height) // 2
+    elif image_bpp < 8:
+        raise Exception("Not supported!")
+    else:
+        bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
+        return image_width * image_height * bytes_per_pixel
