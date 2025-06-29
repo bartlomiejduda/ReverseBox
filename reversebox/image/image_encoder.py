@@ -19,6 +19,7 @@ from reversebox.image.decoders.compressed_decoder_encoder import (
 from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
     PvrTexlibImageDecoderEncoder,
 )
+from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
@@ -352,11 +353,17 @@ class ImageEncoder:
         pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
         unique_colors_count: int = len(set(pillow_img.getdata()))
         if unique_colors_count > max_colors_count:
-            pillow_img = pillow_img.quantize(colors=max_colors_count, method=2).convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)
+            pillow_img = pillow_img.quantize(colors=max_colors_count, method=Image.Quantize.FASTOCTREE).convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)
         image_data = pillow_img.tobytes()
 
         # encode to intermediate image (e.g. RGBA8888 -> RGB565)
         return self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0)
+
+    def _encode_indexed_revert_intermediate_image(self, image_data: bytes, img_width: int, img_height: int,
+                                                  palette_format: ImageFormats, image_endianess: str) -> bytes:
+
+        # revert intermediate image (e.g. RGB565 -> RGBA8888)
+        return ImageDecoder().decode_image(image_data, img_width, img_height, palette_format, image_endianess)
 
     def _encode_indexed_calculate_output_size(self, image_bpp: int, img_width: int, img_height: int) -> int:
         if image_bpp == 4:
@@ -476,7 +483,9 @@ class ImageEncoder:
 
         # mipmaps logic
         if number_of_mipmaps > 0:
-            base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
+            base_rgba_data: bytes = self._encode_indexed_revert_intermediate_image(encoded_intermediate_image, img_width, img_height,
+                                                                                   palette_format, image_endianess)
+            base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(base_rgba_data, img_width, img_height)
             mip_width: int = img_width
             mip_height: int = img_height
             for i in range(number_of_mipmaps):
