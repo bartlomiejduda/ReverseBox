@@ -66,6 +66,8 @@ class ImageFormats(Enum):
     B16 = "b16"
 
     # 24-bit
+    RGBX6666 = "rgbx6666"
+    RGBA6666 = "rgba6666"
     RGB888 = "rgb888"  # PIX_FMT_RGB24  / packed RGB 8:8:8, 24bpp, RGBRGB
     BGR888 = "bgr888"  # PIX_FMT_BGR24  / packed RGB 8:8:8, 24bpp, BGRBGR
 

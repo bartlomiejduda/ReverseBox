@@ -172,7 +172,9 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
         return 16
     elif image_format in (ImageFormats.YUVA420P, ):
         return 20
-    elif image_format in (ImageFormats.RGB888,
+    elif image_format in (ImageFormats.RGBX6666,
+                          ImageFormats.RGBA6666,
+                          ImageFormats.RGB888,
                           ImageFormats.BGR888,
                           ImageFormats.YUV444P,
                           ):
