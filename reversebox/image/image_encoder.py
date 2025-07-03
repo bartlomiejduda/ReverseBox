@@ -349,8 +349,7 @@ class ImageEncoder:
         return encoded_texture_data
 
     def _encode_indexed_get_intermediate_image(self, image_data: bytes, img_width: int, img_height: int,
-                                               palette_format: ImageFormats, image_endianess: str, max_colors_count: int,
-                                               mipmaps_resampling_type: PIL.Image.Resampling) -> bytes:
+                                               palette_format: ImageFormats, image_endianess: str, max_colors_count: int) -> bytes:
 
         # colour quantization and dithering
         pillow_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
@@ -360,7 +359,7 @@ class ImageEncoder:
         image_data = pillow_img.tobytes()
 
         # encode to intermediate image (e.g. RGBA8888 -> RGB565)
-        return self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0, mipmaps_resampling_type)
+        return self._encode_generic(image_data, img_width, img_height, palette_format, image_endianess, 0, PIL.Image.Resampling.NEAREST)
 
     def _encode_indexed_revert_intermediate_image(self, image_data: bytes, img_width: int, img_height: int,
                                                   palette_format: ImageFormats, image_endianess: str) -> bytes:
@@ -426,8 +425,7 @@ class ImageEncoder:
 
     def _encode_indexed(self, image_data: bytes, img_width: int,
                         img_height: int, image_format: ImageFormats, palette_format: ImageFormats,
-                        image_endianess: str, palette_endianess: str, max_colors_count: int, number_of_mipmaps: int,
-                        mipmaps_resampling_type: PIL.Image.Resampling) -> Tuple[bytes, bytes]:
+                        image_endianess: str, palette_endianess: str, max_colors_count: int, number_of_mipmaps: int) -> Tuple[bytes, bytes]:
         encode_function, palette_bpp, read_function, write_function = self.generic_data_formats[palette_format]
         image_bpp: int = get_bpp_for_image_format(image_format)
         palette_bpp: int = get_bpp_for_image_format(palette_format)
@@ -442,8 +440,7 @@ class ImageEncoder:
 
         # get intermediate image
         encoded_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(image_data, img_width, img_height,
-                                                                                        palette_format, image_endianess, max_colors_count,
-                                                                                        mipmaps_resampling_type)
+                                                                                        palette_format, image_endianess, max_colors_count)
         expected_encoded_intermediate_image_size: int = get_linear_image_data_size(get_bpp_for_image_format(palette_format), img_width, img_height)
         if len(encoded_intermediate_image) != expected_encoded_intermediate_image_size:
             raise Exception("Error! Wrong intermediate image data size!")
@@ -497,12 +494,11 @@ class ImageEncoder:
             for i in range(number_of_mipmaps):
                 mip_width //= 2
                 mip_height //= 2
-                mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=mipmaps_resampling_type)
+                mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=PIL.Image.Resampling.NEAREST)
                 mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
                 mipmap_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(mip_rgba_data, mip_width,
                                                                                                mip_height, palette_format,
-                                                                                               image_endianess, max_colors_count,
-                                                                                               mipmaps_resampling_type)
+                                                                                               image_endianess, max_colors_count)
                 mipmap_pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
                                                                                                mipmap_intermediate_image,
                                                                                                palette_bytes_per_pixel,
@@ -535,10 +531,9 @@ class ImageEncoder:
 
     def encode_indexed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats,
                              palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little",
-                             palette_endianess: str = "little", number_of_mipmaps: int = 0,
-                             mipmaps_resampling_type: PIL.Image.Resampling = Image.Resampling.NEAREST) -> Tuple[bytes, bytes]:
+                             palette_endianess: str = "little", number_of_mipmaps: int = 0) -> Tuple[bytes, bytes]:
         return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format,
-                                    image_endianess, palette_endianess, max_color_count, number_of_mipmaps, mipmaps_resampling_type)
+                                    image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
 
     def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)
