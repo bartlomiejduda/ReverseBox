@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from reversebox.image.decoders.gst_decoder import GSTImageDecoder
+from reversebox.image.decoders.gst_decoder_encoder import GSTImageDecoderEncoder
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -49,7 +49,7 @@ def test_gst_unswizzle_and_swizzle():
         palette_data = pal_file.read()
         pal_file.close()
 
-        gst_decoder = GSTImageDecoder()
+        gst_decoder = GSTImageDecoderEncoder()
         base_data = gst_decoder.get_base_data(swizzled_file_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
         detail_data = gst_decoder.get_detail_data(swizzled_file_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
         block_width, block_height, detail_bpp = gst_decoder.get_gst_params(test_entry.img_format)

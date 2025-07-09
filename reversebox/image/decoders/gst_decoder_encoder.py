@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -17,7 +17,7 @@ logger = get_logger(__name__)
 # fmt: off
 
 
-class GSTImageDecoder:
+class GSTImageDecoderEncoder:
     """
     Decoder for any PS2 GST images
     """
@@ -84,3 +84,18 @@ class GSTImageDecoder:
                                                                 block_height, detail_bpp)
 
         return decompressed_texture_data
+
+    def encode_gst_image_main(self, encoded_image_data: bytes, encoded_palette_data: bytes, img_width: int, img_height: int,
+                              gst_format: ImageFormats,  is_swizzled: bool) -> bytes:
+        block_width, block_height, detail_bpp = self.gst_data_formats[gst_format]
+
+        gst_data: bytes = b''
+
+        # compress GST
+        # TODO
+
+        # swizzle GST data
+        if is_swizzled:
+            pass  # TODO
+
+        return gst_data

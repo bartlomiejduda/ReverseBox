@@ -11,7 +11,7 @@ from reversebox.image.decoders.bumpmap_decoder import BumpmapDecoder
 from reversebox.image.decoders.compressed_decoder_encoder import (
     CompressedImageDecoderEncoder,
 )
-from reversebox.image.decoders.gst_decoder import GSTImageDecoder
+from reversebox.image.decoders.gst_decoder_encoder import GSTImageDecoderEncoder
 from reversebox.image.decoders.n64_decoder import N64Decoder
 from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
     PvrTexlibImageDecoderEncoder,
@@ -814,7 +814,7 @@ class ImageDecoder:
         return PvrTexlibImageDecoderEncoder().decode_compressed_image_main(image_data, img_width, img_height, image_format)
 
     def decode_gst_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, convert_format: ImageFormats, convert_pal_format: ImageFormats, is_swizzled: bool = True) -> bytes:
-        gst_decoder = GSTImageDecoder()
+        gst_decoder = GSTImageDecoderEncoder()
         decoded_gst_data: bytes = gst_decoder.decode_gst_image_main(image_data, img_width, img_height, image_format, is_swizzled)
         return self.decode_indexed_image(decoded_gst_data, palette_data, img_width, img_height, convert_format, convert_pal_format)
 

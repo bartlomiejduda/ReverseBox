@@ -17,6 +17,7 @@ from reversebox.image.common import (
 from reversebox.image.decoders.compressed_decoder_encoder import (
     CompressedImageDecoderEncoder,
 )
+from reversebox.image.decoders.gst_decoder_encoder import GSTImageDecoderEncoder
 from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
     PvrTexlibImageDecoderEncoder,
 )
@@ -540,3 +541,8 @@ class ImageEncoder:
 
     def encode_pvrtexlib_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return PvrTexlibImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)
+
+    def encode_gst_image(self, image_data: bytes, img_width: int, img_height: int, gst_format: ImageFormats, image_format: ImageFormats,
+                         palette_format: ImageFormats, max_color_count: int, is_swizzled: bool = True) -> bytes:
+        encoded_image_data, encoded_palette_data = self.encode_indexed_image(image_data, img_width, img_height, image_format, palette_format, max_color_count)
+        return GSTImageDecoderEncoder().encode_gst_image_main(encoded_image_data, encoded_palette_data, img_width, img_height, gst_format, is_swizzled)
