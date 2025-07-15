@@ -41,27 +41,35 @@ def _xg_address_2d_tiled_y(block_offset: int, width_in_blocks: int, texel_byte_p
 
 
 def _convert_x360_image_data(image_data: bytes, image_width: int, image_height: int, block_pixel_size: int, texel_byte_pitch: int, swizzle_flag: bool) -> bytes:
-    converted_data: bytearray = bytearray(len(image_data))
-
     width_in_blocks: int = image_width // block_pixel_size
     height_in_blocks: int = image_height // block_pixel_size
 
-    for j in range(height_in_blocks):
-        for i in range(width_in_blocks):
-            block_offset = j * width_in_blocks + i
-            x = _xg_address_2d_tiled_x(block_offset, width_in_blocks, texel_byte_pitch)
-            y = _xg_address_2d_tiled_y(block_offset, width_in_blocks, texel_byte_pitch)
-            src_byte_offset = (j * width_in_blocks * texel_byte_pitch + i * texel_byte_pitch)
-            dest_byte_offset = (y * width_in_blocks * texel_byte_pitch + x * texel_byte_pitch)
+    padded_width_in_blocks: int = (width_in_blocks + 31) & ~31
+    padded_height_in_blocks: int = (height_in_blocks + 31) & ~31
+    total_padded_blocks = padded_width_in_blocks * padded_height_in_blocks
 
-            if dest_byte_offset + texel_byte_pitch > len(converted_data):
-                continue
+    if not swizzle_flag:
+        converted_data: bytearray = bytearray(width_in_blocks * height_in_blocks * texel_byte_pitch)
+    else:
+        converted_data: bytearray = bytearray(total_padded_blocks * texel_byte_pitch)  # type: ignore
+
+    for block_offset in range(total_padded_blocks):
+        x = _xg_address_2d_tiled_x(block_offset, padded_width_in_blocks, texel_byte_pitch)
+        y = _xg_address_2d_tiled_y(block_offset, padded_width_in_blocks, texel_byte_pitch)
+
+        if x < width_in_blocks and y < height_in_blocks:
             if not swizzle_flag:
-                converted_data[dest_byte_offset: dest_byte_offset + texel_byte_pitch] = image_data[src_byte_offset: src_byte_offset + texel_byte_pitch]
+                src_byte_offset = block_offset * texel_byte_pitch
+                dest_byte_offset = (y * width_in_blocks + x) * texel_byte_pitch
+                if src_byte_offset + texel_byte_pitch <= len(image_data):
+                    converted_data[dest_byte_offset: dest_byte_offset + texel_byte_pitch] = image_data[src_byte_offset: src_byte_offset + texel_byte_pitch]
             else:
-                converted_data[src_byte_offset: src_byte_offset + texel_byte_pitch] = image_data[dest_byte_offset: dest_byte_offset + texel_byte_pitch]
+                src_byte_offset = (y * width_in_blocks + x) * texel_byte_pitch
+                dest_byte_offset = block_offset * texel_byte_pitch
+                if src_byte_offset + texel_byte_pitch <= len(image_data):
+                    converted_data[dest_byte_offset: dest_byte_offset + texel_byte_pitch] = image_data[src_byte_offset: src_byte_offset + texel_byte_pitch]
 
-    return converted_data
+    return bytes(converted_data)
 
 
 def unswizzle_x360(image_data: bytes, img_width: int, img_height: int, block_pixel_size: int = 4, texel_byte_pitch: int = 8) -> bytes:
