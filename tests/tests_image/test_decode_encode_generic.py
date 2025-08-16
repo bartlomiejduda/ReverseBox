@@ -46,6 +46,7 @@ def test_decode_and_encode_all_generic_images():
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBT5551_512x256.bin", debug_flag=False, img_width=512, img_height=256, img_format=ImageFormats.RGBT5551),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_BGRA5551_32x32.bin", debug_flag=False, img_width=32, img_height=32, img_format=ImageFormats.BGRA5551),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RGBX4444_240x136.bin", debug_flag=False, img_width=240, img_height=136, img_format=ImageFormats.RGBX4444),
+        # ImageDecodeEncodeTestEntry(img_file_path="ea_sample_RAWBMP2_PS2_440x712.bin", debug_flag=True, img_width=440, img_height=712, img_format=ImageFormats.RAWBMP2_PS2, image_endianess="big"),
     ]
 
     performance_test_entries: List[ImagePerformanceTestEntry] = []
@@ -58,7 +59,7 @@ def test_decode_and_encode_all_generic_images():
         bin_file = open(_get_test_image_path(test_entry.img_file_path), "rb")
         encoded_image_data = bin_file.read()
         bin_file.close()
-        decoded_image_data: bytes = image_decoder.decode_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        decoded_image_data: bytes = image_decoder.decode_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, image_endianess=test_entry.image_endianess if test_entry.image_endianess is not None else "little")
         re_encoded_image_data: bytes = image_encoder.encode_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps)
         re_decoded_image_data: bytes = image_decoder.decode_image(re_encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
 

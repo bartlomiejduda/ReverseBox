@@ -120,6 +120,7 @@ class ImageDecodeEncodeTestEntry:
     image_data_size: Optional[int] = None
     max_colors_count: Optional[int] = None
     number_of_mipmaps: Optional[int] = None
+    image_endianess: Optional[str] = None
 
 
 @dataclass

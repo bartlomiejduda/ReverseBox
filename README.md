@@ -103,6 +103,8 @@ or software researchers).
 
 * Image
   - Decode RGB121 ✔️
+  - Decode ALPHA4 ✔️
+  - Decode RAWBMP2_PS2 ✔️
   - Decode RGB121_BYTE ✔️
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️

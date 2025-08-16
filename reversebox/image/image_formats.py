@@ -19,6 +19,8 @@ class ImageFormats(Enum):
     # Generic Formats
     # 4-bit
     RGB121 = "rgb121"  # PIX_FMT_RGB4 / packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb)
+    ALPHA4 = "alpha4"  # (A4 / Alpha 4-bit)
+    RAWBMP2_PS2 = "rawbmp2_ps2"  # RAWBMP/2 PS2 (4-bit)
 
     # 8-bit
     RGBX2222 = "rgbx2222"
