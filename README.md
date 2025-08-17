@@ -104,12 +104,13 @@ or software researchers).
 * Image
   - Decode RGB121 ✔️
   - Decode ALPHA4 ✔️
-  - Decode RAWBMP2_PS2 ✔️
+  - Decode ALPHA4_16X ✔️
   - Decode RGB121_BYTE ✔️
   - Decode RGBA2222 ✔️
   - Decode RGBX2222 ✔️
   - Decode GRAY8 ✔️
   - Decode ALPHA8 ✔️
+  - Decode ALPHA8_16X ✔️
   - Decode LA44 ✔️
   - Decode RGBX332 (RGB8) ✔️
   - Decode BGRX332 (BGR8) ✔️

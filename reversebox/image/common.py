@@ -85,7 +85,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                         ImageFormats.BC4_UNORM,
                         ImageFormats.PAL4,
                         ImageFormats.ALPHA4,
-                        ImageFormats.RAWBMP2_PS2
+                        ImageFormats.ALPHA4_16X
                         ):
         return 4
     elif image_format in (ImageFormats.RGBX2222,
@@ -95,6 +95,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.BGR332,
                           ImageFormats.GRAY8,
                           ImageFormats.ALPHA8,
+                          ImageFormats.ALPHA8_16X,
                           ImageFormats.LA44,
                           ImageFormats.N64_I8,
                           ImageFormats.N64_IA4,

@@ -20,7 +20,7 @@ class ImageFormats(Enum):
     # 4-bit
     RGB121 = "rgb121"  # PIX_FMT_RGB4 / packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb)
     ALPHA4 = "alpha4"  # (A4 / Alpha 4-bit)
-    RAWBMP2_PS2 = "rawbmp2_ps2"  # RAWBMP/2 PS2 (4-bit)
+    ALPHA4_16X = "alpha4_16x"
 
     # 8-bit
     RGBX2222 = "rgbx2222"
@@ -30,6 +30,7 @@ class ImageFormats(Enum):
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
     GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (Y800 / L8 / Luminance 8-bit)
     ALPHA8 = "alpha8"  # (A8 / Alpha 8-bit)
+    ALPHA8_16X = "alpha8_16x"
     LA44 = "la44"  # (LA4 / L4A4 / Luminance 4-bit and Alpha 4-bit)
     R8 = "r8"
     G8 = "g8"

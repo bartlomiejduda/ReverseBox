@@ -74,17 +74,7 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    # A4 (Alpha 4-bit)
-    def _decode_alpha4_pixel(self, pixel_int: int) -> bytes:
-        p = bytearray(4)
-        p[0] = 0xFF
-        p[1] = 0xFF
-        p[2] = 0xFF
-        p[3] = pixel_int & 0xFF
-        return p
-
-    # RAWBMP/2 PS2 (4-bit)
-    def _decode_rawbmp2_ps2_pixel(self, pixel_int: int) -> bytes:
+    def _decode_alpha_16x_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = 0xFF
         p[1] = 0xFF
@@ -92,8 +82,7 @@ class ImageDecoder:
         p[3] = (16 * pixel_int) & 0xFF
         return p
 
-    # A8 (Alpha 8-bit)
-    def _decode_alpha8_pixel(self, pixel_int: int) -> bytes:
+    def _decode_alpha_only_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = 0xFF
         p[1] = 0xFF
@@ -584,12 +573,13 @@ class ImageDecoder:
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
         ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),  # GRAY, 4bpp
-        ImageFormats.ALPHA4: (_decode_alpha4_pixel, 4, get_uint8),
-        ImageFormats.RAWBMP2_PS2: (_decode_rawbmp2_ps2_pixel, 4, get_uint8),
+        ImageFormats.ALPHA4: (_decode_alpha_only_pixel, 4, get_uint8),
+        ImageFormats.ALPHA4_16X: (_decode_alpha_16x_pixel, 4, get_uint8),
 
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
-        ImageFormats.ALPHA8: (_decode_alpha8_pixel, 8, get_uint8),
+        ImageFormats.ALPHA8: (_decode_alpha_only_pixel, 8, get_uint8),
+        ImageFormats.ALPHA8_16X: (_decode_alpha_16x_pixel, 8, get_uint8),
         ImageFormats.LA44: (_decode_la44_pixel, 8, get_uint8),
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
