@@ -1,6 +1,7 @@
 crc==7.1.0
 faker==33.1.0
 hashbase==1.1.5
+lz4==4.4.4
 lzokay==1.1.8
 matplotlib==3.10.0
 mmh3==5.0.1
@@ -10,6 +11,6 @@ polib==1.2.0
 pre-commit==4.1.0
 pytest==8.3.3
 pytest-cov==6.0.0
-setuptools==75.6.0
+setuptools==80.9.0
 twine==5.1.1
 types-setuptools==75.6.0.20241126

@@ -58,6 +58,7 @@ or software researchers).
   - BZIP2 (TODO) ❌
   - GZIP (TODO) ❌
   - JCALG1 (TODO) ❌
+  - LZ4 ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZMA (TODO) ❌
   - LZO / LZO1X ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZSS (TODO) ❌
