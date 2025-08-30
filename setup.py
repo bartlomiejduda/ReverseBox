@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.49.0"
+VERSION_NUM: Final[str] = "0.49.1"
 
 
 def get_long_description() -> str:
@@ -27,6 +27,8 @@ setuptools.setup(
     description="A set of functions useful in reverse engineering.",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
+    license="GPL-3.0-or-later",
+    license_files=["LICENSE"],
     url="https://github.com/bartlomiejduda/ReverseBox",
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -45,11 +47,9 @@ setuptools.setup(
         "Environment :: Console",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
         "Natural Language :: English",
     ],
-    test_suite="tests",
     keywords="ReverseBox, reverse engineering, RE, CRC, Hash, Encryption, Compression, Checksum, Python, image, decode, decoding, "
     "RGB, swizzle, swizzling, morton, twiddle, twiddling, texture, UYVY, YUY2, NV21, NV12, RGBA, RGBA8888, RGB565, RGBA8, BGR, "
     "grayscale, graphics, color, pixel, convert, converting, YUV, RAW, PSP, PS1, PS2, PS3, PS4, XBOX, X360, gamecube, dreamcast, "
