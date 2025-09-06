@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -34,17 +34,20 @@ def test_hash_djb2_from_string_to_match_expected_result():
         TextHashTestEntry(test_string="Secret123@123", expected_int=5791429533929400023, expected_str="0x505F4A7A0F9166D7"),
         TextHashTestEntry(test_string="", expected_int=5381, expected_str="0x1505"),
         TextHashTestEntry(test_string=" ", expected_int=177605, expected_str="0x2B5C5"),
+        TextHashTestEntry(test_string="i/IMG_GRADE_12", expected_int=580088926, expected_str="0x2293745E", hash_size=4),  # Room of Prey 3 (Android)
+        TextHashTestEntry(test_string="t/T_SYS", expected_int=1491806618, expected_str="0x58EB299A", hash_size=4),  # Room of Prey 3 (Android)
+        TextHashTestEntry(test_string="snd/S_EFF_28.ogg", expected_int=178497392, expected_str="0xAA3A770", hash_size=4),  # Room of Prey 3 (Android)
     ]
 
     for hash_entry in hash_data_list:
         # check expected result from first execution
-        test_result = djb2_handler.calculate_djb2_hash_from_string(hash_entry.test_string)
+        test_result = djb2_handler.calculate_djb2_hash_from_string(hash_entry.test_string, hash_size=hash_entry.hash_size if hash_entry.hash_size else 8)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == hash_entry.expected_int
         assert test_result_str == hash_entry.expected_str
 
         # check if result is the same after second execution
-        test_result = djb2_handler.calculate_djb2_hash_from_string(hash_entry.test_string)
+        test_result = djb2_handler.calculate_djb2_hash_from_string(hash_entry.test_string, hash_size=hash_entry.hash_size if hash_entry.hash_size else 8)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == hash_entry.expected_int
         assert test_result_str == hash_entry.expected_str
@@ -70,20 +73,20 @@ def test_hash_djb2_from_bytes_to_match_expected_result():
         BytesHashTestEntry(test_bytes=b"Secret123@123", expected_int=5791429533929400023, expected_str="0x505F4A7A0F9166D7"),
         BytesHashTestEntry(test_bytes=b"", expected_int=5381, expected_str="0x1505"),
         BytesHashTestEntry(test_bytes=b" ", expected_int=177605, expected_str="0x2B5C5"),
+        BytesHashTestEntry(test_bytes=b"i/IMG_GRADE_12", expected_int=580088926, expected_str="0x2293745E", hash_size=4),  # Room of Prey 3 (Android)
+        BytesHashTestEntry(test_bytes=b"t/T_SYS", expected_int=1491806618, expected_str="0x58EB299A", hash_size=4),  # Room of Prey 3 (Android)
+        BytesHashTestEntry(test_bytes=b"snd/S_EFF_28.ogg", expected_int=178497392, expected_str="0xAA3A770", hash_size=4),  # Room of Prey 3 (Android)
     ]
 
     for hash_entry in hash_data_list:
         # check expected result from first execution
-        test_result = djb2_handler.calculate_djb2_hash_from_bytes(hash_entry.test_bytes)
+        test_result = djb2_handler.calculate_djb2_hash_from_bytes(hash_entry.test_bytes, hash_size=hash_entry.hash_size if hash_entry.hash_size else 8)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == hash_entry.expected_int
         assert test_result_str == hash_entry.expected_str
 
         # check if result is the same after second execution
-        test_result = djb2_handler.calculate_djb2_hash_from_bytes(hash_entry.test_bytes)
+        test_result = djb2_handler.calculate_djb2_hash_from_bytes(hash_entry.test_bytes, hash_size=hash_entry.hash_size if hash_entry.hash_size else 8)
         test_result_str = convert_int_to_hex_string(test_result)
         assert test_result == hash_entry.expected_int
         assert test_result_str == hash_entry.expected_str
-
-
-# fmt: on
