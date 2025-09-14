@@ -5,7 +5,7 @@ License: GPL-3.0 License
 
 import ctypes
 import faulthandler
-from ctypes import POINTER, c_int, c_uint8, cast, create_string_buffer
+from ctypes import POINTER, c_int, c_uint, c_uint8, c_void_p, cast, create_string_buffer
 
 from reversebox.common.common import get_dll_path
 from reversebox.common.logger import get_logger
@@ -110,12 +110,12 @@ class PvrTexlibImageDecoderEncoder:
         output_buffer_size: int = img_height * img_width * 4
 
         c_format_number = c_int(input_format_number)
-        c_image_width = c_int(img_width)
-        c_image_height = c_int(img_height)
+        c_image_width = c_uint(img_width)
+        c_image_height = c_uint(img_height)
 
         input_buffer = create_string_buffer(bytes(image_data))
-        c_input_buffer = cast(input_buffer, POINTER(c_uint8))  # buffer with input image data
-        c_output_buffer = (c_uint8 * output_buffer_size)()  # empty buffer for output image data
+        c_input_buffer = cast(input_buffer, POINTER(c_void_p))  # buffer with input image data
+        c_output_buffer = (c_void_p * output_buffer_size)()  # empty buffer for output image data
 
         try:
             dll_file = ctypes.CDLL(dll_path)
