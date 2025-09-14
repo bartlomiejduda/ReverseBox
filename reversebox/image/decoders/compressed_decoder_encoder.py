@@ -4,6 +4,7 @@ License: GPL-3.0 License
 """
 
 import ctypes
+import faulthandler
 from ctypes import (
     POINTER,
     Structure,
@@ -46,7 +47,7 @@ class CompressedImageDecoderEncoder:
     """
 
     def __init__(self):
-        pass
+        faulthandler.enable()
 
     def _init_dxgi_image(self, img_width: int, img_height: int, format_number: int,
                          row_pitch: int, slice_pitch: int, image_data: bytes) -> DXGIImage:

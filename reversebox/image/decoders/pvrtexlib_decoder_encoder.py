@@ -4,6 +4,7 @@ License: GPL-3.0 License
 """
 
 import ctypes
+import faulthandler
 from ctypes import POINTER, c_int, c_uint8, cast, create_string_buffer
 
 from reversebox.common.common import get_dll_path
@@ -87,7 +88,7 @@ class PvrTexlibImageDecoderEncoder:
     """
 
     def __init__(self):
-        pass
+        faulthandler.enable()
 
     def _get_pvrtexlib_format_number(self, image_format: ImageFormats) -> int:
         """

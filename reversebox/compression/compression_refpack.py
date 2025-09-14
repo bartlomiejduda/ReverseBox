@@ -1,9 +1,10 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
 import ctypes
+import faulthandler
 from ctypes import c_char
 
 from reversebox.common.common import get_dll_path
@@ -12,6 +13,13 @@ from reversebox.common.common import get_dll_path
 
 
 class RefpackHandler:
+    """
+    Compressor/Decompressor for EA Refpack algorithm
+    """
+
+    def __init__(self):
+        faulthandler.enable()
+
     def compress_data(self, uncompressed_data: bytes) -> bytes:
         if len(uncompressed_data) == 0:
             raise Exception("Data is empty! Nothing to compress!")
