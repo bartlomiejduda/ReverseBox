@@ -55,11 +55,11 @@ or software researchers).
 * Compression
   - Asobo (TODO) ❌
   - BZE/BZZ (TODO) ❌
-  - BZIP2 (TODO) ❌
+  - BZIP2 ✔️ <span style="color:yellow">(wrapper only)</span>
   - GZIP (TODO) ❌
   - JCALG1 (TODO) ❌
   - LZ4 ✔️ <span style="color:yellow">(wrapper only)</span>
-  - LZMA (TODO) ❌
+  - LZMA ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZO / LZO1X ✔️ <span style="color:yellow">(wrapper only)</span>
   - LZSS (TODO) ❌
   - MIO0 ✔️
