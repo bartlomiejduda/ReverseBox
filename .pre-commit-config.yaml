@@ -8,12 +8,12 @@ repos:
     -   id: check-added-large-files
         args: ['--maxkb=10000']
     -   id: end-of-file-fixer
-        exclude: (tests_io/data|tests_image/image_files)/.*
+        exclude: (tests_io/data|tests_compression/compression_data|tests_image/image_files)/.*
     -   id: trailing-whitespace
-        exclude: (tests_io/data|tests_image/image_files)/.*
+        exclude: (tests_io/data|tests_compression/compression_data|tests_image/image_files)/.*
     -   id: check-docstring-first
     -   id: mixed-line-ending
-        exclude: (tests_io/data|tests_image/image_files)/.*
+        exclude: (tests_io/data|tests_compression/compression_data|tests_image/image_files)/.*
     -   id: requirements-txt-fixer
     -   id: check-executables-have-shebangs
 -   repo: https://github.com/pycqa/isort

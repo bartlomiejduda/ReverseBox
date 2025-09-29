@@ -69,6 +69,7 @@ or software researchers).
   - RNC (TODO) ❌
   - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
   - (game-specific) Re:Tiyoruga DAT compression ✔️
+  - (game-specific) Intelligent Games Custom Huffman ✔️
 
 * Encryption
   - AES (TODO) ❌
