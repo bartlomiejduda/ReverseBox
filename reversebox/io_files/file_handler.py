@@ -166,6 +166,12 @@ class FileHandler:
         data = self.file.read(number_of_bytes)
         return data
 
+    def skip_bytes(self, number_of_bytes: int) -> None:
+        self._check_file()
+        self._check_read_mode()
+        self.file.read(number_of_bytes)
+        return
+
     def read_whole_file_content(self) -> bytes:
         self._check_file()
         self._check_read_mode()
@@ -255,6 +261,12 @@ class FileHandler:
         self._check_file()
         self._check_write_mode()
         self.file.write(data_to_write)
+        return True
+
+    def write_null_bytes(self, number_of_bytes: int) -> bool:
+        self._check_file()
+        self._check_write_mode()
+        self.file.write(b'\x00' * number_of_bytes)
         return True
 
     def write_int8(self, value: int) -> bool:
