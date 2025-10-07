@@ -78,15 +78,23 @@ def crop_image(
 
 
 def get_bpp_for_image_format(image_format: ImageFormats) -> int:
-    if image_format in (ImageFormats.RGB121,
-                        ImageFormats.N64_CMPR,
-                        ImageFormats.N64_I4,
-                        ImageFormats.BC1_DXT1,
-                        ImageFormats.BC4_UNORM,
-                        ImageFormats.PAL4,
-                        ImageFormats.ALPHA4,
-                        ImageFormats.ALPHA4_16X
+    if image_format in (ImageFormats.PVRTCII_2bpp,
+                        ImageFormats.PVRTCI_2bpp_RGBA,
+                        ImageFormats.PVRTCI_2bpp_RGB
                         ):
+        return 2
+    elif image_format in (ImageFormats.RGB121,
+                          ImageFormats.N64_CMPR,
+                          ImageFormats.N64_I4,
+                          ImageFormats.BC1_DXT1,
+                          ImageFormats.BC4_UNORM,
+                          ImageFormats.PAL4,
+                          ImageFormats.ALPHA4,
+                          ImageFormats.ALPHA4_16X,
+                          ImageFormats.PVRTCII_4bpp,
+                          ImageFormats.PVRTCI_4bpp_RGBA,
+                          ImageFormats.PVRTCI_4bpp_RGB,
+                          ):
         return 4
     elif image_format in (ImageFormats.RGBX2222,
                           ImageFormats.RGBA2222,
