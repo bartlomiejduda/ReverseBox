@@ -10,9 +10,9 @@ from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 # Used in XBOX CLASSIC and PS3 games (e.g. EA XSH files)
 
 # Swizzling modes:
-# block_width_height=1 --> linear formats
-# block_width_height=4 --> BC formats, 4x4 blocks
-# block_width_height=8 --> BC formats, 8x8 blocks
+# block_width=1, block_height=1 --> linear formats
+# block_width=4, block_height=4 --> BC formats, 4x4 blocks
+# block_width=8, block_height=8 --> BC formats, 8x8 blocks
 
 # fmt: off
 
@@ -39,12 +39,20 @@ def calculate_morton_index(t: int, width: int, height: int) -> int:
     return num7 * width + num6
 
 
-def _convert_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height, swizzle_flag: bool) -> bytes:
-    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
-    block_data_size: int = bytes_per_pixel * block_width_height * block_width_height
+def _convert_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width: int, block_height: int, swizzle_flag: bool) -> bytes:
+    if bpp == 1:
+        block_data_size: int = (block_width * block_height) // 8
+    elif bpp == 2:
+        block_data_size: int = (block_width * block_height) // 4
+    elif bpp == 4:
+        block_data_size: int = (block_width * block_height) // 2
+    else:
+        bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
+        block_data_size: int = bytes_per_pixel * block_width * block_height
+
     converted_data: bytearray = bytearray(len(pixel_data))
-    img_height //= block_width_height
-    img_width //= block_width_height
+    img_width //= block_width
+    img_height //= block_height
     source_index: int = 0
 
     for t in range(img_width * img_height):
@@ -59,9 +67,9 @@ def _convert_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int
     return converted_data
 
 
-def unswizzle_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height: int = 1) -> bytes:
-    return _convert_morton(pixel_data, img_width, img_height, bpp, block_width_height, False)
+def unswizzle_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width: int = 1, block_height: int = 1) -> bytes:
+    return _convert_morton(pixel_data, img_width, img_height, bpp, block_width, block_height, False)
 
 
-def swizzle_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width_height: int = 1) -> bytes:
-    return _convert_morton(pixel_data, img_width, img_height, bpp, block_width_height, True)
+def swizzle_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width: int = 1, block_height: int = 1) -> bytes:
+    return _convert_morton(pixel_data, img_width, img_height, bpp, block_width, block_height, True)
