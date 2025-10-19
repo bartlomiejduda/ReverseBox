@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from reversebox.image.compression.compression_zlib import compress_zlib, decompress_zlib
+from reversebox.compression.compression_zlib2 import compress_zlib, decompress_zlib
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper

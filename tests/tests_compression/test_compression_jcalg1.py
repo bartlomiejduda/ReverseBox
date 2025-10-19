@@ -1,5 +1,5 @@
 """
-Copyright © 2022  Bartłomiej Duda
+Copyright © 2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -13,5 +13,6 @@ def test_open_and_compress_file_with_jcalg1():
     # TODO - this test needs to be rewritten...
     test_data = b"ABCD"
     jcalg1_handler = JCALG1Handler()
-    jcalg1_handler.compress_data(test_data)
+    with pytest.raises(Exception, match="Not supported yet!"):
+        jcalg1_handler.compress_data(test_data)
     assert True

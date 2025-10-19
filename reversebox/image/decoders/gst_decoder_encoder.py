@@ -4,7 +4,7 @@ License: GPL-3.0 License
 """
 
 from reversebox.common.logger import get_logger
-from reversebox.image.compression.compression_gst import decompress_gst_image
+from reversebox.compression.compression_gst import decompress_gst_image
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.swizzling.swizzle_gst import (
     unswizzle_gst_base,

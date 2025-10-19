@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from reversebox.image.compression.compression_rle_tga import (
+from reversebox.compression.compression_rle_tga import (
     compress_rle_tga,
     decompress_rle_tga,
 )

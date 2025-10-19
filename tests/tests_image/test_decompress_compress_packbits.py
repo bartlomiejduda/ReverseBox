@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from reversebox.image.compression.compression_packbits import (
+from reversebox.compression.compression_packbits import (
     compress_packbits,
     decompress_packbits,
 )
