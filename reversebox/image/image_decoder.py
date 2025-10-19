@@ -719,7 +719,7 @@ class ImageDecoder:
         return texture_data
 
     def _decode_indexed(self, image_data: bytes, palette_data: bytes, img_width: int,
-                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str) -> bytes:
+                        img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str, palette_endianess: str, scale_value: int) -> bytes:
         img_bits_per_pixel = self.indexed_data_formats[image_format]
         decode_function, pal_bits_per_pixel, palette_entry_read_function = self.generic_data_formats[palette_format]
         palette_entry_size: int = convert_bpp_to_bytes_per_pixel(pal_bits_per_pixel)
@@ -734,7 +734,7 @@ class ImageDecoder:
         palette_data_ints: list = []
         for i in range(len(palette_data) // palette_entry_size):
             palette_entry = palette_handler.get_bytes(palette_offset, palette_entry_size)
-            palette_entry_int = palette_entry_read_function(palette_entry, palette_endianess_format)
+            palette_entry_int = palette_entry_read_function(palette_entry, palette_endianess_format) * scale_value
             palette_offset += palette_entry_size
             palette_data_ints.append(palette_entry_int)
 
@@ -814,8 +814,8 @@ class ImageDecoder:
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:
         return self._decode_generic(image_data, img_width, img_height, self.generic_data_formats[image_format], image_endianess)
 
-    def decode_indexed_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little") -> bytes:
-        return self._decode_indexed(image_data, palette_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess)
+    def decode_indexed_image(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, palette_format: ImageFormats, image_endianess: str = "little", palette_endianess: str = "little", scale_value: int = 1) -> bytes:
+        return self._decode_indexed(image_data, palette_data, img_width, img_height, image_format, palette_format, image_endianess, palette_endianess, scale_value)
 
     def decode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().decode_compressed_image_main(image_data, img_width, img_height, image_format)
