@@ -32,7 +32,7 @@ def test_decompress_and_compress_rle_emergency():
     compressed_file_data: bytes = compressed_file.read(41054)
     palette_data: bytes = compressed_file.read(768)
 
-    decompressed_file_data: bytes = decompress_rle_emergency(compressed_file_data, bpp, img_width, img_height)
+    decompressed_file_data: bytes = decompress_rle_emergency(compressed_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -40,7 +40,7 @@ def test_decompress_and_compress_rle_emergency():
         image_decoder = ImageDecoder()
         wrapper = PillowWrapper()
         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-            decompressed_file_data, palette_data, img_width, img_height, image_format, palette_format
+            decompressed_file_data, palette_data, img_width, img_height, image_format, palette_format, scale_value=4
         )
         pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()

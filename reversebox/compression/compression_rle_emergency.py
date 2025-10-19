@@ -13,12 +13,13 @@ logger = get_logger(__name__)
 # Used in CFF image files from "Emergency: Fighters For Life"
 
 
-def decompress_rle_emergency(image_data: bytes, bpp: int, image_width: int, image_height: int) -> bytes:
+def decompress_rle_emergency(image_data: bytes, image_width: int, image_height: int, bpp: int) -> bytes:
     if bpp != 8:
         raise Exception(f"Not supported bpp! Bpp={bpp}")
 
     compressed_data: bytearray = bytearray(image_data)
-    decompressed_data: bytearray = bytearray(image_width * image_height)
+    output_size: int = image_width * image_height
+    decompressed_data: bytearray = bytearray(output_size)
     input_offset: int = 0
     output_offset: int = 0
 
@@ -27,6 +28,9 @@ def decompress_rle_emergency(image_data: bytes, bpp: int, image_width: int, imag
 
         if control_byte == 0:
             input_offset += 1
+            break
+
+        if output_offset >= output_size:
             break
 
         if control_byte & 0x80:  # repeated packet
