@@ -265,7 +265,8 @@ or software researchers).
   - PS2 GS Texture Compression ✔️
   - RLE TGA compression ✔️
   - PackBits (Macintosh RLE) compression ✔️
-  - Executioners RLE compression ✔️
+  - (game-specific) Executioners RLE compression ✔️
+  - (game-specific) Emergency RLE compression ✔️
   - Generating mipmaps ✔️
 
 * IO
