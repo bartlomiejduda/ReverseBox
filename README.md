@@ -267,6 +267,7 @@ or software researchers).
   - PackBits (Macintosh RLE) compression ✔️
   - (game-specific) Executioners RLE compression ✔️
   - (game-specific) Emergency RLE compression ✔️
+  - (game-specific) Neversoft RLE compression ✔️
   - Generating mipmaps ✔️
 
 * IO
