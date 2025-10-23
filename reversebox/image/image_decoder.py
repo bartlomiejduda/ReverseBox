@@ -202,6 +202,25 @@ class ImageDecoder:
         p[3] = a
         return p
 
+    def _decode_bgrt5551_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        b = pixel_int & 0x1F
+        g = (pixel_int >> 5) & 0x1F
+        r = (pixel_int >> 10) & 0x1F
+        p[0] = (r << 3) | (r >> 2)
+        p[1] = (g << 3) | (g >> 2)
+        p[2] = (b << 3) | (b >> 2)
+
+        if pixel_int & 0x8000:  # translucient
+            a = 0x80
+        elif pixel_int == 0:  # transparent
+            a = 0x00
+        else:  # opaque
+            a = 0xFF
+
+        p[3] = a
+        return p
+
     def _decode_rgba5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -308,6 +327,21 @@ class ImageDecoder:
         p[1] = (pixel_int >> 8) & 0xFF
         p[2] = (pixel_int >> 0) & 0xFF
         p[3] = 0xFF
+        return p
+
+    def _decode_bgrt8888_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int >> 16) & 0xFF
+        p[1] = (pixel_int >> 8) & 0xFF
+        p[2] = (pixel_int >> 0) & 0xFF
+        if pixel_int & 0x8000:  # translucient
+            a = 0x80
+        elif pixel_int == 0:  # transparent
+            a = 0x00
+        else:  # opaque
+            a = 0xFF
+
+        p[3] = a
         return p
 
     # TODO - fix this, not decoding properly
@@ -598,6 +632,7 @@ class ImageDecoder:
         ImageFormats.BGR565: (_decode_bgr565_pixel, 16, get_uint16),
         ImageFormats.RGBX5551: (_decode_rgbx5551_pixel, 16, get_uint16),
         ImageFormats.RGBT5551: (_decode_rgbt5551_pixel, 16, get_uint16),
+        ImageFormats.BGRT5551: (_decode_bgrt5551_pixel, 16, get_uint16),
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
         ImageFormats.BGRA5551: (_decode_bgra5551_pixel, 16, get_uint16),
         ImageFormats.BGRX5551: (_decode_bgrx5551_pixel, 16, get_uint16),
@@ -631,6 +666,7 @@ class ImageDecoder:
         ImageFormats.XRGB8888: (_decode_xrgb8888_pixel, 32, get_uint32),
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
+        ImageFormats.BGRT8888: (_decode_bgrt8888_pixel, 32, get_uint32),
         ImageFormats.RGBM8888: (_decode_rgbm8888_pixel, 32, get_uint32),
         ImageFormats.R32: (_decode_r_only_pixel, 32, get_uint32),
         ImageFormats.G32: (_decode_g_only_pixel, 32, get_uint32),

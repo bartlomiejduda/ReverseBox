@@ -56,6 +56,7 @@ class ImageFormats(Enum):
     RGBA5551 = "rgba5551"
     RGBX5551 = "rgbx5551"
     RGBT5551 = "rgbt5551"  # with transparency and tranluciency
+    BGRT5551 = "bgrt5551"  # with transparency and tranluciency
     BGRA5551 = "bgra5551"
     BGRX5551 = "bgrx5551"
 
@@ -79,6 +80,7 @@ class ImageFormats(Enum):
     RGBX8888 = "rgbx8888"  # PIX_FMT_0BGR / packed BGR 8:8:8, 32bpp, 0BGR0BGR...
     BGRA8888 = "bgra8888"  # PIX_FMT_BGRA / packed BGRA 8:8:8:8, 32bpp, BGRABGRA  (B8G8R8A8_UNORM)
     BGRX8888 = "bgrx8888"  # PIX_FMT_BGR0 / packed BGR 8:8:8, 32bpp, BGR0BGR0...  (B8G8R8X8_UNORM)
+    BGRT8888 = "bgrt8888"
     ARGB8888 = "argb8888"  # PIX_FMT_ARGB / packed ARGB 8:8:8:8, 32bpp, ARGBARGB
     ABGR8888 = "abgr8888"  # PIX_FMT_ABGR / packed ABGR 8:8:8:8, 32bpp, ABGRABGR
     XRGB8888 = "xrgb8888"  # PIX_FMT_0RGB / packed RGB 8:8:8, 32bpp, 0RGB0RGB...
