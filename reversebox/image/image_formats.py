@@ -96,6 +96,7 @@ class ImageFormats(Enum):
     # Indexed Formats
     PAL4 = "pal4"
     PAL8 = "pal8"
+    PAL8_TZAR = "pal8_tzar"
     PAL16 = "pal16"
     PAL_I8A8 = "pal_i8a8"
     PAL32 = "pal32"

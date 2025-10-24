@@ -7,13 +7,7 @@ from typing import List
 
 from reversebox.common.logger import get_logger
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
-from reversebox.io_files.bytes_helper_functions import (
-    get_uint8,
-    get_uint16,
-    get_uint32,
-    set_uint8,
-    set_uint16,
-)
+from reversebox.io_files.bytes_helper_functions import get_uint8, get_uint32
 
 logger = get_logger(__name__)
 
@@ -52,13 +46,7 @@ def decompress_rle_tzar(image_data: bytes, image_width: int, image_height: int, 
             for _ in range(transparent_values_count):
                 row_data += b'\x00' * bytes_per_pixel
             for _ in range(color_values_count):
-                pixel_data: bytes = image_data[input_offset:input_offset+bytes_per_pixel]
-                if bpp == 16:
-                    row_data += set_uint16(get_uint16(pixel_data, "<") | 1, "<")
-                elif bpp == 8:
-                    row_data += set_uint8(get_uint8(pixel_data, "<") | 1, "<")
-                else:
-                    raise Exception("Not supported!")
+                row_data += image_data[input_offset:input_offset+bytes_per_pixel].replace(b'\x00', b'\xFF')
                 input_offset += bytes_per_pixel
 
         decompressed_data += row_data

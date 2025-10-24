@@ -67,7 +67,7 @@ def test_decompress_and_compress_rle_tzar_caravan():
     img_width = 195
     img_height = 900
     bpp = 8
-    image_format = ImageFormats.PAL8
+    image_format = ImageFormats.PAL8_TZAR
     palette_format = ImageFormats.BGRT8888
 
     signature: bytes = compressed_file.read(4)
@@ -77,12 +77,7 @@ def test_decompress_and_compress_rle_tzar_caravan():
     compressed_size: int = struct.unpack("<I", compressed_file.read(4))[0]
     compressed_file.seek(38)
 
-    palette_data: bytearray = bytearray()
-    for i in range(256):
-        rgb_pal_entry = compressed_file.read(3)
-        compressed_file.read(1)
-        palette_data += rgb_pal_entry + b'\xFF'
-
+    palette_data: bytes = compressed_file.read(1024)
     compressed_file_data: bytes = compressed_file.read()
 
     decompressed_file_data: bytes = decompress_rle_tzar(compressed_file_data, img_width, img_height, bpp)

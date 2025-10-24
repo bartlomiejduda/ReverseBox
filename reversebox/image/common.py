@@ -127,6 +127,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.GST422,
                           ImageFormats.GST822,
                           ImageFormats.PAL8,
+                          ImageFormats.PAL8_TZAR,
                           ImageFormats.BW1bpp,
                           ImageFormats.SharedExponentR9G9B9E5,
                           ) or "ASTC" in image_format.value\

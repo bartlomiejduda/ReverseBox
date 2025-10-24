@@ -147,6 +147,7 @@ or software researchers).
   - Decode BGR48 ✔️
   - Decode/Encode PAL4 ✔️
   - Decode/Encode PAL8 ✔️
+  - Decode PAL8_TZAR ✔️
   - Decode PAL16 ✔️
   - Decode PAL32 ✔️
   - Decode PAL_I8A8 ✔️

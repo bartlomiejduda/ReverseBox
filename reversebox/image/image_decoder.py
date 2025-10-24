@@ -680,6 +680,7 @@ class ImageDecoder:
         # image_format: bits_per_pixel
         ImageFormats.PAL4: 4,
         ImageFormats.PAL8: 8,
+        ImageFormats.PAL8_TZAR: 8,
         ImageFormats.PAL16: 16,
         ImageFormats.PAL_I8A8: 16,
         ImageFormats.PAL32: 32,
@@ -791,7 +792,10 @@ class ImageDecoder:
             for i in range(img_width * img_height):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
-                texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
+                if image_format is ImageFormats.PAL8_TZAR and palette_index_int == 0:
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_index_int)  # noqa
+                else:
+                    texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 1
         elif img_bits_per_pixel == 16:  # e.g. PAL16
             for i in range(img_width * img_height):
