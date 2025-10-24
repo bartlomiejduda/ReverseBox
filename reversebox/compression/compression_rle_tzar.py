@@ -46,7 +46,7 @@ def decompress_rle_tzar(image_data: bytes, image_width: int, image_height: int, 
             for _ in range(transparent_values_count):
                 row_data += b'\x00' * bytes_per_pixel
             for _ in range(color_values_count):
-                row_data += image_data[input_offset:input_offset+bytes_per_pixel].replace(b'\x00', b'\xFF')
+                row_data += image_data[input_offset:input_offset+bytes_per_pixel]
                 input_offset += bytes_per_pixel
 
         decompressed_data += row_data
