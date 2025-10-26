@@ -70,6 +70,7 @@ or software researchers).
   - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
   - PS2 GS Texture Compression ✔️
   - RLE TGA ✔️
+  - RLE TGA (reversed condition) ✔️
   - PackBits (Macintosh RLE) ✔️
   - (game-specific) Re:Tiyoruga DAT compression ✔️
   - (game-specific) Intelligent Games Custom Huffman ✔️
