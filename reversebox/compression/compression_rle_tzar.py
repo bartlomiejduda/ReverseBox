@@ -25,13 +25,13 @@ def decompress_rle_tzar(image_data: bytes, image_width: int, image_height: int, 
     decompressed_data: bytearray = bytearray()
     input_offset: int = 0
 
-    offsets: List[int] = []
+    row_offsets_list: List[int] = []
     for _ in range(image_height):
-        offsets.append(get_uint32(image_data[input_offset:input_offset+4], "<"))
+        row_offsets_list.append(get_uint32(image_data[input_offset:input_offset+4], "<"))
         input_offset += 4
 
-    for offset in offsets:
-        input_offset = offset
+    for row_offset in row_offsets_list:
+        input_offset = row_offset
         row_data: bytearray = bytearray()
 
         while 1:
@@ -44,7 +44,8 @@ def decompress_rle_tzar(image_data: bytes, image_width: int, image_height: int, 
             input_offset += 1
 
             for _ in range(transparent_values_count):
-                row_data += b'\x00' * bytes_per_pixel
+                row_data += int(0x6F).to_bytes(bytes_per_pixel, 'little')
+
             for _ in range(color_values_count):
                 row_data += image_data[input_offset:input_offset+bytes_per_pixel]
                 input_offset += bytes_per_pixel

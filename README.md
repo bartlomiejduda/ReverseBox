@@ -123,6 +123,7 @@ or software researchers).
   - Decode BGRT5551 ✔️
   - Decode/Encode RGBA5551 ✔️
   - Decode/Encode BGRA5551 ✔️
+  - Decode BGRA5551_TZAR ✔️
   - Decode BGRX5551 ✔️
   - Decode RGBX6666 ✔️
   - Decode RGBA6666 ✔️
@@ -143,6 +144,7 @@ or software researchers).
   - Decode ABGR8888 ✔️
   - Decode/Encode RGBA8888 ✔️
   - Decode/Encode BGRA8888 ✔️
+  - Decode BGRA8888_TZAR ✔️
   - Decode RGB48 ✔️
   - Decode BGR48 ✔️
   - Decode/Encode PAL4 ✔️

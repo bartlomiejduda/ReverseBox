@@ -27,7 +27,7 @@ def test_decompress_and_compress_rle_tzar_arab_church():
     img_width = 146
     img_height = 135
     bpp = 16
-    image_format = ImageFormats.BGRT5551
+    image_format = ImageFormats.BGRA5551_TZAR
 
     signature: bytes = compressed_file.read(4)
     if signature != b" elr":
@@ -68,7 +68,7 @@ def test_decompress_and_compress_rle_tzar_caravan():
     img_height = 900
     bpp = 8
     image_format = ImageFormats.PAL8_TZAR
-    palette_format = ImageFormats.BGRT8888
+    palette_format = ImageFormats.BGRA8888_TZAR
 
     signature: bytes = compressed_file.read(4)
     if signature != b" elr":

@@ -172,6 +172,18 @@ class ImageDecoder:
         p[3] = (0x00 if a == 0 else 0xFF)
         return p
 
+    def _decode_bgra5551_tzar_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        b = pixel_int & 0x1F
+        g = (pixel_int >> 5) & 0x1F
+        r = (pixel_int >> 10) & 0x1F
+
+        p[0] = (r << 3) | (r >> 2)
+        p[1] = (g << 3) | (g >> 2)
+        p[2] = (b << 3) | (b >> 2)
+        p[3] = (0x00 if pixel_int == 0x6F else 0xFF)
+        return p
+
     def _decode_rgbx5551_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = pixel_int & 0x1F
@@ -374,6 +386,20 @@ class ImageDecoder:
         p[1] = (pixel_int >> 8) & 0xff
         p[2] = (pixel_int >> 0) & 0xff
         p[3] = (pixel_int >> 24) & 0xff
+        return p
+
+    def _decode_bgra8888_tzar_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int >> 16) & 0xff
+        p[1] = (pixel_int >> 8) & 0xff
+        p[2] = (pixel_int >> 0) & 0xff
+
+        if pixel_int == 0x6F:  # transparent
+            a = 0x00
+        else:  # opaque
+            a = 0xFF
+
+        p[3] = a
         return p
 
     def _decode_abgr8888_pixel(self, pixel_int: int) -> bytes:
@@ -635,6 +661,7 @@ class ImageDecoder:
         ImageFormats.BGRT5551: (_decode_bgrt5551_pixel, 16, get_uint16),
         ImageFormats.RGBA5551: (_decode_rgba5551_pixel, 16, get_uint16),
         ImageFormats.BGRA5551: (_decode_bgra5551_pixel, 16, get_uint16),
+        ImageFormats.BGRA5551_TZAR: (_decode_bgra5551_tzar_pixel, 16, get_uint16),
         ImageFormats.BGRX5551: (_decode_bgrx5551_pixel, 16, get_uint16),
         ImageFormats.RGBA4444: (_decode_rgba4444_pixel, 16, get_uint16),
         ImageFormats.ARGB4444: (_decode_argb4444_pixel, 16, get_uint16),
@@ -663,6 +690,7 @@ class ImageDecoder:
         ImageFormats.ABGR8888: (_decode_abgr8888_pixel, 32, get_uint32),
         ImageFormats.RGBA8888: (_decode_rgba8888_pixel, 32, get_uint32),
         ImageFormats.BGRA8888: (_decode_bgra8888_pixel, 32, get_uint32),
+        ImageFormats.BGRA8888_TZAR: (_decode_bgra8888_tzar_pixel, 32, get_uint32),
         ImageFormats.XRGB8888: (_decode_xrgb8888_pixel, 32, get_uint32),
         ImageFormats.RGBX8888: (_decode_rgbx8888_pixel, 32, get_uint32),
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
@@ -792,7 +820,7 @@ class ImageDecoder:
             for i in range(img_width * img_height):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
-                if image_format is ImageFormats.PAL8_TZAR and palette_index_int == 0:
+                if image_format is ImageFormats.PAL8_TZAR and palette_index_int == 0x6F:
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_index_int)  # noqa
                 else:
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa

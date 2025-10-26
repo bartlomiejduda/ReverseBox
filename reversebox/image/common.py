@@ -164,6 +164,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.RGBT5551,
                           ImageFormats.BGRT5551,
                           ImageFormats.BGRA5551,
+                          ImageFormats.BGRA5551_TZAR,
                           ImageFormats.BGRX5551,
                           ImageFormats.ARGB1555,
                           ImageFormats.XRGB1555,
@@ -194,6 +195,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
         return 24
     elif image_format in (ImageFormats.RGBA8888,
                           ImageFormats.BGRA8888,
+                          ImageFormats.BGRA8888_TZAR,
                           ImageFormats.ARGB8888,
                           ImageFormats.ABGR8888,
                           ImageFormats.XRGB8888,
