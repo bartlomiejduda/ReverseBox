@@ -68,8 +68,16 @@ or software researchers).
   - Refpack (EA Games) ✔️ <span style="color:yellow">(wrapper only)</span>
   - RNC (TODO) ❌
   - ZLIB ✔️ <span style="color:yellow">(wrapper only)</span>
+  - PS2 GS Texture Compression ✔️
+  - RLE TGA ✔️
+  - PackBits (Macintosh RLE) ✔️
   - (game-specific) Re:Tiyoruga DAT compression ✔️
   - (game-specific) Intelligent Games Custom Huffman ✔️
+  - (game-specific) Executioners RLE ✔️
+  - (game-specific) Emergency RLE ✔️
+  - (game-specific) Neversoft RLE ✔️
+  - (game-specific) Tzar RLE ✔️
+  - (game-specific) Leapster RLE ✔️
 
 * Encryption
   - AES (TODO) ❌
@@ -135,6 +143,7 @@ or software researchers).
   - Decode XBGR4444 ✔️
   - Decode/Encode RGBX4444 ✔️
   - Decode BGRA4444 ✔️
+  - Decode BGRA4444_LEAPSTER ✔️
   - Decode BGRX4444 ✔️
   - Decode XRGB1555 ✔️
   - Decode ARGB1555 ✔️
@@ -267,12 +276,6 @@ or software researchers).
   - Dreamcast Swizzling/Twiddling (Morton Order) ✔️
   - BC Swizzling/Twiddling ✔️
   - PS2 GS Texture Swizzling/Twiddling ✔️
-  - PS2 GS Texture Compression ✔️
-  - RLE TGA compression ✔️
-  - PackBits (Macintosh RLE) compression ✔️
-  - (game-specific) Executioners RLE compression ✔️
-  - (game-specific) Emergency RLE compression ✔️
-  - (game-specific) Neversoft RLE compression ✔️
   - Generating mipmaps ✔️
 
 * IO

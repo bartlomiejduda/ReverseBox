@@ -503,6 +503,23 @@ class ImageDecoder:
         p[3] = (a << 4) | (a >> 0)
         return p
 
+    def _decode_bgra4444_leapster_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        b = (pixel_int >> 0) & 0x0f
+        g = (pixel_int >> 4) & 0x0f
+        r = (pixel_int >> 8) & 0x0f
+
+        if pixel_int == 0xF0:
+            a = 0x00
+        else:
+            a = 0xFF
+
+        p[0] = (r << 4) | (r >> 0)
+        p[1] = (g << 4) | (g >> 0)
+        p[2] = (b << 4) | (b >> 0)
+        p[3] = a
+        return p
+
     def _decode_rgbx4444_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         r = (pixel_int >> 0) & 0x0f
@@ -670,6 +687,7 @@ class ImageDecoder:
         ImageFormats.XBGR4444: (_decode_xbgr4444_pixel, 16, get_uint16),
         ImageFormats.RGBX4444: (_decode_rgbx4444_pixel, 16, get_uint16),  # RGB444
         ImageFormats.BGRA4444: (_decode_bgra4444_pixel, 16, get_uint16),  # BGR444
+        ImageFormats.BGRA4444_LEAPSTER: (_decode_bgra4444_leapster_pixel, 16, get_uint16),
         ImageFormats.BGRX4444: (_decode_bgrx4444_pixel, 16, get_uint16),  # BGR444
         ImageFormats.XRGB1555: (_decode_xrgb1555_pixel, 16, get_uint16),  # RGB555
         ImageFormats.XBGR1555: (_decode_xbgr1555_pixel, 16, get_uint16),  # BGR555

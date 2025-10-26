@@ -46,6 +46,7 @@ class ImageFormats(Enum):
     RGBA4444 = "rgba4444"
     RGBX4444 = "rgbx4444"
     BGRA4444 = "bgra4444"
+    BGRA4444_LEAPSTER = "bgra4444_leapster"
     BGRX4444 = "bgrx4444"
 
     ARGB4444 = "argb4444"
