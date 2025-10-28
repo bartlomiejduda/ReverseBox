@@ -95,6 +95,7 @@ or software researchers).
   - Additive Hash ✔️
   - AP ✔️
   - DJB2 ✔️
+  - RX3 ✔️
   - FNV0-32 ✔️
   - FNV0-64 ✔️
   - FNV1-32 ✔️
