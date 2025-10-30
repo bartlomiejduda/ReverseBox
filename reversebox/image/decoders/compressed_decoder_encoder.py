@@ -5,6 +5,8 @@ License: GPL-3.0 License
 
 import ctypes
 import faulthandler
+import os
+import tempfile
 from ctypes import (
     POINTER,
     Structure,
@@ -17,6 +19,7 @@ from ctypes import (
 )
 
 from reversebox.common.common import get_dll_path
+from reversebox.common.constants import DLL_LOG_FILE_NAME
 from reversebox.common.logger import get_logger
 from reversebox.image.common import get_bc_image_data_size
 from reversebox.image.image_formats import ImageFormats
@@ -47,7 +50,8 @@ class CompressedImageDecoderEncoder:
     """
 
     def __init__(self):
-        faulthandler.enable()
+        with open(os.path.join(tempfile.gettempdir(), DLL_LOG_FILE_NAME), "a", encoding="utf-8") as f:
+            faulthandler.enable(f)
 
     def _init_dxgi_image(self, img_width: int, img_height: int, format_number: int,
                          row_pitch: int, slice_pitch: int, image_data: bytes) -> DXGIImage:

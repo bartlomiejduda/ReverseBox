@@ -5,9 +5,12 @@ License: GPL-3.0 License
 
 import ctypes
 import faulthandler
+import os
+import tempfile
 from ctypes import c_char
 
 from reversebox.common.common import get_dll_path
+from reversebox.common.constants import DLL_LOG_FILE_NAME
 
 # fmt: off
 
@@ -18,7 +21,8 @@ class RefpackHandler:
     """
 
     def __init__(self):
-        faulthandler.enable()
+        with open(os.path.join(tempfile.gettempdir(), DLL_LOG_FILE_NAME), "a", encoding="utf-8") as f:
+            faulthandler.enable(f)
 
     def compress_data(self, uncompressed_data: bytes) -> bytes:
         if len(uncompressed_data) == 0:
