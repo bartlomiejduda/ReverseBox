@@ -37,7 +37,7 @@ class PSPDXTDecoder:
         b1, g1, r1, a1 = (c1 >> 24) & 0xFF, (c1 >> 16) & 0xFF, (c1 >> 8) & 0xFF, c1 & 0xFF
         return (((2 * b0 + b1) // 3) << 24) | (((2 * g0 + g1) // 3) << 16) | (((2 * r0 + r1) // 3) << 8) | ((2 * a0 + a1) // 3)
 
-    def _rgba565_to_bgra8888(self, pixel_int: int) -> int:
+    def _rgb565_to_bgra8888(self, pixel_int: int) -> int:
         r = ((pixel_int >> 11) & 0x1F) * 0xFF // 0x1F
         g = ((pixel_int >> 5) & 0x3F) * 0xFF // 0x3F
         b = ((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F
@@ -57,13 +57,13 @@ class PSPDXTDecoder:
         decoded_dxt_block: bytearray = bytearray(16 * 4)  # 16 RGBA pixels
 
         if c0 > c1:
-            colors[0] = c0 = self._rgba565_to_bgra8888(c0)
-            colors[1] = c1 = self._rgba565_to_bgra8888(c1)
+            colors[0] = c0 = self._rgb565_to_bgra8888(c0)
+            colors[1] = c1 = self._rgb565_to_bgra8888(c1)
             colors[2] = self._interpolation_66_33(c0, c1)
             colors[3] = self._interpolation_66_33(c1, c0)
         else:
-            colors[0] = c0 = self._rgba565_to_bgra8888(c0)
-            colors[1] = c1 = self._rgba565_to_bgra8888(c1)
+            colors[0] = c0 = self._rgb565_to_bgra8888(c0)
+            colors[1] = c1 = self._rgb565_to_bgra8888(c1)
             colors[2] = self._interpolation_50_50(c0, c1)
             colors[3] = 0x00  # transparent
 
