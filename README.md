@@ -113,159 +113,165 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
   - (game-specific) Pivotal Games DAT Hash ✔️
 
-* Image
-  - Decode RGB121 ✔️
-  - Decode ALPHA4 ✔️
-  - Decode ALPHA4_16X ✔️
-  - Decode RGB121_BYTE ✔️
-  - Decode RGBA2222 ✔️
-  - Decode RGBX2222 ✔️
-  - Decode GRAY8 ✔️
-  - Decode ALPHA8 ✔️
-  - Decode ALPHA8_16X ✔️
-  - Decode LA44 ✔️
-  - Decode RGBX332 (RGB8) ✔️
-  - Decode BGRX332 (BGR8) ✔️
-  - Decode/Encode RGB565 ✔️
-  - Decode/Encode BGR565 ✔️
-  - Decode/Encode RGBX5551 ✔️
-  - Decode/Encode RGBT5551 ✔️
-  - Decode BGRT5551 ✔️
-  - Decode/Encode RGBA5551 ✔️
-  - Decode/Encode BGRA5551 ✔️
-  - Decode BGRA5551_TZAR ✔️
-  - Decode BGRX5551 ✔️
-  - Decode RGBX6666 ✔️
-  - Decode RGBA6666 ✔️
-  - Decode RGB888 (RGB24) ✔️
-  - Decode BGR888 (BGR24) ✔️
-  - Decode ARGB4444 ✔️
-  - Decode RGBA4444 ✔️
-  - Decode ABGR4444 ✔️
-  - Decode XBGR4444 ✔️
-  - Decode/Encode RGBX4444 ✔️
-  - Decode BGRA4444 ✔️
-  - Decode BGRA4444_LEAPSTER ✔️
-  - Decode BGRX4444 ✔️
-  - Decode XRGB1555 ✔️
-  - Decode ARGB1555 ✔️
-  - Decode ABGR1555 ✔️
-  - Decode XBGR1555 ✔️
-  - Decode/Encode ARGB8888 ✔️
-  - Decode ABGR8888 ✔️
-  - Decode/Encode RGBA8888 ✔️
-  - Decode/Encode BGRA8888 ✔️
-  - Decode BGRA8888_TZAR ✔️
-  - Decode RGB48 ✔️
-  - Decode BGR48 ✔️
-  - Decode/Encode PAL4 ✔️
-  - Decode/Encode PAL8 ✔️
-  - Decode PAL8_TZAR ✔️
-  - Decode PAL16 ✔️
-  - Decode PAL32 ✔️
-  - Decode PAL_I8A8 ✔️
-  - Decode N64_RGB5A3 ✔️
-  - Decode N64_I4 ✔️
-  - Decode N64_I8 ✔️
-  - Decode N64_IA4 ✔️
-  - Decode N64_IA8 ✔️
-  - Decode N64_RGBA32 ✔️
-  - Decode N64_CMPR ✔️
-  - Decode/Encode BC1/DXT1 ✔️
-  - Decode PSP_DXT1 ✔️
-  - Decode/Encode DXT2 ✔️
-  - Decode/Encode BC2/DXT3 ✔️
-  - Decode PSP_DXT3 ✔️
-  - Decode/Encode DXT4 ✔️
-  - Decode/Encode BC3/DXT5 ✔️
-  - Decode PSP_DXT5 ✔️
-  - Decode/Encode BC4 ✔️
-  - Decode/Encode BC5 ✔️
-  - Decode/Encode BC6 ✔️
-  - Decode/Encode BC7 ✔️
-  - Decode/Encode PVRTCI_2bpp_RGB ✔️
-  - Decode/Encode PVRTCI_2bpp_RGBA ✔️
-  - Decode/Encode PVRTCI_4bpp_RGB ✔️
-  - Decode/Encode PVRTCI_4bpp_RGBA ✔️
-  - Decode/Encode PVRTCII_2bpp ✔️
-  - Decode/Encode PVRTCII_4bpp ✔️
-  - Decode/Encode ETC1 ✔️
-  - Decode/Encode BW1bpp ✔️
-  - Decode/Encode SharedExponentR9G9B9E5 ✔️
-  - Decode/Encode RGBG8888 ✔️
-  - Decode/Encode GRGB8888 ✔️
-  - Decode/Encode ETC2_RGB ✔️
-  - Decode/Encode ETC2_RGBA ✔️
-  - Decode/Encode ETC2_RGB_A1 ✔️
-  - Decode/Encode EAC_R11 ✔️
-  - Decode/Encode EAC_RG11 ✔️
-  - Decode/Encode ASTC_4x4 ✔️
-  - Decode/Encode ASTC_5x4 ✔️
-  - Decode/Encode ASTC_5x5 ✔️
-  - Decode/Encode ASTC_6x5 ✔️
-  - Decode/Encode ASTC_6x6 ✔️
-  - Decode/Encode ASTC_8x5 ✔️
-  - Decode/Encode ASTC_8x6 ✔️
-  - Decode/Encode ASTC_8x8 ✔️
-  - Decode/Encode ASTC_10x5 ✔️
-  - Decode/Encode ASTC_10x6 ✔️
-  - Decode/Encode ASTC_10x8 ✔️
-  - Decode/Encode ASTC_10x10 ✔️
-  - Decode/Encode ASTC_12x10 ✔️
-  - Decode/Encode ASTC_12x12 ✔️
-  - Decode/Encode ASTC_3x3x3 ✔️
-  - Decode/Encode ASTC_4x3x3 ✔️
-  - Decode/Encode ASTC_4x4x3 ✔️
-  - Decode/Encode ASTC_4x4x4 ✔️
-  - Decode/Encode ASTC_5x4x4 ✔️
-  - Decode/Encode ASTC_5x5x4 ✔️
-  - Decode/Encode ASTC_5x5x5 ✔️
-  - Decode/Encode ASTC_6x5x5 ✔️
-  - Decode/Encode ASTC_6x6x5 ✔️
-  - Decode/Encode ASTC_6x6x6 ✔️
-  - Decode/Encode BASISU_ETC1S ✔️
-  - Decode/Encode BASISU_UASTC ✔️
-  - Decode/Encode RGBM ✔️
-  - Decode/Encode RGBD ✔️
-  - Decode GST121 ✔️
-  - Decode GST221 ✔️
-  - Decode GST421 ✔️
-  - Decode GST821 ✔️
-  - Decode GST122 ✔️
-  - Decode GST222 ✔️
-  - Decode GST422 ✔️
-  - Decode GST822 ✔️
-  - Decode YUY2 ✔️
-  - Decode NV12 ✔️
-  - Decode NV21 ✔️
-  - Decode UYVY ✔️
-  - Decode YUV444P ✔️
-  - Decode YUV410P ✔️
-  - Decode YUV420P ✔️
-  - Decode YUV422P ✔️
-  - Decode YUV411P ✔️
-  - Decode UYYVYY411 ✔️
-  - Decode YUV440P ✔️
-  - Decode YUVA420P ✔️
-  - Decode AYUV ✔️
-  - Decode GRAY8A (LA88) ✔️
-  - Decode GRAY16 ✔️
-  - Decode RG88 ✔️
-  - Decode XRGB8888 ✔️
-  - Decode RGBX8888 ✔️
-  - Decode XBGR8888 ✔️
-  - Decode BGRX8888 ✔️
-  - Decode BGRT8888 ✔️
-  - Decode R8 ✔️
-  - Decode G8 ✔️
-  - Decode B8 ✔️
-  - Decode R16 ✔️
-  - Decode G16 ✔️
-  - Decode B16 ✔️
-  - Decode R32 ✔️
-  - Decode G32 ✔️
-  - Decode B32 ✔️
-  - Decode BUMPMAP_SR ✔️
+* Image<br>
+Decoding and encoding images with pixel formats <br>mentioned in the following table:
+
+| Image Format           | Decode support      | Encode support      |
+|------------------------|---------------------|---------------------|
+| RGB121                 | <center>✔️</center> | <center>❌</center>  |
+| ALPHA4                 | <center>✔️</center> | <center>❌</center>  |
+| ALPHA4_16X             | <center>✔️</center> | <center>❌</center>  |
+| RGB121_BYTE            | <center>✔️</center> | <center>❌</center>  |
+| RGBA2222               | <center>✔️</center> | <center>❌</center>  |
+| RGBX2222               | <center>✔️</center> | <center>❌</center>  |
+| GRAY8                  | <center>✔️</center> | <center>❌</center>  |
+| ALPHA8                 | <center>✔️</center> | <center>❌</center>  |
+| ALPHA8_16X             | <center>✔️</center> | <center>❌</center>  |
+| LA44                   | <center>✔️</center> | <center>❌</center>  |
+| RGBX332 (RGB8)         | <center>✔️</center> | <center>❌</center>  |
+| BGRX332 (BGR8)         | <center>✔️</center> | <center>❌</center>  |
+| RGB565                 | <center>✔️</center> | <center>✔️</center> |
+| BGR565                 | <center>✔️</center> | <center>✔️</center> |
+| RGBX5551               | <center>✔️</center> | <center>✔️</center> |
+| RGBT5551               | <center>✔️</center> | <center>❌</center>  |
+| BGRT5551               | <center>✔️</center> | <center>✔️</center> |
+| RGBA5551               | <center>✔️</center> | <center>✔️</center> |
+| BGRA5551               | <center>✔️</center> | <center>✔️</center> |
+| BGRA5551_TZAR          | <center>✔️</center> | <center>❌</center>  |
+| BGRX5551               | <center>✔️</center> | <center>❌</center>  |
+| RGBX6666               | <center>✔️</center> | <center>❌</center>  |
+| RGBA6666               | <center>✔️</center> | <center>❌</center>  |
+| RGB888 (RGB24)         | <center>✔️</center> | <center>❌</center>  |
+| BGR888 (BGR24)         | <center>✔️</center> | <center>❌</center>  |
+| ARGB4444               | <center>✔️</center> | <center>❌</center>  |
+| RGBA4444               | <center>✔️</center> | <center>❌</center>  |
+| ABGR4444               | <center>✔️</center> | <center>❌</center>  |
+| XBGR4444               | <center>✔️</center> | <center>❌</center>  |
+| RGBX4444               | <center>✔️</center> | <center>✔️</center> |
+| BGRA4444               | <center>✔️</center> | <center>❌</center>  |
+| BGRA4444_LEAPSTER      | <center>✔️</center> | <center>❌</center>  |
+| BGRX4444               | <center>✔️</center> | <center>❌</center>  |
+| XRGB1555               | <center>✔️</center> | <center>❌</center>  |
+| ARGB1555               | <center>✔️</center> | <center>❌</center>  |
+| ABGR1555               | <center>✔️</center> | <center>❌</center>  |
+| XBGR1555               | <center>✔️</center> | <center>❌</center>  |
+| ARGB8888               | <center>✔️</center> | <center>✔️</center> |
+| ABGR8888               | <center>✔️</center> | <center>❌</center>  |
+| RGBA8888               | <center>✔️</center> | <center>✔️</center> |
+| BGRA8888               | <center>✔️</center> | <center>✔️</center> |
+| XRGB8888               | <center>✔️</center> | <center>❌</center>  |
+| RGBX8888               | <center>✔️</center> | <center>❌</center>  |
+| XBGR8888               | <center>✔️</center> | <center>❌</center>  |
+| BGRX8888               | <center>✔️</center> | <center>❌</center>  |
+| BGRT8888               | <center>✔️</center> | <center>❌</center>  |
+| BGRA8888_TZAR          | <center>✔️</center> | <center>❌</center>  |
+| RGB48                  | <center>✔️</center> | <center>❌</center>  |
+| BGR48                  | <center>✔️</center> | <center>❌</center>  |
+| PAL4                   | <center>✔️</center> | <center>✔️</center> |
+| PAL8                   | <center>✔️</center> | <center>✔️</center> |
+| PAL8_TZAR              | <center>✔️</center> | <center>❌</center>  |
+| PAL16                  | <center>✔️</center> | <center>❌</center>  |
+| PAL32                  | <center>✔️</center> | <center>❌</center>  |
+| PAL_I8A8               | <center>✔️</center> | <center>❌</center>  |
+| N64_RGB5A3             | <center>✔️</center> | <center>❌</center>  |
+| N64_I4                 | <center>✔️</center> | <center>❌</center>  |
+| N64_I8                 | <center>✔️</center> | <center>❌</center>  |
+| N64_IA4                | <center>✔️</center> | <center>❌</center>  |
+| N64_IA8                | <center>✔️</center> | <center>❌</center>  |
+| N64_RGBA32             | <center>✔️</center> | <center>❌</center>  |
+| N64_CMPR               | <center>✔️</center> | <center>❌</center>  |
+| BC1/DXT1               | <center>✔️</center> | <center>✔️</center> |
+| PSP_DXT1               | <center>✔️</center> | <center>❌</center>  |
+| DXT2                   | <center>✔️</center> | <center>❌</center>  |
+| BC2/DXT3               | <center>✔️</center> | <center>✔️</center> |
+| PSP_DXT3               | <center>✔️</center> | <center>❌</center>  |
+| DXT4                   | <center>✔️</center> | <center>✔️</center> |
+| BC3/DXT5               | <center>✔️</center> | <center>✔️</center> |
+| PSP_DXT5               | <center>✔️</center> | <center>❌</center>  |
+| BC4                    | <center>✔️</center> | <center>✔️</center> |
+| BC5                    | <center>✔️</center> | <center>✔️</center> |
+| BC6                    | <center>✔️</center> | <center>✔️</center> |
+| BC7                    | <center>✔️</center> | <center>✔️</center> |
+| PVRTCI_2bpp_RGB        | <center>✔️</center> | <center>✔️</center> |
+| PVRTCI_2bpp_RGBA       | <center>✔️</center> | <center>✔️</center> |
+| PVRTCI_4bpp_RGB        | <center>✔️</center> | <center>✔️</center> |
+| PVRTCI_4bpp_RGBA       | <center>✔️</center> | <center>✔️</center> |
+| PVRTCII_2bpp           | <center>✔️</center> | <center>✔️</center> |
+| PVRTCII_4bpp           | <center>✔️</center> | <center>✔️</center> |
+| ETC1                   | <center>✔️</center> | <center>✔️</center> |
+| BW1bpp                 | <center>✔️</center> | <center>✔️</center> |
+| SharedExponentR9G9B9E5 | <center>✔️</center> | <center>✔️</center> |
+| RGBG8888               | <center>✔️</center> | <center>✔️</center> |
+| GRGB8888               | <center>✔️</center> | <center>✔️</center> |
+| ETC2_RGB               | <center>✔️</center> | <center>✔️</center> |
+| ETC2_RGBA              | <center>✔️</center> | <center>✔️</center> |
+| ETC2_RGB_A1            | <center>✔️</center> | <center>✔️</center> |
+| EAC_R11                | <center>✔️</center> | <center>✔️</center> |
+| EAC_RG11               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_4x4               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_5x4               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_5x5               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_6x5               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_6x6               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_8x5               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_8x6               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_8x8               | <center>✔️</center> | <center>✔️</center> |
+| ASTC_10x5              | <center>✔️</center> | <center>✔️</center> |
+| ASTC_10x6              | <center>✔️</center> | <center>✔️</center> |
+| ASTC_10x8              | <center>✔️</center> | <center>✔️</center> |
+| ASTC_10x10             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_12x10             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_12x12             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_3x3x3             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_4x3x3             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_4x4x3             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_4x4x4             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_5x4x4             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_5x5x4             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_5x5x5             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_6x5x5             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_6x6x5             | <center>✔️</center> | <center>✔️</center> |
+| ASTC_6x6x6             | <center>✔️</center> | <center>✔️</center> |
+| BASISU_ETC1S           | <center>✔️</center> | <center>✔️</center> |
+| BASISU_UASTC           | <center>✔️</center> | <center>✔️</center> |
+| RGBM                   | <center>✔️</center> | <center>✔️</center> |
+| RGBD                   | <center>✔️</center> | <center>✔️</center> |
+| GST121                 | <center>✔️</center> | <center>❌</center>  |
+| GST221                 | <center>✔️</center> | <center>❌</center>  |
+| GST421                 | <center>✔️</center> | <center>❌</center>  |
+| GST821                 | <center>✔️</center> | <center>❌</center>  |
+| GST122                 | <center>✔️</center> | <center>❌</center>  |
+| GST222                 | <center>✔️</center> | <center>❌</center>  |
+| GST422                 | <center>✔️</center> | <center>❌</center>  |
+| GST822                 | <center>✔️</center> | <center>❌</center>  |
+| YUY2                   | <center>✔️</center> | <center>❌</center>  |
+| NV12                   | <center>✔️</center> | <center>❌</center>  |
+| NV21                   | <center>✔️</center> | <center>❌</center>  |
+| UYVY                   | <center>✔️</center> | <center>❌</center>  |
+| YUV444P                | <center>✔️</center> | <center>❌</center>  |
+| YUV410P                | <center>✔️</center> | <center>❌</center>  |
+| YUV420P                | <center>✔️</center> | <center>❌</center>  |
+| YUV422P                | <center>✔️</center> | <center>❌</center>  |
+| YUV411P                | <center>✔️</center> | <center>❌</center>  |
+| UYYVYY411              | <center>✔️</center> | <center>❌</center>  |
+| YUV440P                | <center>✔️</center> | <center>❌</center>  |
+| YUVA420P               | <center>✔️</center> | <center>❌</center>  |
+| AYUV                   | <center>✔️</center> | <center>❌</center>  |
+| GRAY8A (LA88)          | <center>✔️</center> | <center>❌</center>  |
+| GRAY16                 | <center>✔️</center> | <center>❌</center>  |
+| RG88                   | <center>✔️</center> | <center>❌</center>  |
+| R8                     | <center>✔️</center> | <center>❌</center>  |
+| G8                     | <center>✔️</center> | <center>❌</center>  |
+| B8                     | <center>✔️</center> | <center>❌</center>  |
+| R16                    | <center>✔️</center> | <center>❌</center>  |
+| G16                    | <center>✔️</center> | <center>❌</center>  |
+| B16                    | <center>✔️</center> | <center>❌</center>  |
+| R32                    | <center>✔️</center> | <center>❌</center>  |
+| G32                    | <center>✔️</center> | <center>❌</center>  |
+| B32                    | <center>✔️</center> | <center>❌</center>  |
+| BUMPMAP_SR             | <center>✔️</center> | <center>❌</center>  |
+
+
   - 3DS Swizzling/Twiddling ✔️
   - CMPR Swizzling/Twiddling ✔️
   - PS2 Swizzling/Twiddling ✔️
