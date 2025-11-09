@@ -149,7 +149,7 @@ or software researchers).
 | RGB565                 | <center>✔️</center> | <center>✔️</center> |
 | BGR565                 | <center>✔️</center> | <center>✔️</center> |
 | RGBX5551               | <center>✔️</center> | <center>✔️</center> |
-| RGBT5551               | <center>✔️</center> | <center>❌</center>  |
+| RGBT5551               | <center>✔️</center> | <center>✔️</center> |
 | BGRT5551               | <center>✔️</center> | <center>✔️</center> |
 | RGBA5551               | <center>✔️</center> | <center>✔️</center> |
 | BGRA5551               | <center>✔️</center> | <center>✔️</center> |
@@ -157,14 +157,14 @@ or software researchers).
 | BGRX5551               | <center>✔️</center> | <center>❌</center>  |
 | RGBX6666               | <center>✔️</center> | <center>❌</center>  |
 | RGBA6666               | <center>✔️</center> | <center>❌</center>  |
-| RGB888 (RGB24)         | <center>✔️</center> | <center>❌</center>  |
-| BGR888 (BGR24)         | <center>✔️</center> | <center>❌</center>  |
+| RGB888 (RGB24)         | <center>✔️</center> | <center>✔️</center> |
+| BGR888 (BGR24)         | <center>✔️</center> | <center>✔️</center> |
 | ARGB4444               | <center>✔️</center> | <center>❌</center>  |
 | RGBA4444               | <center>✔️</center> | <center>❌</center>  |
-| ABGR4444               | <center>✔️</center> | <center>❌</center>  |
+| ABGR4444               | <center>✔️</center> | <center>✔️</center> |
 | XBGR4444               | <center>✔️</center> | <center>❌</center>  |
 | RGBX4444               | <center>✔️</center> | <center>✔️</center> |
-| BGRA4444               | <center>✔️</center> | <center>❌</center>  |
+| BGRA4444               | <center>✔️</center> | <center>✔️</center> |
 | BGRA4444_LEAPSTER      | <center>✔️</center> | <center>❌</center>  |
 | BGRX4444               | <center>✔️</center> | <center>❌</center>  |
 | XRGB1555               | <center>✔️</center> | <center>❌</center>  |
