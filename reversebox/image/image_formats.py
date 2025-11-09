@@ -115,10 +115,13 @@ class ImageFormats(Enum):
 
     # compressed Formats
     BC1_DXT1 = "bc1_dxt1"
+    PSP_DXT1 = "psp_dxt1"
     DXT2 = "dxt2"
     BC2_DXT3 = "bc2_dxt3"
+    PSP_DXT3 = "psp_dxt3"
     DXT4 = "dxt4"
     BC3_DXT5 = "bc3_dxt5"
+    PSP_DXT5 = "psp_dxt5"
     BC4_UNORM = "bc4_unorm"
     BC5_UNORM = "bc5_unorm"
     BC6H_UF16 = "bc6h_uf16"

@@ -172,10 +172,13 @@ or software researchers).
   - Decode N64_RGBA32 ✔️
   - Decode N64_CMPR ✔️
   - Decode/Encode BC1/DXT1 ✔️
+  - Decode PSP_DXT1 ✔️
   - Decode/Encode DXT2 ✔️
   - Decode/Encode BC2/DXT3 ✔️
+  - Decode PSP_DXT3 ✔️
   - Decode/Encode DXT4 ✔️
   - Decode/Encode BC3/DXT5 ✔️
+  - Decode PSP_DXT5 ✔️
   - Decode/Encode BC4 ✔️
   - Decode/Encode BC5 ✔️
   - Decode/Encode BC6 ✔️
