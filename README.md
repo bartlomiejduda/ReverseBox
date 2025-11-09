@@ -132,7 +132,7 @@ or software researchers).
   - Generating mipmaps ✔️
   - Decoding and encoding images with pixel formats <br>mentioned in the following table:
 
-| Image Format           | Decode support      | Encode support      |
+| Pixel Format           | Decode support      | Encode support      |
 |------------------------|---------------------|---------------------|
 | RGB121                 | <center>✔️</center> | <center>❌</center>  |
 | ALPHA4                 | <center>✔️</center> | <center>❌</center>  |
