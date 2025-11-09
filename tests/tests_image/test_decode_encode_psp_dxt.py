@@ -7,6 +7,7 @@ import os
 
 import pytest
 
+from reversebox.image.common import get_bc_image_data_size
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -29,13 +30,15 @@ def test_decode_and_encode_all_psp_dxt_images():
         ImageDecodeEncodeTestEntry(img_file_path="monkey_PSP_DXT1.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.PSP_DXT1),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_PSP_DXT3.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.PSP_DXT3),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_PSP_DXT5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.PSP_DXT5),
-
     ]
 
     for test_entry in image_test_entries:
 
         bin_file = open(_get_test_image_path(test_entry.img_file_path), "rb")
         encoded_image_data = bin_file.read()
+
+        calculated_bc_size: int = get_bc_image_data_size(test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        assert len(encoded_image_data) == calculated_bc_size
 
         decoded_image_data: bytes = image_decoder.decode_psp_dxt_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
 

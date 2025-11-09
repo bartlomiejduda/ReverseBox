@@ -243,10 +243,12 @@ def is_compressed_image_format(image_format: ImageFormats) -> bool:
 
 
 def get_block_data_size(img_format: ImageFormats) -> int:
-    if img_format in (ImageFormats.BC1_DXT1, ImageFormats.BC4_UNORM):
+    if img_format in (ImageFormats.BC1_DXT1, ImageFormats.PSP_DXT1, ImageFormats.BC4_UNORM):
         return 8
     elif img_format in (ImageFormats.BC2_DXT3,
+                        ImageFormats.PSP_DXT3,
                         ImageFormats.BC3_DXT5,
+                        ImageFormats.PSP_DXT5,
                         ImageFormats.BC5_UNORM,
                         ImageFormats.BC6H_UF16,
                         ImageFormats.BC6H_SF16,
@@ -257,8 +259,8 @@ def get_block_data_size(img_format: ImageFormats) -> int:
         return 1
 
 
-def get_bc_image_data_size(image_height: int, image_width: int, image_format: ImageFormats) -> int:
-    return ((image_height + 3) // 4) * ((image_width + 3) // 4) * get_block_data_size(image_format)
+def get_bc_image_data_size(image_width: int, image_height: int, image_format: ImageFormats) -> int:
+    return ((image_width + 3) // 4) * ((image_height + 3) // 4) * get_block_data_size(image_format)
 
 
 def calculate_aligned_value(value: int, multiple: int) -> int:
