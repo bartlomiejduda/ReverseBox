@@ -113,8 +113,24 @@ or software researchers).
   - (game-specific) E-racer (TODO) ❌
   - (game-specific) Pivotal Games DAT Hash ✔️
 
-* Image<br>
-Decoding and encoding images with pixel formats <br>mentioned in the following table:
+* Image
+  - 3DS Swizzling/Twiddling ✔️
+  - CMPR Swizzling/Twiddling ✔️
+  - PS2 Swizzling/Twiddling ✔️
+  - PS2 Palette Swizzling/Twiddling ✔️
+  - PS4 Swizzling/Twiddling ✔️
+  - PSP Swizzling/Twiddling ✔️
+  - PS Vita Swizzling/Twiddling ✔️
+  - XBOX 360 Swizzling/Twiddling ✔️
+  - GameCube/WII Swizzling/Twiddling ✔️
+  - Switch Swizzling/Twiddling ✔️
+  - WII U Swizzling/Twiddling ✔️
+  - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
+  - Dreamcast Swizzling/Twiddling (Morton Order) ✔️
+  - BC Swizzling/Twiddling ✔️
+  - PS2 GS Texture Swizzling/Twiddling ✔️
+  - Generating mipmaps ✔️
+  - Decoding and encoding images with pixel formats <br>mentioned in the following table:
 
 | Image Format           | Decode support      | Encode support      |
 |------------------------|---------------------|---------------------|
@@ -271,23 +287,6 @@ Decoding and encoding images with pixel formats <br>mentioned in the following t
 | B32                    | <center>✔️</center> | <center>❌</center>  |
 | BUMPMAP_SR             | <center>✔️</center> | <center>❌</center>  |
 
-
-  - 3DS Swizzling/Twiddling ✔️
-  - CMPR Swizzling/Twiddling ✔️
-  - PS2 Swizzling/Twiddling ✔️
-  - PS2 Palette Swizzling/Twiddling ✔️
-  - PS4 Swizzling/Twiddling ✔️
-  - PSP Swizzling/Twiddling ✔️
-  - PS Vita Swizzling/Twiddling ✔️
-  - XBOX 360 Swizzling/Twiddling ✔️
-  - GameCube/WII Swizzling/Twiddling ✔️
-  - Switch Swizzling/Twiddling ✔️
-  - WII U Swizzling/Twiddling ✔️
-  - XBOX/PS3 Swizzling/Twiddling (Morton Order) ✔️
-  - Dreamcast Swizzling/Twiddling (Morton Order) ✔️
-  - BC Swizzling/Twiddling ✔️
-  - PS2 GS Texture Swizzling/Twiddling ✔️
-  - Generating mipmaps ✔️
 
 * IO
   - File Reader ✔️
