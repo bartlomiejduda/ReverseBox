@@ -305,23 +305,27 @@ class ImageEncoder:
             raise Exception(f"[1] Bits_per_pixel={bits_per_pixel} not supported!")
 
         read_offset = 0
-        image_endianess_format: str = self._get_endianess_format(image_endianess)
+        source_image_endianess_format: str = self._get_endianess_format("little")  # always RGBA8888 little endian
 
         for i in range(len(image_data) // source_image_bytes_per_pixel):
             image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
-            pixel_int: int = get_uint32(image_pixel, image_endianess_format)
+            pixel_int: int = get_uint32(image_pixel, source_image_endianess_format)
             read_offset += source_image_bytes_per_pixel
+            encoded_pixel_data = encode_function(self, pixel_int)  # encode target pixel in little endian order
+
+            if image_endianess == "big":
+                encoded_pixel_data = encoded_pixel_data[::-1]  # change pixel endianess to big endian
 
             if bits_per_pixel == 4:
                 pass
             elif bits_per_pixel == 8:
                 pass
             elif bits_per_pixel == 16:
-                texture_data[i * 2: (i + 1) * 2] = encode_function(self, pixel_int)  # noqa
+                texture_data[i * 2: (i + 1) * 2] = encoded_pixel_data
             elif bits_per_pixel == 24:
-                texture_data[i * 3: (i + 1) * 3] = encode_function(self, pixel_int)  # noqa
+                texture_data[i * 3: (i + 1) * 3] = encoded_pixel_data
             elif bits_per_pixel == 32:
-                texture_data[i * 4: (i + 1) * 4] = encode_function(self, pixel_int)  # noqa
+                texture_data[i * 4: (i + 1) * 4] = encoded_pixel_data
             else:
                 raise Exception(f"[2] Bits_per_pixel={bits_per_pixel} not supported!")
 

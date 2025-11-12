@@ -34,6 +34,7 @@ def test_decode_and_encode_all_generic_images():
     image_test_entries = [
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGBA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGBA8888, number_of_mipmaps=0),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_N64_BGR565_BigEndian_unswizzled.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565, image_endianess="big"),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA8888),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB888),
@@ -59,9 +60,13 @@ def test_decode_and_encode_all_generic_images():
         bin_file = open(_get_test_image_path(test_entry.img_file_path), "rb")
         encoded_image_data = bin_file.read()
         bin_file.close()
-        decoded_image_data: bytes = image_decoder.decode_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, image_endianess=test_entry.image_endianess if test_entry.image_endianess is not None else "little")
-        re_encoded_image_data: bytes = image_encoder.encode_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format, number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps)
-        re_decoded_image_data: bytes = image_decoder.decode_image(re_encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format)
+        decoded_image_data: bytes = image_decoder.decode_image(encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format,
+                                                               image_endianess=test_entry.image_endianess if test_entry.image_endianess is not None else "little")
+        re_encoded_image_data: bytes = image_encoder.encode_image(decoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format,
+                                                                  number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps,
+                                                                  image_endianess=test_entry.image_endianess if test_entry.image_endianess is not None else "little")
+        re_decoded_image_data: bytes = image_decoder.decode_image(re_encoded_image_data, test_entry.img_width, test_entry.img_height, test_entry.img_format,
+                                                                  image_endianess=test_entry.image_endianess if test_entry.image_endianess is not None else "little")
 
         # performance test logic start ###################################################################################
         if PERFORMANCE_TEST_FLAG:
