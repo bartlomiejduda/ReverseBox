@@ -105,7 +105,7 @@ class ImageFormats(Enum):
     PAL32 = "pal32"
 
     # N64 / WII formats
-    N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp
+    N64_BGR5A3 = "n64_bgr5a3"  # COLOR+ALPHA, 16bpp
     N64_RGBA32 = "n64_rgba32"  # COLOR+ALPHA, 32bpp
     N64_CMPR = "n64_cmpr"  # COLOR+ALPHA, 4bpp, compressed
     N64_I4 = "n64_i4"  # GRAY, 4bpp

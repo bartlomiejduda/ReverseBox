@@ -296,14 +296,14 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_rgb5A3_pixel(self, pixel_int: int) -> bytes:
+    def _decode_bgr5A3_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
-        if pixel_int & 0x8000:  # rgb555
+        if pixel_int & 0x8000:  # bgr555
             p[0] = (((pixel_int >> 10) & 0x1F) * 0xFF // 0x1F)
             p[1] = (((pixel_int >> 5) & 0x1F) * 0xFF // 0x1F)
             p[2] = (((pixel_int >> 0) & 0x1F) * 0xFF // 0x1F)
             p[3] = 0xFF
-        else:  # argb3444
+        else:  # bgra4443
             p[0] = (((pixel_int >> 8) & 0x0F) * 0xFF // 0x0F)
             p[1] = (((pixel_int >> 4) & 0x0F) * 0xFF // 0x0F)
             p[2] = (((pixel_int >> 0) & 0x0F) * 0xFF // 0x0F)
@@ -695,7 +695,7 @@ class ImageDecoder:
         ImageFormats.ARGB1555: (_decode_argb1555_pixel, 16, get_uint16),
         ImageFormats.ABGR1555: (_decode_abgr1555_pixel, 16, get_uint16),
         ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),  # GRAY+ALPHA, 16bpp
-        ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
+        ImageFormats.N64_BGR5A3: (_decode_bgr5A3_pixel, 16, get_uint16),
         ImageFormats.R16: (_decode_r_only_pixel, 16, get_uint16),
         ImageFormats.G16: (_decode_g_only_pixel, 16, get_uint16),
         ImageFormats.B16: (_decode_b_only_pixel, 16, get_uint16),
