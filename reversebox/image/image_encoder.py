@@ -88,6 +88,26 @@ class ImageEncoder:
         rgb565_bytes[1] = (rgb565 >> 8) & 0xFF
         return rgb565_bytes
 
+    def _encode_bgr5a3_pixel(self, pixel_int: int) -> bytearray:
+        r = (pixel_int >> 0) & 0xFF
+        g = (pixel_int >> 8) & 0xFF
+        b = (pixel_int >> 16) & 0xFF
+        a = (pixel_int >> 24) & 0xFF
+
+        if a >= 248:
+            r5 = (r * 31 + 127) // 255
+            g5 = (g * 31 + 127) // 255
+            b5 = (b * 31 + 127) // 255
+            pixel = (0x8000 | (r5 << 10) | (g5 << 5) | (b5 << 0))
+        else:
+            r4 = (r * 15 + 127) // 255
+            g4 = (g * 15 + 127) // 255
+            b4 = (b * 15 + 127) // 255
+            a3 = (a * 7 + 127) // 255
+            pixel = ((a3 << 12) | (r4 << 8) | (g4 << 4) | (b4 << 0))
+
+        return bytearray([pixel & 0xFF, (pixel >> 8) & 0xFF])
+
     def _encode_rgb565_pixel(self, pixel_int: int) -> bytearray:
         b = (pixel_int >> 0) & 0xFF
         g = (pixel_int >> 8) & 0xFF
@@ -263,6 +283,7 @@ class ImageEncoder:
         # image_format: (encode_function, bits_per_pixel, read_function, write_function)
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
+        ImageFormats.N64_BGR5A3: (_encode_bgr5a3_pixel, 16, get_uint16, set_uint16),
         ImageFormats.ABGR4444: (_encode_abgr4444_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGRA4444: (_encode_bgra4444_pixel, 16, get_uint16, set_uint16),
         ImageFormats.RGBX4444: (_encode_rgbx4444_pixel, 16, get_uint16, set_uint16),

@@ -36,7 +36,7 @@ def test_decode_and_encode_all_generic_images():
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGR565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_N64_BGR565_BigEndian_unswizzled.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGR565, image_endianess="big"),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_N64_BGRA32_BigEndian_unswizzled.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA8888, image_endianess="big"),
-        # ImageDecodeEncodeTestEntry(img_file_path="monkey_N64_BGR5A3_BigEndian_unswizzled.bin", debug_flag=True, img_width=256, img_height=128, img_format=ImageFormats.N64_BGR5A3, image_endianess="big"),
+        ImageDecodeEncodeTestEntry(img_file_path="monkey_N64_BGR5A3_BigEndian_unswizzled.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.N64_BGR5A3, image_endianess="big"),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_BGRA8888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.BGRA8888),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB565.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB565),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_RGB888.bin", debug_flag=False, img_width=256, img_height=128, img_format=ImageFormats.RGB888),
