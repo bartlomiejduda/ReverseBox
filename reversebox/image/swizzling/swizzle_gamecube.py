@@ -1,5 +1,5 @@
 """
-Copyright © 2024  Bartłomiej Duda
+Copyright © 2024-2025  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -7,6 +7,7 @@ from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 
 # Swizzling used in GameCube and WII games
 # e.g. GSH files from FIFA 09 (WII)
+# e.g. BTI files from Mario Kart (WII) (see https://rewiki.miraheze.org/wiki/BTI_Image)
 
 # fmt: off
 
@@ -67,19 +68,23 @@ def get_pixel_offset(x: int, y: int, img_width: int, bpp: int) -> int:
 def unswizzle_gamecube(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     unswizzled_data = bytearray(len(image_data))
     destination_index: int = 0
-    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
 
     for y in range(img_height):
         for x in range(img_width):
             index = get_pixel_offset(x, y, img_width, bpp)
 
-            if bpp == 32:
+            if bpp == 4:
+                unswizzled_data[destination_index] = image_data[index]
+                if x & 1:
+                    destination_index += 1
+            elif bpp == 32:
                 unswizzled_data[destination_index] = image_data[index]
                 unswizzled_data[destination_index+1] = image_data[index+1]
                 unswizzled_data[destination_index+2] = image_data[index+32]
                 unswizzled_data[destination_index+3] = image_data[index+33]
                 destination_index += 4
             else:
+                bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
                 unswizzled_data[destination_index: destination_index + bytes_per_pixel] = image_data[index: index + bytes_per_pixel]
                 destination_index += bytes_per_pixel
 
@@ -89,19 +94,23 @@ def unswizzle_gamecube(image_data: bytes, img_width: int, img_height: int, bpp: 
 def swizzle_gamecube(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     swizzled_data = bytearray(len(image_data))
     destination_index: int = 0
-    bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
 
     for y in range(img_height):
         for x in range(img_width):
             index = get_pixel_offset(x, y, img_width, bpp)
 
-            if bpp == 32:
+            if bpp == 4:
+                swizzled_data[index] = image_data[destination_index]
+                if x & 1:
+                    destination_index += 1
+            elif bpp == 32:
                 swizzled_data[index] = image_data[destination_index]
                 swizzled_data[index+1] = image_data[destination_index+1]
                 swizzled_data[index+32] = image_data[destination_index+2]
                 swizzled_data[index+33] = image_data[destination_index+3]
                 destination_index += 4
             else:
+                bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(bpp)
                 swizzled_data[index: index + bytes_per_pixel] = image_data[destination_index: destination_index + bytes_per_pixel]
                 destination_index += bytes_per_pixel
 
