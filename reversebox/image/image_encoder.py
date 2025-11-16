@@ -54,6 +54,10 @@ class ImageEncoder:
         value4 = r // 0x11
         return bytes([value4 & 0x0F])
 
+    def _encode_i8_pixel(self, pixel_int: int) -> bytes:
+        r = pixel_int & 0xFF
+        return bytes([r])
+
     def _encode_rgba8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = (pixel_int >> 0) & 0xff
@@ -288,6 +292,7 @@ class ImageEncoder:
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel, read_function, write_function)
         ImageFormats.N64_I4: (_encode_i4_pixel, 4, get_uint8, set_uint8),
+        ImageFormats.N64_I8: (_encode_i8_pixel, 8, get_uint8, set_uint8),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.N64_BGR5A3: (_encode_bgr5a3_pixel, 16, get_uint16, set_uint16),
