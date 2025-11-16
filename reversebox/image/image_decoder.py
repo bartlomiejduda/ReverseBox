@@ -75,12 +75,12 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_alpha_16x_pixel(self, pixel_int: int) -> bytes:
+    def _decode_alpha_17x_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = 0xFF
         p[1] = 0xFF
         p[2] = 0xFF
-        p[3] = (16 * pixel_int) & 0xFF
+        p[3] = (17 * pixel_int) & 0xFF
         return p
 
     def _decode_alpha_only_pixel(self, pixel_int: int) -> bytes:
@@ -666,12 +666,12 @@ class ImageDecoder:
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
         ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),  # GRAY, 4bpp
         ImageFormats.ALPHA4: (_decode_alpha_only_pixel, 4, get_uint8),
-        ImageFormats.ALPHA4_16X: (_decode_alpha_16x_pixel, 4, get_uint8),
+        ImageFormats.ALPHA4_17X: (_decode_alpha_17x_pixel, 4, get_uint8),
 
         ImageFormats.RGB121_BYTE: (_decode_rgb121_byte_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),
         ImageFormats.ALPHA8: (_decode_alpha_only_pixel, 8, get_uint8),
-        ImageFormats.ALPHA8_16X: (_decode_alpha_16x_pixel, 8, get_uint8),
+        ImageFormats.ALPHA8_17X: (_decode_alpha_17x_pixel, 8, get_uint8),
         ImageFormats.LA44: (_decode_la44_pixel, 8, get_uint8),
         ImageFormats.RGBX2222: (_decode_rgbx2222_pixel, 8, get_uint8),
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),

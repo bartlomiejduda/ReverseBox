@@ -136,13 +136,13 @@ or software researchers).
 |------------------------|---------------------|---------------------|
 | RGB121                 | <center>✔️</center> | <center>❌</center>  |
 | ALPHA4                 | <center>✔️</center> | <center>❌</center>  |
-| ALPHA4_16X             | <center>✔️</center> | <center>❌</center>  |
+| ALPHA4_17X             | <center>✔️</center> | <center>✔️</center> |
 | RGB121_BYTE            | <center>✔️</center> | <center>❌</center>  |
 | RGBA2222               | <center>✔️</center> | <center>❌</center>  |
 | RGBX2222               | <center>✔️</center> | <center>❌</center>  |
 | GRAY8                  | <center>✔️</center> | <center>❌</center>  |
 | ALPHA8                 | <center>✔️</center> | <center>❌</center>  |
-| ALPHA8_16X             | <center>✔️</center> | <center>❌</center>  |
+| ALPHA8_17X             | <center>✔️</center> | <center>❌</center>  |
 | LA44                   | <center>✔️</center> | <center>❌</center>  |
 | RGBX332 (RGB8)         | <center>✔️</center> | <center>❌</center>  |
 | BGRX332 (BGR8)         | <center>✔️</center> | <center>❌</center>  |
