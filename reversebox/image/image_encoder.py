@@ -26,6 +26,7 @@ from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.io_files.bytes_handler import BytesHandler
 from reversebox.io_files.bytes_helper_functions import (
+    get_uint8,
     get_uint16,
     get_uint24,
     get_uint32,
@@ -47,6 +48,11 @@ class ImageEncoder:
 
     def __init__(self):
         pass
+
+    def _encode_i4_pixel(self, pixel_int: int) -> bytes:
+        r = pixel_int & 0xFF
+        value4 = r // 0x11
+        return bytes([value4 & 0x0F])
 
     def _encode_rgba8888_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
@@ -281,6 +287,7 @@ class ImageEncoder:
     # target format is one of the listed below
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel, read_function, write_function)
+        ImageFormats.N64_I4: (_encode_i4_pixel, 4, get_uint8, set_uint8),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.N64_BGR5A3: (_encode_bgr5a3_pixel, 16, get_uint16, set_uint16),
@@ -328,27 +335,45 @@ class ImageEncoder:
         read_offset = 0
         source_image_endianess_format: str = self._get_endianess_format("little")  # always RGBA8888 little endian
 
-        for i in range(len(image_data) // source_image_bytes_per_pixel):
-            image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
-            pixel_int: int = get_uint32(image_pixel, source_image_endianess_format)
-            read_offset += source_image_bytes_per_pixel
-            encoded_pixel_data = encode_function(self, pixel_int)  # encode target pixel in little endian order
+        if bits_per_pixel == 4:
+            for i in range(img_width * img_height // 2):
+                image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
+                pixel_int: int = get_uint32(image_pixel, source_image_endianess_format)
+                read_offset += source_image_bytes_per_pixel
+                encoded_pixel_data1 = encode_function(self, pixel_int)
 
-            if image_endianess == "big":
-                encoded_pixel_data = encoded_pixel_data[::-1]  # change pixel endianess to big endian
+                image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
+                pixel_int: int = get_uint32(image_pixel, source_image_endianess_format)
+                read_offset += source_image_bytes_per_pixel
+                encoded_pixel_data2 = encode_function(self, pixel_int)
 
-            if bits_per_pixel == 4:
-                pass
-            elif bits_per_pixel == 8:
-                pass
-            elif bits_per_pixel == 16:
-                texture_data[i * 2: (i + 1) * 2] = encoded_pixel_data
-            elif bits_per_pixel == 24:
-                texture_data[i * 3: (i + 1) * 3] = encoded_pixel_data
-            elif bits_per_pixel == 32:
-                texture_data[i * 4: (i + 1) * 4] = encoded_pixel_data
-            else:
-                raise Exception(f"[2] Bits_per_pixel={bits_per_pixel} not supported!")
+                if image_endianess == "little":
+                    encoded_pixel = (encoded_pixel_data2[0] << 4) | encoded_pixel_data1[0]
+                elif image_endianess == "big":
+                    encoded_pixel = (encoded_pixel_data1[0] << 4) | encoded_pixel_data2[0]
+                else:
+                    raise Exception("Not supported endianess!")
+                texture_data[i] = encoded_pixel
+        else:
+            for i in range(len(image_data) // source_image_bytes_per_pixel):
+                image_pixel: bytes = image_handler.get_bytes(read_offset, source_image_bytes_per_pixel)
+                pixel_int: int = get_uint32(image_pixel, source_image_endianess_format)
+                read_offset += source_image_bytes_per_pixel
+                encoded_pixel_data = encode_function(self, pixel_int)  # encode target pixel in little endian order
+
+                if image_endianess == "big":
+                    encoded_pixel_data = encoded_pixel_data[::-1]  # change pixel endianess to big endian
+
+                if bits_per_pixel == 8:
+                    texture_data[i: (i + 1)] = encoded_pixel_data
+                elif bits_per_pixel == 16:
+                    texture_data[i * 2: (i + 1) * 2] = encoded_pixel_data
+                elif bits_per_pixel == 24:
+                    texture_data[i * 3: (i + 1) * 3] = encoded_pixel_data
+                elif bits_per_pixel == 32:
+                    texture_data[i * 4: (i + 1) * 4] = encoded_pixel_data
+                else:
+                    raise Exception(f"[2] Bits_per_pixel={bits_per_pixel} not supported!")
 
         return texture_data
 
