@@ -68,6 +68,11 @@ class ImageEncoder:
         r = pixel_int & 0xFF
         return bytes([r])
 
+    def _encode_ia8_pixel(self, pixel_int: int) -> bytes:
+        r = (pixel_int >> 0) & 0xFF
+        a = (pixel_int >> 24) & 0xFF
+        return bytes((r & 0xFF, a & 0xFF))
+
     def _encode_alpha_17x_pixel(self, pixel_int: int) -> bytes:
         alpha_value = (pixel_int >> 24) & 0xff
         alpha_value = alpha_value // 17
@@ -310,6 +315,7 @@ class ImageEncoder:
         ImageFormats.ALPHA4_17X: (_encode_alpha_17x_pixel, 4, get_uint8, set_uint8),
         ImageFormats.N64_IA4: (_encode_ia4_pixel, 8, get_uint8, set_uint8),
         ImageFormats.N64_I8: (_encode_i8_pixel, 8, get_uint8, set_uint8),
+        ImageFormats.N64_IA8: (_encode_ia8_pixel, 16, get_uint8, set_uint8),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.N64_BGR5A3: (_encode_bgr5a3_pixel, 16, get_uint16, set_uint16),
