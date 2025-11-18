@@ -21,6 +21,7 @@ class ImageFormats(Enum):
     RGB121 = "rgb121"  # PIX_FMT_RGB4 / packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb)
     ALPHA4 = "alpha4"  # (A4 / Alpha 4-bit)
     ALPHA4_17X = "alpha4_17x"
+    N64_I4 = "n64_i4"  # GRAY, 4bpp
 
     # 8-bit
     RGBX2222 = "rgbx2222"
@@ -28,9 +29,10 @@ class ImageFormats(Enum):
     RGB121_BYTE = "rgb121_byte"  # PIX_FMT_RGB4_BYTE / packed RGB 1:2:1, 8bpp, (msb)1R 2G 1B(lsb)
     RGB332 = "rgb332"  # PIX_FMT_RGB8 / packed RGB 3:3:2, 8bpp, (msb)2R 3G 3B(lsb)
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
-    GRAY8 = "gray8"  # PIX_FMT_GRAY8 / Y, 8bpp  (Y800 / L8 / Luminance 8-bit)
     ALPHA8 = "alpha8"  # (A8 / Alpha 8-bit)
     ALPHA8_17X = "alpha8_17x"
+    N64_I8 = "n64_i8"  # GRAY, 8bpp
+    N64_IA4 = "n64_ia4"  # GRAY+ALPHA, 8bpp
     LA44 = "la44"  # (LA4 / L4A4 / Luminance 4-bit and Alpha 4-bit)
     R8 = "r8"
     G8 = "g8"
@@ -71,6 +73,10 @@ class ImageFormats(Enum):
     G16 = "g16"
     B16 = "b16"
 
+    N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp
+    N64_BGR5A3 = "n64_bgr5a3"  # COLOR+ALPHA, 16bpp
+    N64_IA8 = "n64_ia8"  # GRAY+ALPHA, 16bpp
+
     # 24-bit
     RGBX6666 = "rgbx6666"
     RGBA6666 = "rgba6666"
@@ -91,6 +97,7 @@ class ImageFormats(Enum):
     R32 = "r32"
     G32 = "g32"
     B32 = "b32"
+    N64_RGBA32 = "n64_rgba32"  # COLOR+ALPHA, 32bpp
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B
@@ -104,19 +111,10 @@ class ImageFormats(Enum):
     PAL_I8A8 = "pal_i8a8"
     PAL32 = "pal32"
 
-    # N64 / WII formats
-    N64_RGB5A3 = "n64_rgb5a3"  # COLOR+ALPHA, 16bpp
-    N64_BGR5A3 = "n64_bgr5a3"  # COLOR+ALPHA, 16bpp
-    N64_RGBA32 = "n64_rgba32"  # COLOR+ALPHA, 32bpp
-    N64_CMPR = "n64_cmpr"  # COLOR+ALPHA, 4bpp, compressed
-    N64_I4 = "n64_i4"  # GRAY, 4bpp
-    N64_I8 = "n64_i8"  # GRAY, 8bpp
-    N64_IA4 = "n64_ia4"  # GRAY+ALPHA, 8bpp
-    N64_IA8 = "n64_ia8"  # GRAY+ALPHA, 16bpp
-
     # compressed Formats
     BC1_DXT1 = "bc1_dxt1"
     PSP_DXT1 = "psp_dxt1"
+    N64_CMPR = "n64_cmpr"  # COLOR+ALPHA, 4bpp, compressed, similar to DXT1
     DXT2 = "dxt2"
     BC2_DXT3 = "bc2_dxt3"
     PSP_DXT3 = "psp_dxt3"

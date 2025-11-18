@@ -68,7 +68,7 @@ def test_nintendo_switch_unswizzle_and_swizzle_gray8():
 
     img_width = 320
     img_height = 512
-    image_format = ImageFormats.GRAY8
+    image_format = ImageFormats.N64_I8
 
     unswizzled_file_data = unswizzle_switch(swizzled_file_data, img_width, img_height,
                                             bytes_per_block=1, block_height=16, width_pad=8, height_pad=8)

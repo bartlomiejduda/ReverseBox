@@ -31,7 +31,7 @@ def test_morton_dreamcast_unswizzle_and_swizzle():
     img_width = 512
     img_height = 512
     bpp = 8
-    image_format = ImageFormats.GRAY8
+    image_format = ImageFormats.N64_I8
 
     unswizzled_file_data = unswizzle_psvita_dreamcast(swizzled_file_data, img_width, img_height, bpp, block_width=1, block_height=1)
 
