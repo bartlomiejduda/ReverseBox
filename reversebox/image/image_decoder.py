@@ -12,7 +12,7 @@ from reversebox.image.decoders.compressed_decoder_encoder import (
     CompressedImageDecoderEncoder,
 )
 from reversebox.image.decoders.gst_decoder_encoder import GSTImageDecoderEncoder
-from reversebox.image.decoders.n64_decoder import N64Decoder
+from reversebox.image.decoders.n64_decoder_encoder import N64ImageDecoderEncoder
 from reversebox.image.decoders.psp_dxt_decoder import PSPDXTDecoder
 from reversebox.image.decoders.pvrtexlib_decoder_encoder import (
     PvrTexlibImageDecoderEncoder,
@@ -939,7 +939,7 @@ class ImageDecoder:
         return bumpmap_decoder.decode_bumpmap_image_main(image_data, img_width, img_height, image_format)
 
     def decode_n64_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        n64_decoder = N64Decoder()
+        n64_decoder = N64ImageDecoderEncoder()
         return n64_decoder.decode_n64_image_main(image_data, img_width, img_height, image_format)
 
     def decode_psp_dxt_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:

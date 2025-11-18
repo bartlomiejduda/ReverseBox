@@ -244,7 +244,11 @@ def is_compressed_image_format(image_format: ImageFormats) -> bool:
 
 
 def get_block_data_size(img_format: ImageFormats) -> int:
-    if img_format in (ImageFormats.BC1_DXT1, ImageFormats.PSP_DXT1, ImageFormats.BC4_UNORM):
+    if img_format in (ImageFormats.BC1_DXT1,
+                      ImageFormats.PSP_DXT1,
+                      ImageFormats.BC4_UNORM,
+                      ImageFormats.N64_CMPR,
+                      ):
         return 8
     elif img_format in (ImageFormats.BC2_DXT3,
                         ImageFormats.PSP_DXT3,
