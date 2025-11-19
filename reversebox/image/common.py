@@ -85,7 +85,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
         return 2
     elif image_format in (ImageFormats.RGB121,
                           ImageFormats.N64_CMPR,
-                          ImageFormats.N64_I4,
+                          ImageFormats.GRAY4,
                           ImageFormats.BC1_DXT1,
                           ImageFormats.PSP_DXT1,
                           ImageFormats.BC4_UNORM,
@@ -105,7 +105,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.ALPHA8,
                           ImageFormats.ALPHA8_17X,
                           ImageFormats.LA44,
-                          ImageFormats.N64_I8,
+                          ImageFormats.GRAY8,
                           ImageFormats.N64_IA4,
                           ImageFormats.DXT2,
                           ImageFormats.BC2_DXT3,

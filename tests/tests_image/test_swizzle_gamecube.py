@@ -73,7 +73,7 @@ def test_gamecube_unswizzle_and_swizzle_font1_4bit():
     img_width = 128
     img_height = 1152
     bpp = 4
-    image_format = ImageFormats.N64_I4
+    image_format = ImageFormats.GRAY4
 
     unswizzled_file_data = unswizzle_gamecube(
         swizzled_file_data, img_width, img_height, bpp
@@ -115,7 +115,7 @@ def test_gamecube_unswizzle_and_swizzle_monkey_i4_4bit():
     img_width = 256
     img_height = 128
     bpp = 4
-    image_format = ImageFormats.N64_I4
+    image_format = ImageFormats.GRAY4
 
     unswizzled_file_data = unswizzle_gamecube(
         swizzled_file_data, img_width, img_height, bpp

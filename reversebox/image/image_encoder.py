@@ -312,10 +312,10 @@ class ImageEncoder:
     # target format is one of the listed below
     generic_data_formats = {
         # image_format: (encode_function, bits_per_pixel, read_function, write_function)
-        ImageFormats.N64_I4: (_encode_i4_pixel, 4, get_uint8, set_uint8),
+        ImageFormats.GRAY4: (_encode_i4_pixel, 4, get_uint8, set_uint8),
         ImageFormats.ALPHA4_17X: (_encode_alpha_17x_pixel, 4, get_uint8, set_uint8),
         ImageFormats.N64_IA4: (_encode_ia4_pixel, 8, get_uint8, set_uint8),
-        ImageFormats.N64_I8: (_encode_i8_pixel, 8, get_uint8, set_uint8),
+        ImageFormats.GRAY8: (_encode_i8_pixel, 8, get_uint8, set_uint8),
         ImageFormats.N64_IA8: (_encode_ia8_pixel, 16, get_uint8, set_uint8),
         ImageFormats.RGB565: (_encode_rgb565_pixel, 16, get_uint16, set_uint16),
         ImageFormats.BGR565: (_encode_bgr565_pixel, 16, get_uint16, set_uint16),

@@ -596,7 +596,7 @@ class ImageDecoder:
 
     # L4 (Luminance 4-bit)
     # GRAY4
-    def _decode_i4_pixel(self, pixel_int: int) -> bytes:
+    def _decode_gray4_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = (pixel_int * 0x11) & 0xFF
         p[1] = (pixel_int * 0x11) & 0xFF
@@ -606,7 +606,7 @@ class ImageDecoder:
 
     # L8 (Luminance 8-bit)
     # I64_I8 / GRAY8
-    def _decode_i8_pixel(self, pixel_int: int) -> bytes:
+    def _decode_gray8_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = pixel_int & 0xFF
         p[1] = pixel_int & 0xFF
@@ -659,7 +659,7 @@ class ImageDecoder:
     generic_data_formats = {
         # image_format: (decode_function, bits_per_pixel, image_entry_read_function)
         ImageFormats.RGB121: (_decode_rgb121_byte_pixel, 4, get_uint8),
-        ImageFormats.N64_I4: (_decode_i4_pixel, 4, get_uint8),  # GRAY, 4bpp
+        ImageFormats.GRAY4: (_decode_gray4_pixel, 4, get_uint8),  # GRAY, 4bpp, same as N64_I4
         ImageFormats.ALPHA4: (_decode_alpha_only_pixel, 4, get_uint8),
         ImageFormats.ALPHA4_17X: (_decode_alpha_17x_pixel, 4, get_uint8),
 
@@ -671,7 +671,7 @@ class ImageDecoder:
         ImageFormats.RGBA2222: (_decode_rgba2222_pixel, 8, get_uint8),
         ImageFormats.RGB332: (_decode_rgb332_pixel, 8, get_uint8),
         ImageFormats.BGR332: (_decode_bgr332_pixel, 8, get_uint8),
-        ImageFormats.N64_I8: (_decode_i8_pixel, 8, get_uint8),  # GRAY, 8bpp
+        ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),  # GRAY, 8bpp, same as N64_I8
         ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),  # GRAY+ALPHA, 8bpp
         ImageFormats.R8: (_decode_r_only_pixel, 8, get_uint8),
         ImageFormats.G8: (_decode_g_only_pixel, 8, get_uint8),

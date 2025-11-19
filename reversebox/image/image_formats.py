@@ -21,7 +21,7 @@ class ImageFormats(Enum):
     RGB121 = "rgb121"  # PIX_FMT_RGB4 / packed RGB 1:2:1 bitstream, 4bpp, (msb)1R 2G 1B(lsb)
     ALPHA4 = "alpha4"  # (A4 / Alpha 4-bit)
     ALPHA4_17X = "alpha4_17x"
-    N64_I4 = "n64_i4"  # GRAY, 4bpp
+    GRAY4 = "gray4"  # GRAY, 4bpp, same as N64_I4
 
     # 8-bit
     RGBX2222 = "rgbx2222"
@@ -31,7 +31,7 @@ class ImageFormats(Enum):
     BGR332 = "bgr332"  # PIX_FMT_BGR8 / packed RGB 3:3:2, 8bpp, (msb)2B 3G 3R(lsb)
     ALPHA8 = "alpha8"  # (A8 / Alpha 8-bit)
     ALPHA8_17X = "alpha8_17x"
-    N64_I8 = "n64_i8"  # GRAY, 8bpp
+    GRAY8 = "gray8"  # GRAY, 8bpp
     N64_IA4 = "n64_ia4"  # GRAY+ALPHA, 8bpp
     LA44 = "la44"  # (LA4 / L4A4 / Luminance 4-bit and Alpha 4-bit)
     R8 = "r8"

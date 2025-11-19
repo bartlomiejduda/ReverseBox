@@ -191,8 +191,8 @@ or software researchers).
 | PAL_I8A8               | <center>✔️</center> | <center>❌</center>  |
 | N64_RGB5A3             | <center>✔️</center> | <center>❌</center>  |
 | N64_BGR5A3             | <center>✔️</center> | <center>✔️</center> |
-| N64_I4                 | <center>✔️</center> | <center>✔️</center> |
-| N64_I8                 | <center>✔️</center> | <center>✔️</center> |
+| N64_I4 / GRAY4         | <center>✔️</center> | <center>✔️</center> |
+| N64_I8 / GRAY8         | <center>✔️</center> | <center>✔️</center> |
 | N64_IA4                | <center>✔️</center> | <center>✔️</center> |
 | N64_IA8                | <center>✔️</center> | <center>✔️</center> |
 | N64_RGBA32             | <center>✔️</center> | <center>❌</center>  |
