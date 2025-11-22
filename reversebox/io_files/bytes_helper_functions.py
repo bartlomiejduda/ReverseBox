@@ -8,6 +8,18 @@ import struct
 
 # e.g. number=2273, number_of_bits=3, position=5  result --> 7
 def get_bits(number: int, number_of_bits: int, position: int) -> int:
+    if not isinstance(number, int):
+        raise TypeError("number must be an integer")
+    if not isinstance(number_of_bits, int):
+        raise TypeError("number_of_bits must be an integer")
+    if not isinstance(position, int):
+        raise TypeError("position must be an integer")
+
+    if number_of_bits <= 0:
+        raise ValueError("number_of_bits must be > 0")
+    if position < 0:
+        raise ValueError("position must be >= 0")
+
     return ((1 << number_of_bits) - 1) & (number >> position)
 
 

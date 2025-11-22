@@ -32,10 +32,3 @@ class BytesHandler:
     def bytes_to_bitstring(self):
         binary_string = "".join(format(byte, "08b") for byte in self.input_bytes)
         return binary_string
-
-    # TODO - test if this works
-    def get_int_from_bits(self, n: int, start_bit: int, number_of_bits: int) -> int:
-        n = n >> (31 - start_bit - number_of_bits)
-        mask = ~(-1 << number_of_bits)
-        result = n & mask
-        return result
