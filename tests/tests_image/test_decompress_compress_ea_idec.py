@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from reversebox.compression.compression_ea_idec import decompress_ea_idec
+from reversebox.compression.compression_ea_idec import EAIDECCompressionHandler
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
@@ -33,7 +33,7 @@ def test_decompress_and_compress_ea_idec_theme_park_world():
     image_format = ImageFormats.BGRA8888
 
     compressed_file_data: bytes = compressed_file.read()
-    decompressed_file_data: bytes = decompress_ea_idec(compressed_file_data)
+    decompressed_file_data: bytes = EAIDECCompressionHandler().decompress_ea_idec(compressed_file_data)
 
     # debug start ###############################################################################################
     is_debug = False
