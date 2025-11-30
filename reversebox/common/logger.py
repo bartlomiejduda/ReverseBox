@@ -14,7 +14,11 @@ class LazyFileHandler(logging.FileHandler):
     def emit(self, record):
         if not self.has_written:
             if self.stream is None:
-                self.stream = self._open()
+                try:
+                    self.stream = self._open()
+                except Exception as error:
+                    print(f"Can't open logger file. Error: {error}")
+                    return
             self.has_written = True
         super().emit(record)
 
