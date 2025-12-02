@@ -67,7 +67,8 @@ def test_psp_unswizzle_and_swizzle():
 #     img_width = 276
 #     img_height = 276
 #     bpp = 8
-#     image_format = ImageFormats.PAL8_RGBA8888
+#     image_format = ImageFormats.PAL8
+#     palette_format = ImageFormats.RGBA8888
 #
 #     unswizzled_file_data = unswizzle_psp(
 #         swizzled_file_data, img_width, img_height, bpp
@@ -79,7 +80,7 @@ def test_psp_unswizzle_and_swizzle():
 #         image_decoder = ImageDecoder()
 #         wrapper = PillowWrapper()
 #         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-#             unswizzled_file_data, palette_data, img_width, img_height, image_format
+#             unswizzled_file_data, palette_data, img_width, img_height, image_format, palette_format
 #         )
 #         pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
 #         pil_image.show()

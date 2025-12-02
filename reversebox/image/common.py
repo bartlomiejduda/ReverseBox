@@ -34,8 +34,14 @@ def convert_bpp_to_bytes_per_pixel_float(input_bpp: int) -> float:
 # stride = rowbytes = pitch
 # stride = (width * bpp) >> 3
 def get_stride_value(img_width: int, bpp: int) -> int:
-    stride: int = img_width * bpp // 8
+    stride: int = (img_width * bpp) // 8
     return stride
+
+
+def get_stride_value_psp(img_width: int, bpp: int) -> int:
+    raw_stride = (img_width * bpp) // 8
+    padded_stride = (raw_stride + 15) & ~15   # align to 16 bytes
+    return padded_stride
 
 
 # img_width = pixels_per_row
