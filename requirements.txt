@@ -11,6 +11,7 @@ polib==1.2.0
 pre-commit==4.1.0
 pytest==8.3.3
 pytest-cov==6.0.0
+pytest-xdist==3.8.0
 setuptools==80.9.0
 twine==6.1.0
 types-setuptools==75.6.0.20241126
