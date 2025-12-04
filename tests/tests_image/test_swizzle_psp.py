@@ -9,6 +9,7 @@ import pytest
 
 from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_formats import ImageFormats
+from reversebox.image.image_padding import psp_image_padding
 from reversebox.image.pillow_wrapper import PillowWrapper
 from reversebox.image.swizzling.swizzle_psp import swizzle_psp, unswizzle_psp
 
@@ -28,9 +29,8 @@ def test_psp_unswizzle_and_swizzle():
     bpp = 32
     image_format = ImageFormats.RGBA8888
 
-    unswizzled_file_data = unswizzle_psp(
-        swizzled_file_data, img_width, img_height, bpp
-    )
+    unswizzled_file_data = unswizzle_psp(swizzled_file_data, img_width, img_height, bpp)
+    unswizzled_file_data = psp_image_padding(unswizzled_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -44,9 +44,7 @@ def test_psp_unswizzle_and_swizzle():
         pil_image.show()
     # debug end #################################################################################################
 
-    reswizzled_file_data = swizzle_psp(
-        unswizzled_file_data, img_width, img_height, bpp
-    )
+    reswizzled_file_data = swizzle_psp(unswizzled_file_data, img_width, img_height, bpp)
 
     assert len(swizzled_file_data) == len(reswizzled_file_data)
     assert swizzled_file_data[:100] == reswizzled_file_data[:100]
@@ -70,6 +68,7 @@ def test_psp_unswizzle_and_swizzle_bubbles():
     palette_format = ImageFormats.RGBA8888
 
     unswizzled_file_data = unswizzle_psp(swizzled_file_data, img_width, img_height, bpp)
+    unswizzled_file_data = psp_image_padding(unswizzled_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -107,6 +106,7 @@ def test_psp_unswizzle_and_swizzle_fifa_2009_ea_nation():
     palette_format = ImageFormats.RGBA8888
 
     unswizzled_file_data = unswizzle_psp(swizzled_file_data, img_width, img_height, bpp)
+    unswizzled_file_data = psp_image_padding(unswizzled_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
@@ -144,6 +144,7 @@ def test_psp_unswizzle_and_swizzle_ben2_number4():
     palette_format = ImageFormats.RGBA8888
 
     unswizzled_file_data = unswizzle_psp(swizzled_file_data, img_width, img_height, bpp)
+    unswizzled_file_data = psp_image_padding(unswizzled_file_data, img_width, img_height, bpp)
 
     # debug start ###############################################################################################
     is_debug = False
