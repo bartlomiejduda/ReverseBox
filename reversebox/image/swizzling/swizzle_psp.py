@@ -29,10 +29,10 @@ def unswizzle_psp(image_data: bytes, img_width: int, img_height: int, bpp: int) 
             unswizzled_data[unswizzled_data_offset] = image_data[block_address + local_position]
             unswizzled_data_offset += 1
 
-    return unswizzled_data
+    return bytes(unswizzled_data)
 
 
-def swizzle_psp(image_data: bytes, img_width: int, img_height: int, bpp: int):
+def swizzle_psp(image_data: bytes, img_width: int, img_height: int, bpp: int) -> bytes:
     stride: int = get_stride_value(img_width, bpp)
     padded_stride: int = get_stride_value_psp(img_width, bpp)
     padded_height: int = (img_height + 7) & ~7
