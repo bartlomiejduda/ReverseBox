@@ -39,7 +39,7 @@ def get_stride_value(img_width: int, bpp: int) -> int:
 
 
 def get_stride_value_psp(img_width: int, bpp: int) -> int:
-    raw_stride = (img_width * bpp) // 8
+    raw_stride = get_stride_value(img_width, bpp)
     padded_stride = (raw_stride + 15) & ~15   # align to 16 bytes
     return padded_stride
 
