@@ -142,3 +142,11 @@ class GSTSwizzleTestEntry:
     img_format: ImageFormats
     conv_format: ImageFormats
     conv_pal_format: ImageFormats
+
+
+@dataclass
+class MortonIndexTestEntry:
+    t: int
+    width: int
+    height: int
+    expected_result: int

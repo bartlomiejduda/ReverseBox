@@ -4,6 +4,7 @@ License: GPL-3.0 License
 """
 
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
+from reversebox.image.swizzling.morton_index import calculate_morton_index
 
 # Morton Order Texture Swizzling
 # https://en.wikipedia.org/wiki/Z-order_curve
@@ -15,28 +16,6 @@ from reversebox.image.common import convert_bpp_to_bytes_per_pixel
 # block_width=8, block_height=8 --> BC formats, 8x8 blocks
 
 # fmt: off
-
-
-def calculate_morton_index(t: int, width: int, height: int) -> int:
-    num1 = num2 = 1
-    num3 = t
-    t_width = width
-    t_height = height
-    num6 = num7 = 0
-
-    while t_width > 1 or t_height > 1:
-        if t_width > 1:
-            num6 += num2 * (num3 & 1)
-            num3 >>= 1
-            num2 *= 2
-            t_width >>= 1
-        if t_height > 1:
-            num7 += num1 * (num3 & 1)
-            num3 >>= 1
-            num1 *= 2
-            t_height >>= 1
-
-    return num7 * width + num6
 
 
 def _convert_morton(pixel_data: bytes, img_width: int, img_height: int, bpp: int, block_width: int, block_height: int, swizzle_flag: bool) -> bytes:
