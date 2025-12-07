@@ -119,6 +119,7 @@ or software researchers).
   - PS2 Swizzling/Twiddling ✔️
   - PS2 Palette Swizzling/Twiddling ✔️
   - PS4 Swizzling/Twiddling ✔️
+  - PS5 Swizzling/Twiddling ✔️
   - PSP Swizzling/Twiddling ✔️
   - PS Vita Swizzling/Twiddling ✔️
   - XBOX 360 Swizzling/Twiddling ✔️
