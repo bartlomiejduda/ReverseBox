@@ -4,11 +4,6 @@ License: GPL-3.0 License
 """
 
 from reversebox.image.swizzling.swizzle_ps2_4bit import _ps2_swizzle4, _ps2_unswizzle4
-from reversebox.image.swizzling.swizzle_ps2_suba import (
-    _ps2_suba_swizzle_4bit,
-    _ps2_suba_swizzle_8bit,
-    _ps2_suba_swizzle_16bit,
-)
 from reversebox.io_files.bytes_handler import BytesHandler
 
 # fmt: off
@@ -84,13 +79,14 @@ def _pixel16_offset(x: int, y: int, width: int) -> int:
         pagey = y >> 6
         newx = (y & 0x38) + (x & 0x07)
         newy = ((x & 0x30) >> 1) + (y & 0x07)
-        bit = ((x & 0x08) << 1)
+        bit = (x & 0x08) << 1
         x = (pagex << 6) + newx
         y = (pagey << 5) + newy
 
     return 32 * (y * width + x) + bit
 
 
+# 16-bpp TYPE 1/2
 def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(image_data))
 
@@ -98,11 +94,12 @@ def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag:
         ywidth = y * width << 1
         for x in range(width):
             loc = _pixel16_offset(x, y, width) >> 3
+            dest_index = (x << 1) + ywidth
 
             if not swizzle_flag:  # do unswizzle
-                converted_data[(x << 1) + ywidth:(x << 1) + ywidth + 2] = image_data[loc:loc + 2]
+                converted_data[dest_index: dest_index + 2] = image_data[loc:loc + 2]
             else:  # do swizzle
-                converted_data[loc:loc + 2] = image_data[(x << 1) + ywidth:(x << 1) + ywidth + 2]
+                converted_data[loc:loc + 2] = image_data[dest_index: dest_index + 2]
 
     return converted_data
 
@@ -147,48 +144,38 @@ def _convert_ps2_4bit_type2(image_data: bytes, img_width: int, img_height: int, 
 
 
 def unswizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_type: int = 1) -> bytes:
+    if swizzle_type not in (1, 2):
+        raise Exception(f"Not supported swizzle type {swizzle_type}!")
+
     if bpp == 4:
         if swizzle_type == 1:
             return _convert_ps2_4bit_type1(image_data, img_width, img_height, False)
-        elif swizzle_type == 2:
+        if swizzle_type == 2:
             return _convert_ps2_4bit_type2(image_data, img_width, img_height, False)
-        elif swizzle_type == 3:
-            return _ps2_suba_swizzle_4bit(image_data, img_width, img_height, False)
-        else:
-            raise Exception("Not supported swizzle type!")
     elif bpp == 8:
-        if swizzle_type == 3:
-            return _ps2_suba_swizzle_8bit(image_data, img_width, img_height, False)
-        else:  # type 1/2
-            return _convert_ps2_8bit(image_data, img_width, img_height, False)
+        return _convert_ps2_8bit(image_data, img_width, img_height, False)
     elif bpp in (15, 16):
-        if swizzle_type == 3:
-            return _ps2_suba_swizzle_16bit(image_data, img_width, img_height, False)
-        else:  # type 1/2
-            return _convert_ps2_16bit(image_data, img_width, img_height, False)
+        return _convert_ps2_16bit(image_data, img_width, img_height, False)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 unswizzle!")
 
+    raise Exception("Data couldn't be unswizzled!")
+
 
 def swizzle_ps2(image_data: bytes, img_width: int, img_height: int, bpp: int, swizzle_type: int = 1) -> bytes:
+    if swizzle_type not in (1, 2):
+        raise Exception(f"Not supported swizzle type {swizzle_type}!")
+
     if bpp == 4:
         if swizzle_type == 1:
             return _convert_ps2_4bit_type1(image_data, img_width, img_height, True)
-        elif swizzle_type == 2:
+        if swizzle_type == 2:
             return _convert_ps2_4bit_type2(image_data, img_width, img_height, True)
-        elif swizzle_type == 3:
-            return _ps2_suba_swizzle_4bit(image_data, img_width, img_height, True)
-        else:
-            raise Exception("Not supported swizzle type!")
     elif bpp == 8:
-        if swizzle_type == 3:
-            return _ps2_suba_swizzle_8bit(image_data, img_width, img_height, True)
-        else:  # type 1/2
-            return _convert_ps2_8bit(image_data, img_width, img_height, True)
+        return _convert_ps2_8bit(image_data, img_width, img_height, True)
     elif bpp in (15, 16):
-        if swizzle_type == 3:
-            return _ps2_suba_swizzle_16bit(image_data, img_width, img_height, True)
-        else:  # type 1/2
-            return _convert_ps2_16bit(image_data, img_width, img_height, True)
+        return _convert_ps2_16bit(image_data, img_width, img_height, True)
     else:
         raise Exception(f"Bpp {bpp} not supported for PS2 swizzle!")
+
+    raise Exception("Data couldn't be swizzled!")
