@@ -87,6 +87,7 @@ def _pixel16_offset(x: int, y: int, width: int) -> int:
 
 
 # 16-bpp TYPE 1/2
+# TODO - fix this, not unswizzling correctly
 def _convert_ps2_16bit(image_data: bytes, width: int, height: int, swizzle_flag: bool) -> bytes:
     converted_data: bytearray = bytearray(len(image_data))
 
