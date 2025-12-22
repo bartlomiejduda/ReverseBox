@@ -231,10 +231,12 @@ def test_ps2_unswizzle_and_swizzle_4bit_busted_sample_type2():
 
 # TODO - fix this, unswizzling not working for 16-bit
 @pytest.mark.imagetest
-def test_ps2_unswizzle_and_swizzle_bratz_sample():
-    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_t_compact_rockangelz_closed_00000003.bin")
-
+def test_ps2_unswizzle_and_swizzle_bratz_aly_and_aj_poster_sample():
+    swizzled_file_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_aly_and_aj_poster.bin")
     swizzled_file = open(swizzled_file_path, "rb")
+
+    correct_palette_path = os.path.join(os.path.dirname(__file__), "image_files/swizzle_ps2_aly_and_aj_poster_correct_palette.bin")
+    correct_palette_data = open(correct_palette_path, "rb").read()
 
     swizzled_file.seek(320)
     swizzled_file_data: bytes = swizzled_file.read(0x4000)
@@ -246,7 +248,6 @@ def test_ps2_unswizzle_and_swizzle_bratz_sample():
     img_height = 128
     bpp = 8
     image_format = ImageFormats.PAL8
-    # pal_format = ImageFormats.XBGR1555
     pal_format = ImageFormats.RGBX5551
 
     unswizzled_file_data = unswizzle_ps2(
@@ -263,12 +264,14 @@ def test_ps2_unswizzle_and_swizzle_bratz_sample():
         image_decoder = ImageDecoder()
         wrapper = PillowWrapper()
         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format, pal_format,
-            palette_endianess="little"
+            unswizzled_file_data, unswizzled_palette_data, img_width, img_height, image_format, pal_format
         )
         pil_image = wrapper.get_pillow_image_from_rgba8888_data(decoded_image_data, img_width, img_height)
         pil_image.show()
     # debug end #################################################################################################
+
+    assert len(correct_palette_data) == len(unswizzled_palette_data)
+    # assert correct_palette_data == unswizzled_palette_data  # TODO - fix 16-bpp palette unswizzle
 
     # reswizzled_file_data = swizzle_ps2(
     #     unswizzled_file_data, img_width, img_height, bpp, swizzle_type=1
