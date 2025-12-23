@@ -12,6 +12,7 @@ from reversebox.io_files.bytes_handler import BytesHandler
 
 
 # this function can both swizzle and unswizzle ps2 palette
+# converts from CSM1 to CSM2 and from CSM2 to CSM1
 # it supports 32bit and 16bit palettes
 def _convert_ps2_palette(palette_data: bytes) -> bytes:
     converted_palette_data: bytes = b""
