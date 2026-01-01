@@ -11,13 +11,20 @@ from reversebox.io_files.bytes_handler import BytesHandler
 # PS2 Swizzle
 
 
-# this function can both swizzle and unswizzle ps2 palette
+# this function can both swizzle and unswizzle PS2 palette
 # converts from CSM1 to CSM2 and from CSM2 to CSM1
 # it supports 32bit and 16bit palettes
-def _convert_ps2_palette(palette_data: bytes) -> bytes:
+def _convert_ps2_palette(palette_data: bytes, bpp: int = 32) -> bytes:
+    if bpp == 32:
+        bytes_per_palette_pixel: int = 4
+    elif bpp == 16:
+        bytes_per_palette_pixel: int = 2
+    else:
+        raise ValueError(f"Bpp {bpp} not supported!")
+
     converted_palette_data: bytes = b""
     palette_handler = BytesHandler(palette_data)
-    bytes_per_palette_pixel: int = 4
+
     parts: int = int(len(palette_data) / 32)
     stripes: int = 2
     colors: int = 8
@@ -36,9 +43,7 @@ def _convert_ps2_palette(palette_data: bytes) -> bytes:
                         + color
                     )
                     palette_offset: int = palette_index * bytes_per_palette_pixel
-                    palette_entry = palette_handler.get_bytes(
-                        palette_offset, bytes_per_palette_pixel
-                    )
+                    palette_entry = palette_handler.get_bytes(palette_offset, bytes_per_palette_pixel)
                     converted_palette_data += palette_entry
 
     return converted_palette_data
