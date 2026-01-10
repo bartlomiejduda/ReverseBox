@@ -647,7 +647,7 @@ class ImageEncoder:
             raise Exception(f"Image format {image_format} not supported!")
 
         # get initial values
-        number_of_palette_colors: int = 256
+        number_of_palette_colors: int = max_colors_count
         image_bpp: int = get_bpp_for_image_format(image_format)
         palette_bpp: int = get_bpp_for_image_format(palette_format)
         palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
@@ -658,7 +658,8 @@ class ImageEncoder:
 
         # prepare empty bytearray for output data
         main_texture_data = bytearray(self._encode_indexed_calculate_output_size(image_bpp, img_width, img_height))
-        # main_texture_data_expected_size: int = len(main_texture_data)
+        main_texture_data_expected_size: int = len(main_texture_data)
+        palette_data_expected_size: int = len(palette_data)
 
         # treat palette as image to get all colors list
         # it will convert any palette to RGBA8888 for processing
@@ -676,6 +677,17 @@ class ImageEncoder:
                                                                                 read_function, image_endianess_format)
 
         # basic quantization logic (L2 RGBA)
+        # first, get palette colors - do it only once for optimization
+        pal_colors_list: List[Tuple[int, int, int, int]] = []
+        for pal_index in range(number_of_palette_colors):
+            # get palette channels for comparison
+            r_pal = (palette_int_values[pal_index] >> 0) & 0xff
+            g_pal = (palette_int_values[pal_index] >> 8) & 0xff
+            b_pal = (palette_int_values[pal_index] >> 16) & 0xff
+            a_pal = (palette_int_values[pal_index] >> 24) & 0xff
+            pal_colors_list.append((r_pal, g_pal, b_pal, a_pal))
+
+        # main loop for calculating indices
         indices_list: List[int] = []
         for pixel_index in range(len(pixel_int_values)):
             # get image channels
@@ -687,12 +699,9 @@ class ImageEncoder:
             current_diff: int = sys.maxsize
             current_index: int = -1
             # loop through all palette colors to find best match
-            for pal_index in range(number_of_palette_colors):  # TODO - optimization!
+            for pal_index in range(number_of_palette_colors):
                 # get palette channels for comparison
-                r_pal = (palette_int_values[pal_index] >> 0) & 0xff
-                g_pal = (palette_int_values[pal_index] >> 8) & 0xff
-                b_pal = (palette_int_values[pal_index] >> 16) & 0xff
-                a_pal = (palette_int_values[pal_index] >> 24) & 0xff
+                r_pal, g_pal, b_pal, a_pal = pal_colors_list[pal_index]
 
                 delta_r2 = (r_pal - r) * (r_pal - r)
                 delta_g2 = (g_pal - g) * (g_pal - g)
@@ -709,13 +718,24 @@ class ImageEncoder:
             indices_list.append(current_index)
 
         # encode indices for main texture
-        main_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(image_bpp, indices_list,
-                                                                       palette_endianess,
-                                                                       image_endianess_format,
-                                                                       image_bytes_per_pixel, main_texture_data)
+        main_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
+            image_bpp,
+            indices_list,
+            palette_endianess,
+            image_endianess_format,
+            image_bytes_per_pixel,
+            main_texture_data
+        )
         texture_data += main_texture_data
 
         # TODO - mipmap logic here
+
+        # final checks
+        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
+            raise Exception("Error! Wrong size of palette data!")
+
+        if len(main_texture_data) != main_texture_data_expected_size:
+            raise Exception("Error! Wrong size of main texture data!")
 
         return texture_data, palette_data
 
