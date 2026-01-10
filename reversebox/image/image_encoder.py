@@ -331,8 +331,8 @@ class ImageEncoder:
         ImageFormats.RGB888: (_encode_rgb888_pixel, 24, get_uint24, set_uint24),
         ImageFormats.BGR888: (_encode_bgr888_pixel, 24, get_uint24, set_uint24),
         ImageFormats.RGBA8888: (_encode_rgba8888_pixel, 32, get_uint32, set_uint32),
-        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32, get_uint32, set_uint24),
-        ImageFormats.ARGB8888: (_encode_argb8888_pixel, 32, get_uint32, set_uint24),
+        ImageFormats.BGRA8888: (_encode_bgra8888_pixel, 32, get_uint32, set_uint32),
+        ImageFormats.ARGB8888: (_encode_argb8888_pixel, 32, get_uint32, set_uint32),
     }
 
     def _get_endianess_format(self, endianess: str) -> str:
@@ -624,6 +624,7 @@ class ImageEncoder:
                     raise Exception("Error! Wrong size of mipmap data!")
 
                 texture_data += mipmap_texture_data
+        # end of mipmaps logic
 
         # final checks
         if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
@@ -728,7 +729,44 @@ class ImageEncoder:
         )
         texture_data += main_texture_data
 
-        # TODO - mipmap logic here
+        # mipmaps logic  # TODO
+        # if number_of_mipmaps > 0:
+        #     base_rgba_data: bytes = self._encode_indexed_revert_intermediate_image(encoded_intermediate_image,
+        #                                                                            img_width, img_height,
+        #                                                                            palette_format, image_endianess)
+        #     base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(base_rgba_data, img_width, img_height)
+        #     mip_width: int = img_width
+        #     mip_height: int = img_height
+        #     for i in range(number_of_mipmaps):
+        #         mip_width //= 2
+        #         mip_height //= 2
+        #         mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=PIL.Image.Resampling.NEAREST)
+        #         mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
+        #         mipmap_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(mip_rgba_data, mip_width,
+        #                                                                                        mip_height,
+        #                                                                                        palette_format,
+        #                                                                                        image_endianess,
+        #                                                                                        max_colors_count)
+        #         mipmap_pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
+        #                                                                                        mipmap_intermediate_image,
+        #                                                                                        palette_bytes_per_pixel,
+        #                                                                                        read_function,
+        #                                                                                        image_endianess_format)
+        #
+        #         mipmap_texture_data = bytearray(
+        #             self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height))
+        #         mipmap_texture_data_expected_size: int = len(mipmap_texture_data)
+        #         mipmap_texture_data: bytes = self._encode_indexed_encode_indices(image_bpp, mipmap_pixel_int_values,
+        #                                                                          pixel_map, palette_endianess,
+        #                                                                          image_endianess_format,
+        #                                                                          image_bytes_per_pixel,
+        #                                                                          mipmap_texture_data)
+        #
+        #         if len(mipmap_texture_data) != mipmap_texture_data_expected_size:
+        #             raise Exception("Error! Wrong size of mipmap data!")
+        #
+        #         texture_data += mipmap_texture_data
+        # end of mipmaps logic
 
         # final checks
         if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
