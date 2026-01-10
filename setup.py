@@ -1,5 +1,5 @@
 """
-Copyright © 2024-2025  Bartłomiej Duda
+Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.78.3"
+VERSION_NUM: Final[str] = "0.79.0"
 
 
 def get_long_description() -> str:
