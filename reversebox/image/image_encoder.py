@@ -627,13 +627,50 @@ class ImageEncoder:
         # end of mipmaps logic
 
         # final checks
-        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
+        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024 or len(palette_data) == 0:
             raise Exception("Error! Wrong size of palette data!")
 
         if len(main_texture_data) != main_texture_data_expected_size:
             raise Exception("Error! Wrong size of main texture data!")
 
         return texture_data, palette_data
+
+    def _encode_indexed_calculate_indices(self,
+                                          pixel_int_values: list[int],
+                                          pal_colors_list: List[Tuple[int, int, int, int]],
+                                          number_of_palette_colors: int
+                                          ) -> List[int]:
+        indices_list: List[int] = []
+        for pixel_index in range(len(pixel_int_values)):
+            # get image channels
+            r = (pixel_int_values[pixel_index] >> 0) & 0xff
+            g = (pixel_int_values[pixel_index] >> 8) & 0xff
+            b = (pixel_int_values[pixel_index] >> 16) & 0xff
+            a = (pixel_int_values[pixel_index] >> 24) & 0xff
+
+            current_diff: int = sys.maxsize
+            current_index: int = -1
+            # loop through all palette colors to find best match
+            for pal_index in range(number_of_palette_colors):
+                # get palette channels for comparison
+                r_pal, g_pal, b_pal, a_pal = pal_colors_list[pal_index]
+
+                delta_r2 = (r_pal - r) * (r_pal - r)
+                delta_g2 = (g_pal - g) * (g_pal - g)
+                delta_b2 = (b_pal - b) * (b_pal - b)
+                delta_a2 = (a_pal - a) * (a_pal - a)
+
+                # search for best result and save it if found
+                delta2_sum = delta_r2 + delta_g2 + delta_b2 + delta_a2
+                if delta2_sum < current_diff:
+                    current_diff = delta2_sum
+                    current_index = pal_index
+
+            # add the best palette match to list
+            indices_list.append(current_index)
+
+        # return result list
+        return indices_list
 
     # Input for below function must be:
     # image_data --> RGBA8888 image data
@@ -689,34 +726,11 @@ class ImageEncoder:
             pal_colors_list.append((r_pal, g_pal, b_pal, a_pal))
 
         # main loop for calculating indices
-        indices_list: List[int] = []
-        for pixel_index in range(len(pixel_int_values)):
-            # get image channels
-            r = (pixel_int_values[pixel_index] >> 0) & 0xff
-            g = (pixel_int_values[pixel_index] >> 8) & 0xff
-            b = (pixel_int_values[pixel_index] >> 16) & 0xff
-            a = (pixel_int_values[pixel_index] >> 24) & 0xff
-
-            current_diff: int = sys.maxsize
-            current_index: int = -1
-            # loop through all palette colors to find best match
-            for pal_index in range(number_of_palette_colors):
-                # get palette channels for comparison
-                r_pal, g_pal, b_pal, a_pal = pal_colors_list[pal_index]
-
-                delta_r2 = (r_pal - r) * (r_pal - r)
-                delta_g2 = (g_pal - g) * (g_pal - g)
-                delta_b2 = (b_pal - b) * (b_pal - b)
-                delta_a2 = (a_pal - a) * (a_pal - a)
-
-                # search for best result and save it if found
-                delta2_sum = delta_r2 + delta_g2 + delta_b2 + delta_a2
-                if delta2_sum < current_diff:
-                    current_diff = delta2_sum
-                    current_index = pal_index
-
-            # add the best palette match to list
-            indices_list.append(current_index)
+        indices_list: List[int] = self._encode_indexed_calculate_indices(
+            pixel_int_values=pixel_int_values,
+            pal_colors_list=pal_colors_list,
+            number_of_palette_colors=number_of_palette_colors
+        )
 
         # encode indices for main texture
         main_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
@@ -729,47 +743,48 @@ class ImageEncoder:
         )
         texture_data += main_texture_data
 
-        # mipmaps logic  # TODO
-        # if number_of_mipmaps > 0:
-        #     base_rgba_data: bytes = self._encode_indexed_revert_intermediate_image(encoded_intermediate_image,
-        #                                                                            img_width, img_height,
-        #                                                                            palette_format, image_endianess)
-        #     base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(base_rgba_data, img_width, img_height)
-        #     mip_width: int = img_width
-        #     mip_height: int = img_height
-        #     for i in range(number_of_mipmaps):
-        #         mip_width //= 2
-        #         mip_height //= 2
-        #         mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=PIL.Image.Resampling.NEAREST)
-        #         mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
-        #         mipmap_intermediate_image: bytes = self._encode_indexed_get_intermediate_image(mip_rgba_data, mip_width,
-        #                                                                                        mip_height,
-        #                                                                                        palette_format,
-        #                                                                                        image_endianess,
-        #                                                                                        max_colors_count)
-        #         mipmap_pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
-        #                                                                                        mipmap_intermediate_image,
-        #                                                                                        palette_bytes_per_pixel,
-        #                                                                                        read_function,
-        #                                                                                        image_endianess_format)
-        #
-        #         mipmap_texture_data = bytearray(
-        #             self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height))
-        #         mipmap_texture_data_expected_size: int = len(mipmap_texture_data)
-        #         mipmap_texture_data: bytes = self._encode_indexed_encode_indices(image_bpp, mipmap_pixel_int_values,
-        #                                                                          pixel_map, palette_endianess,
-        #                                                                          image_endianess_format,
-        #                                                                          image_bytes_per_pixel,
-        #                                                                          mipmap_texture_data)
-        #
-        #         if len(mipmap_texture_data) != mipmap_texture_data_expected_size:
-        #             raise Exception("Error! Wrong size of mipmap data!")
-        #
-        #         texture_data += mipmap_texture_data
+        # mipmaps logic
+        if number_of_mipmaps > 0:
+            base_img: Image = PillowWrapper().get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
+            mip_width: int = img_width
+            mip_height: int = img_height
+            for i in range(number_of_mipmaps):
+                mip_width //= 2
+                mip_height //= 2
+                mip_pillow_img: Image = base_img.resize((mip_width, mip_height), resample=PIL.Image.Resampling.NEAREST)
+                mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
+                mipmap_pixel_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
+                                                                                               mip_rgba_data,
+                                                                                               palette_bytes_per_pixel,
+                                                                                               read_function,
+                                                                                               image_endianess_format)
+
+                mipmap_texture_data = bytearray(
+                    self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height))
+                mipmap_texture_data_expected_size: int = len(mipmap_texture_data)
+                mipmap_indices_list: List[int] = self._encode_indexed_calculate_indices(
+                    pixel_int_values=mipmap_pixel_int_values,
+                    pal_colors_list=pal_colors_list,
+                    number_of_palette_colors=number_of_palette_colors
+                )
+                # encode indices for mipmaps
+                mipmap_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
+                    image_bpp,
+                    mipmap_indices_list,
+                    palette_endianess,
+                    image_endianess_format,
+                    image_bytes_per_pixel,
+                    mipmap_texture_data
+                )
+
+                if len(mipmap_texture_data) != mipmap_texture_data_expected_size:
+                    raise Exception("Error! Wrong size of mipmap data!")
+
+                texture_data += mipmap_texture_data
         # end of mipmaps logic
 
         # final checks
-        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024:
+        if len(palette_data) != palette_data_expected_size or len(palette_data) > 1024 or len(palette_data) == 0:
             raise Exception("Error! Wrong size of palette data!")
 
         if len(main_texture_data) != main_texture_data_expected_size:

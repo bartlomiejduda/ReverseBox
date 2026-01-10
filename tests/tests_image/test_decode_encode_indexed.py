@@ -41,7 +41,8 @@ def test_decode_and_encode_all_indexed_images():
                                    pal_file_path="ea_sample_PAL4_RGBA8888_256x256_palette.bin",
                                    debug_flag=False, img_width=256, img_height=256, bpp=4,
                                    img_format=ImageFormats.PAL4, pal_format=ImageFormats.RGBA8888, max_colors_count=16,
-                                   palette_offset=0, palette_size=64, image_data_offset=0, image_data_size=43520, number_of_mipmaps=3),
+                                   palette_offset=0, palette_size=64, image_data_offset=0, image_data_size=43520,
+                                   number_of_mipmaps=3, encode_indexed_method="with_existing_palette"),
     ]
 
     for test_entry in image_test_entries:
