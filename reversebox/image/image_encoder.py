@@ -4,7 +4,7 @@ License: GPL-3.0 License
 """
 
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import PIL.Image
 from PIL import Image
@@ -517,14 +517,14 @@ class ImageEncoder:
 
         return texture_data
 
-    def _encode_indexed_get_pixel_int_values(self, image_bpp: int, encoded_intermediate_image: bytes, palette_bytes_per_pixel: int,
+    # get list of pixels from image (list of int values)
+    def _encode_indexed_get_pixel_int_values(self, image_bpp: int, encoded_intermediate_image: bytes, bytes_per_pixel: int,
                                              read_function, image_endianess_format: str) -> list[int]:
         pixel_int_values: list[int] = []
         if image_bpp in (4, 8, 16, 32):
-            number_of_pixels: int = len(encoded_intermediate_image) // palette_bytes_per_pixel
+            number_of_pixels: int = len(encoded_intermediate_image) // bytes_per_pixel
             for i in range(number_of_pixels):
-                pixel_bytes: bytes = encoded_intermediate_image[
-                                     i * palette_bytes_per_pixel: (i + 1) * palette_bytes_per_pixel]
+                pixel_bytes: bytes = encoded_intermediate_image[i * bytes_per_pixel: (i + 1) * bytes_per_pixel]
                 pixel_int: int = read_function(pixel_bytes, image_endianess_format)
                 pixel_int_values.append(pixel_int)
         else:
@@ -641,6 +641,13 @@ class ImageEncoder:
                                           number_of_palette_colors: int
                                           ) -> List[int]:
         indices_list: List[int] = []
+
+        # define color weights
+        weight_r = 2
+        weight_g = 4
+        weight_b = 1
+        weight_a = 1
+
         for pixel_index in range(len(pixel_int_values)):
             # get image channels
             r = (pixel_int_values[pixel_index] >> 0) & 0xff
@@ -648,7 +655,7 @@ class ImageEncoder:
             b = (pixel_int_values[pixel_index] >> 16) & 0xff
             a = (pixel_int_values[pixel_index] >> 24) & 0xff
 
-            current_diff: int = sys.maxsize
+            current_diff: float = sys.maxsize
             current_index: int = -1
             # loop through all palette colors to find best match
             for pal_index in range(number_of_palette_colors):
@@ -661,7 +668,7 @@ class ImageEncoder:
                 delta_a2 = (a_pal - a) * (a_pal - a)
 
                 # search for best result and save it if found
-                delta2_sum = delta_r2 + delta_g2 + delta_b2 + delta_a2
+                delta2_sum = weight_r * delta_r2 + weight_g * delta_g2 + weight_b * delta_b2 + weight_a * delta_a2
                 if delta2_sum < current_diff:
                     current_diff = delta2_sum
                     current_index = pal_index
@@ -676,13 +683,15 @@ class ImageEncoder:
     # image_data --> RGBA8888 image data
     # palette_data --> existing palette in any format (can be extracted from game etc.)
     # palette_format --> format of palette_data (can be game specific)
-    def _encode_indexed_with_existing_palette(self, image_data: bytes, palette_data: bytes, img_width: int,
-                                              img_height: int, image_format: ImageFormats, palette_format: ImageFormats,
-                                              image_endianess: str, palette_endianess: str, max_colors_count: int,
-                                              number_of_mipmaps: int) -> Tuple[bytes, bytes]:
+    def _encode_indexed_v2(self, image_data: bytes, palette_data: bytes, img_width: int,
+                           img_height: int, image_format: ImageFormats, palette_format: ImageFormats,
+                           image_endianess: str, palette_endianess: str, max_colors_count: int,
+                           number_of_mipmaps: int) -> Tuple[bytes, bytes]:
         # initial checks
         if image_format not in (ImageFormats.PAL4, ImageFormats.PAL8):
             raise Exception(f"Image format {image_format} not supported!")
+        if not max_colors_count or max_colors_count > 256 or max_colors_count == 0:
+            raise Exception(f"Max number of colors {max_colors_count} is not allowed!")
 
         # get initial values
         number_of_palette_colors: int = max_colors_count
@@ -697,6 +706,45 @@ class ImageEncoder:
         # prepare empty bytearray for output data
         main_texture_data = bytearray(self._encode_indexed_calculate_output_size(image_bpp, img_width, img_height))
         main_texture_data_expected_size: int = len(main_texture_data)
+
+        # if no palette is provided, we have to generate it from the source image
+        # first by proper quantization, then by assigning remaining colors to the final palette
+        if not palette_data:
+            palette_data: bytearray = bytearray()
+            quantized_img: bytes = (PillowWrapper()
+                                    .get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
+                                    .quantize(colors=max_colors_count, method=Image.Quantize.FASTOCTREE)
+                                    .convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)).tobytes()
+            quantized_img_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
+                                                                                            quantized_img,
+                                                                                            4,
+                                                                                            read_function,
+                                                                                            image_endianess_format)
+            unique_palette_values: List[int] = list(dict.fromkeys(quantized_img_int_values))
+
+            # get aligned number of colors
+            if max_colors_count <= 4:  # PAL2 (4-color)
+                aligned_colors_count = 4
+            elif max_colors_count <= 16:  # PAL4 (16-color)
+                aligned_colors_count = 16
+            elif max_colors_count <= 256:  # PAL8 (256-color)
+                aligned_colors_count = 256
+            else:
+                raise Exception(
+                    f"Not supported aligned colors count for max_colors_count={max_colors_count}")  # TODO - support other formats like PAL16
+
+            # set empty bytearray for palette data
+            palette_data: bytearray = bytearray(aligned_colors_count * palette_bytes_per_pixel)
+
+            # encode palette
+            for pal_entry_number in range(aligned_colors_count):
+                if pal_entry_number < len(unique_palette_values):
+                    pal_entry_bytes: bytes = write_function(unique_palette_values[pal_entry_number], image_endianess_format)
+                else:
+                    pal_entry_bytes: bytes = write_function(0, image_endianess_format)
+                palette_data[pal_entry_number * palette_bytes_per_pixel: (pal_entry_number + 1) * palette_bytes_per_pixel] = pal_entry_bytes
+
+        # get expected size
         palette_data_expected_size: int = len(palette_data)
 
         # treat palette as image to get all colors list
@@ -803,11 +851,11 @@ class ImageEncoder:
         return self._encode_indexed(image_data, img_width, img_height, image_format, palette_format,
                                     image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
 
-    def encode_indexed_image_with_existing_palette(self, image_data: bytes, palette_data: bytes, img_width: int, img_height: int, image_format: ImageFormats,
-                             palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little",
-                             palette_endianess: str = "little", number_of_mipmaps: int = 0) -> Tuple[bytes, bytes]:
-        return self._encode_indexed_with_existing_palette(image_data, palette_data, img_width, img_height, image_format, palette_format,
-                                    image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
+    def encode_indexed_image_v2(self, image_data: bytes, palette_data: Optional[bytes], img_width: int, img_height: int, image_format: ImageFormats,
+                                palette_format: ImageFormats, max_color_count: int, image_endianess: str = "little",
+                                palette_endianess: str = "little", number_of_mipmaps: int = 0) -> Tuple[bytes, bytes]:
+        return self._encode_indexed_v2(image_data, palette_data, img_width, img_height, image_format, palette_format,
+                                       image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
 
     def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)

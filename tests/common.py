@@ -4,6 +4,7 @@ License: GPL-3.0 License
 """
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import Optional
 
 from reversebox.image.image_formats import ImageFormats
@@ -106,6 +107,11 @@ class GetSetBytesEntry:
     endianess: str
 
 
+class EncodeIndexedMethod(str, Enum):
+    V1 = "V1"
+    V2 = "V2"
+
+
 @dataclass
 class ImageDecodeEncodeTestEntry:
     img_file_path: str
@@ -123,7 +129,7 @@ class ImageDecodeEncodeTestEntry:
     max_colors_count: Optional[int] = None
     number_of_mipmaps: Optional[int] = None
     image_endianess: Optional[str] = None
-    encode_indexed_method: Optional[str] = None
+    encode_indexed_method: Optional[EncodeIndexedMethod] = None
 
 
 @dataclass
