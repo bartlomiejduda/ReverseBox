@@ -6,6 +6,7 @@ License: GPL-3.0 License
 import sys
 from typing import Dict, List, Optional, Tuple
 
+import libimagequant as liq
 import PIL.Image
 from PIL import Image
 
@@ -643,9 +644,9 @@ class ImageEncoder:
         indices_list: List[int] = []
 
         # define color weights
-        weight_r = 2
-        weight_g = 4
-        weight_b = 1
+        weight_r = 3
+        weight_g = 2
+        weight_b = 2
         weight_a = 1
 
         for pixel_index in range(len(pixel_int_values)):
@@ -708,19 +709,28 @@ class ImageEncoder:
         main_texture_data_expected_size: int = len(main_texture_data)
 
         # if no palette is provided, we have to generate it from the source image
-        # first by proper quantization, then by assigning remaining colors to the final palette
+        # first by proper quantization, then by assigning colors to the final palette
         if not palette_data:
-            palette_data: bytearray = bytearray()
-            quantized_img: bytes = (PillowWrapper()
-                                    .get_pillow_image_from_rgba8888_data(image_data, img_width, img_height)
-                                    .quantize(colors=max_colors_count, method=Image.Quantize.FASTOCTREE)
-                                    .convert("RGBA", dither=Image.Dither.FLOYDSTEINBERG)).tobytes()
-            quantized_img_int_values: list[int] = self._encode_indexed_get_pixel_int_values(image_bpp,
-                                                                                            quantized_img,
-                                                                                            4,
-                                                                                            read_function,
-                                                                                            image_endianess_format)
-            unique_palette_values: List[int] = list(dict.fromkeys(quantized_img_int_values))
+
+            # define attributes for libimagequant library
+            attr = liq.Attr()
+            attr.max_colors = number_of_palette_colors
+            attr.speed = 1  # 1 = best quality (slow), 10 = worst quality (fast)
+            attr.min_quality = 50
+            attr.max_quality = 100
+
+            # create libimagequant image
+            liq_image: liq.Image = attr.create_rgba(image_data, img_width, img_height, gamma=0.0)
+
+            # quantize image with libimagequant algorithm
+            quantized_img: liq.Result = liq_image.quantize(attr)
+
+            # TODO
+            # remapped_pixels = quantized_img.remap_image(liq_image)
+
+            # get palette after quantization
+            out_palette: List[liq.Color] = quantized_img.get_palette()
+            unique_palette_values: List[int] = [(color.a << 24) | (color.b << 16) | (color.g << 8) | color.r for color in out_palette]
 
             # get aligned number of colors
             if max_colors_count <= 4:  # PAL2 (4-color)

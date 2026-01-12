@@ -1,6 +1,7 @@
 crc==7.1.0
 faker==33.1.0
 hashbase==1.1.5
+libimagequant==2.17.0.0
 lz4==4.4.4
 lzokay==1.1.8
 matplotlib==3.10.0
