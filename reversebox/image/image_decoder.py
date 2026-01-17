@@ -1,9 +1,10 @@
 """
-Copyright © 2024-2025  Bartłomiej Duda
+Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
 import struct
+from typing import List
 
 from reversebox.common.logger import get_logger
 from reversebox.image.common import convert_bpp_to_bytes_per_pixel
@@ -654,6 +655,16 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
+    # placeholder function
+    def _decode_null_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        pixel_int += 1
+        p[0] = 0xFF
+        p[1] = 0xFF
+        p[2] = 0xFF
+        p[3] = 0xFF
+        return p
+
     # source format is one of the listed below
     # target format is always RGBA8888
     generic_data_formats = {
@@ -727,6 +738,7 @@ class ImageDecoder:
         ImageFormats.R32: (_decode_r_only_pixel, 32, get_uint32),
         ImageFormats.G32: (_decode_g_only_pixel, 32, get_uint32),
         ImageFormats.B32: (_decode_b_only_pixel, 32, get_uint32),
+        ImageFormats.IA_X2: (_decode_null_pixel, 32, get_uint32),  # # two IA palettes (16 bit + 16 bit)
 
         ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
         ImageFormats.BGR48: (_decode_bgr48_pixel, 48, get_uint48),
@@ -824,6 +836,29 @@ class ImageDecoder:
         image_endianess_format: str = self._get_endianess_format(image_endianess)
         palette_endianess_format: str = self._get_endianess_format(palette_endianess)
 
+        # handle special cases first
+        # TODO - fix this
+        if palette_format is ImageFormats.IA_X2:  # two IA palettes (16 bit + 16 bit)
+            palette: List[bytes] = []
+            colours: int = 256
+            aligned_offset: int = (colours * 2 + 31) & ~31
+
+            for i in range(colours):
+                a = palette_handler.get_bytes(i * 2 + 0, 1)
+                r = palette_handler.get_bytes(i * 2 + 1, 1)
+                g = palette_handler.get_bytes(aligned_offset + i * 2 + 0, 1)
+                b = palette_handler.get_bytes(aligned_offset + i * 2 + 1, 1)
+                palette.append(r + g + b + a)
+
+            for i in range(img_width * img_height):
+                idx = image_handler.get_bytes(image_offset, 1)[0]
+                texture_data[i * 4:(i + 1) * 4] = palette[idx]
+                image_offset += 1
+
+            assert len(texture_data) == img_width * img_height * 4
+            return texture_data
+
+        # standard cases below
         palette_data_ints: list = []
         for i in range(len(palette_data) // palette_entry_size):
             palette_entry = palette_handler.get_bytes(palette_offset, palette_entry_size)
@@ -831,7 +866,8 @@ class ImageDecoder:
             palette_offset += palette_entry_size
             palette_data_ints.append(palette_entry_int)
 
-        if img_bits_per_pixel == 4:  # e.g. PAL4
+        # e.g. PAL4
+        if img_bits_per_pixel == 4:
             for i in range(0, img_width * img_height, 2):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
@@ -844,7 +880,9 @@ class ImageDecoder:
                 else:
                     raise Exception(f"Endianess not supported! Endianess: {image_endianess}")
                 image_offset += 1
-        elif img_bits_per_pixel == 8:  # e.g. PAL8
+
+        # e.g. PAL8
+        elif img_bits_per_pixel == 8:
             for i in range(img_width * img_height):
                 palette_index: bytes = image_handler.get_bytes(image_offset, 1)
                 palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
@@ -853,7 +891,9 @@ class ImageDecoder:
                 else:
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 1
-        elif img_bits_per_pixel == 16:  # e.g. PAL16
+
+        # e.g. PAL16 / PALI8A8
+        elif img_bits_per_pixel == 16:
             for i in range(img_width * img_height):
                 if image_format is ImageFormats.PAL_I8A8:
                     if image_endianess == "little":
@@ -891,7 +931,9 @@ class ImageDecoder:
                     palette_index_int: int = struct.unpack(image_endianess_format + "B", palette_index or b'\x00')[0]
                     texture_data[i * 4:(i + 1) * 4] = decode_function(self, palette_data_ints[palette_index_int])  # noqa
                 image_offset += 2
-        elif img_bits_per_pixel == 32:  # e.g. PAL32
+
+        # e.g. PAL32
+        elif img_bits_per_pixel == 32:
             for i in range(img_width * img_height):
                 if image_endianess == "little":
                     palette_index: bytes = image_handler.get_bytes(image_offset, 1)
@@ -905,6 +947,7 @@ class ImageDecoder:
         else:
             raise Exception(f"Bpp {img_bits_per_pixel} not supported!")
 
+        assert len(texture_data) == img_width * img_height * 4
         return texture_data
 
     def decode_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats, image_endianess: str = "little") -> bytes:

@@ -222,7 +222,8 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.RGBG8888,
                           ImageFormats.GRGB8888,
                           ImageFormats.RGBM,
-                          ImageFormats.RGBD
+                          ImageFormats.RGBD,
+                          ImageFormats.IA_X2
                           ):
         return 32
     elif image_format in (ImageFormats.RGB48,

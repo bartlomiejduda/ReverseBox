@@ -98,6 +98,7 @@ class ImageFormats(Enum):
     G32 = "g32"
     B32 = "b32"
     N64_RGBA32 = "n64_rgba32"  # COLOR+ALPHA, 32bpp
+    IA_X2 = "ia_x2"  # two IA palettes (16 bit + 16 bit)
 
     # 48-bit
     RGB48 = "rgb48"  # PIX_FMT_RGB48LE / PIX_FMT_RGB48BE / packed RGB 16:16:16, 48bpp, 16R, 16G, 16B

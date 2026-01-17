@@ -31,6 +31,12 @@ def test_decode_and_encode_all_indexed_images():
         # ImageDecodeEncodeTestEntry(img_file_path="pal_i8a8_bgra8888.bin", debug_flag=False, img_width=256, img_height=120,
         #                            bpp=16, img_format=ImageFormats.PAL_I8A8, pal_format=ImageFormats.BGRA8888,
         #                            palette_offset=48, palette_size=1024, image_data_offset=1072, image_data_size=61440),
+        # ImageDecodeEncodeTestEntry(img_file_path="german_flag.gsh_5_direntry_1.bin",
+        #                            pal_file_path="german_flag.gsh_5_direntry_1_binattach_1.bin",
+        #                            debug_flag=False, img_width=256, img_height=128, bpp=8,
+        #                            img_format=ImageFormats.PAL8, pal_format=ImageFormats.IA_X2, max_colors_count=256,
+        #                            palette_offset=0, palette_size=1024, image_data_offset=0, image_data_size=32784,
+        #                            number_of_mipmaps=0, encode_indexed_method=EncodeIndexedMethod.V1.value),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_PAL8_RGBA8888_150x300.bin",
                                    pal_file_path="ea_sample_PAL8_RGBA8888_150x300_palette.bin",
                                    debug_flag=False, img_width=150, img_height=300, bpp=8,
@@ -67,7 +73,8 @@ def test_decode_and_encode_all_indexed_images():
             test_entry.img_width,
             test_entry.img_height,
             test_entry.img_format,
-            test_entry.pal_format
+            test_entry.pal_format,
+            palette_endianess="little"
         )
 
         if test_entry.encode_indexed_method == EncodeIndexedMethod.V2.value:

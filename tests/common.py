@@ -129,6 +129,7 @@ class ImageDecodeEncodeTestEntry:
     max_colors_count: Optional[int] = None
     number_of_mipmaps: Optional[int] = None
     image_endianess: Optional[str] = None
+    palette_endianess: Optional[str] = None
     encode_indexed_method: Optional[EncodeIndexedMethod] = None
 
 
