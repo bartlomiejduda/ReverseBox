@@ -837,12 +837,14 @@ class ImageDecoder:
         palette_endianess_format: str = self._get_endianess_format(palette_endianess)
 
         # handle special cases first
-        # TODO - fix this
-        if palette_format is ImageFormats.IA_X2:  # two IA palettes (16 bit + 16 bit)
+        if palette_format == ImageFormats.IA_X2:  # two IA palettes (16 bit + 16 bit)
+            if image_format != ImageFormats.PAL8:
+                raise Exception("Not supported! IA_X2 can be decoded only as PAL8!")
             palette: List[bytes] = []
             colours: int = 256
             aligned_offset: int = (colours * 2 + 31) & ~31
 
+            # build RGBA palette from two IA palettes
             for i in range(colours):
                 a = palette_handler.get_bytes(i * 2 + 0, 1)
                 r = palette_handler.get_bytes(i * 2 + 1, 1)

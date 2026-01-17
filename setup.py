@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.82.0"
+VERSION_NUM: Final[str] = "0.82.1"
 
 
 def get_long_description() -> str:
@@ -56,7 +56,16 @@ setuptools.setup(
     "BC, BC1, BC2, BC3, BC4, BC5, BC6, BC7, DXT1, DXT2, DXT3, PackBits, RLE, Macintosh, Jenkins, murmur, murmur3, one-at-a-time, "
     "additive, ASTC, ETC1, ETC2, DXT2, DXT4, EAC, BASISU, PVRTCI, UASTC, RGBM, RGBD, LZ4",
     python_requires=">=3.6",
-    install_requires=["lzokay", "polib", "crc", "hashbase", "pillow", "mmh3", "lz4"],
+    install_requires=[
+        "lzokay",
+        "polib",
+        "crc",
+        "hashbase",
+        "pillow",
+        "mmh3",
+        "lz4",
+        "numpy",
+    ],
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
     package_data={"": ["libs/*.dll"]},
     include_package_data=True,
