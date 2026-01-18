@@ -11,7 +11,7 @@ from reversebox.image.image_decoder import ImageDecoder
 from reversebox.image.image_encoder import ImageEncoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
-from tests.common import EncodeIndexedMethod, ImageDecodeEncodeTestEntry
+from tests.common import ImageDecodeEncodeTestEntry
 
 # fmt: off
 
@@ -48,13 +48,13 @@ def test_decode_and_encode_all_indexed_images():
                                    debug_flag=False, img_width=150, img_height=300, bpp=8,
                                    img_format=ImageFormats.PAL8, pal_format=ImageFormats.RGBA8888, max_colors_count=256,
                                    palette_offset=0, palette_size=1024, image_data_offset=0, image_data_size=45000,
-                                   number_of_mipmaps=0, encode_indexed_method=EncodeIndexedMethod.V2.value),
+                                   number_of_mipmaps=0),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_PAL4_RGBA8888_256x256.bin",
                                    pal_file_path="ea_sample_PAL4_RGBA8888_256x256_palette.bin",
                                    debug_flag=False, img_width=256, img_height=256, bpp=4,
                                    img_format=ImageFormats.PAL4, pal_format=ImageFormats.RGBA8888, max_colors_count=16,
                                    palette_offset=0, palette_size=64, image_data_offset=0, image_data_size=43520,
-                                   number_of_mipmaps=3, encode_indexed_method=EncodeIndexedMethod.V2.value),
+                                   number_of_mipmaps=3),
     ]
 
     for test_entry in image_test_entries:
@@ -83,32 +83,18 @@ def test_decode_and_encode_all_indexed_images():
             palette_endianess="little"
         )
 
-        if test_entry.encode_indexed_method == EncodeIndexedMethod.V2.value:
-            re_encoded_image_data, re_encoded_palette_data = (
-                image_encoder.encode_indexed_image_v2(
-                    decoded_image_data,
-                    None,
-                    test_entry.img_width,
-                    test_entry.img_height,
-                    test_entry.img_format,
-                    test_entry.pal_format,
-                    max_color_count=test_entry.max_colors_count,
-                    number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps
-                )
+        re_encoded_image_data, re_encoded_palette_data = (
+            image_encoder.encode_indexed_image(
+                decoded_image_data,
+                test_entry.img_width,
+                test_entry.img_height,
+                test_entry.img_format,
+                test_entry.pal_format,
+                max_color_count=test_entry.max_colors_count,
+                number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps
             )
+        )
 
-        else:
-            re_encoded_image_data, re_encoded_palette_data = (
-                image_encoder.encode_indexed_image(
-                    decoded_image_data,
-                    test_entry.img_width,
-                    test_entry.img_height,
-                    test_entry.img_format,
-                    test_entry.pal_format,
-                    max_color_count=test_entry.max_colors_count,
-                    number_of_mipmaps=0 if not test_entry.number_of_mipmaps else test_entry.number_of_mipmaps
-                )
-            )
         re_decoded_image_data: bytes = image_decoder.decode_indexed_image(
             re_encoded_image_data,
             re_encoded_palette_data,
