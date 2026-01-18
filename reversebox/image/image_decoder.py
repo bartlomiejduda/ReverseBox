@@ -738,7 +738,8 @@ class ImageDecoder:
         ImageFormats.R32: (_decode_r_only_pixel, 32, get_uint32),
         ImageFormats.G32: (_decode_g_only_pixel, 32, get_uint32),
         ImageFormats.B32: (_decode_b_only_pixel, 32, get_uint32),
-        ImageFormats.IA_X2: (_decode_null_pixel, 32, get_uint32),  # # two IA palettes (16 bit + 16 bit)
+        ImageFormats.IA_X2_ARGB: (_decode_null_pixel, 32, get_uint32),  # two IA palettes (16 bit + 16 bit)
+        ImageFormats.IA_X2_GRAB: (_decode_null_pixel, 32, get_uint32),  # two IA palettes (16 bit + 16 bit)
 
         ImageFormats.RGB48: (_decode_rgb48_pixel, 48, get_uint48),
         ImageFormats.BGR48: (_decode_bgr48_pixel, 48, get_uint48),
@@ -837,17 +838,25 @@ class ImageDecoder:
         palette_endianess_format: str = self._get_endianess_format(palette_endianess)
 
         # handle special cases first
-        if palette_format == ImageFormats.IA_X2:  # two IA palettes (16 bit + 16 bit)
+        if palette_format in (ImageFormats.IA_X2_ARGB, ImageFormats.IA_X2_GRAB):  # two IA palettes (16 bit + 16 bit)
             palette: List[bytes] = []
             colours: int = len(palette_data) // 4
             aligned_offset: int = (colours * 2 + 31) & ~31
 
             # build RGBA palette from two IA palettes
             for i in range(colours):
-                a = palette_handler.get_bytes(i * 2 + 0, 1)
-                r = palette_handler.get_bytes(i * 2 + 1, 1)
-                g = palette_handler.get_bytes(aligned_offset + i * 2 + 0, 1)
-                b = palette_handler.get_bytes(aligned_offset + i * 2 + 1, 1)
+                if palette_format == ImageFormats.IA_X2_ARGB:
+                    a = palette_handler.get_bytes(i * 2 + 0, 1)
+                    r = palette_handler.get_bytes(i * 2 + 1, 1)
+                    g = palette_handler.get_bytes(aligned_offset + i * 2 + 0, 1)
+                    b = palette_handler.get_bytes(aligned_offset + i * 2 + 1, 1)
+                elif palette_format == ImageFormats.IA_X2_GRAB:
+                    g = palette_handler.get_bytes(i * 2 + 0, 1)
+                    r = palette_handler.get_bytes(i * 2 + 1, 1)
+                    a = palette_handler.get_bytes(aligned_offset + i * 2 + 0, 1)
+                    b = palette_handler.get_bytes(aligned_offset + i * 2 + 1, 1)
+                else:
+                    raise Exception(f"No supported palette format {palette_format}!")
                 palette.append(r + g + b + a)
 
             # decode colours

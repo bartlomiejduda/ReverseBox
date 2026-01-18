@@ -37,6 +37,12 @@ def test_decode_and_encode_all_indexed_images():
         #                            img_format=ImageFormats.PAL8, pal_format=ImageFormats.IA_X2, max_colors_count=256,
         #                            palette_offset=0, palette_size=1024, image_data_offset=0, image_data_size=32784,
         #                            number_of_mipmaps=0, encode_indexed_method=EncodeIndexedMethod.V1.value),
+        # ImageDecodeEncodeTestEntry(img_file_path="trophy_texture_wii.bin",
+        #                            pal_file_path="trophy_texture_wii_palette.bin",
+        #                            debug_flag=True, img_width=256, img_height=256, bpp=8,
+        #                            img_format=ImageFormats.PAL8, pal_format=ImageFormats.IA_X2_GRAB, max_colors_count=256,
+        #                            palette_offset=0, palette_size=1024, image_data_offset=0, image_data_size=65536,
+        #                            number_of_mipmaps=0, encode_indexed_method=EncodeIndexedMethod.V1.value),
         ImageDecodeEncodeTestEntry(img_file_path="ea_sample_PAL8_RGBA8888_150x300.bin",
                                    pal_file_path="ea_sample_PAL8_RGBA8888_150x300_palette.bin",
                                    debug_flag=False, img_width=150, img_height=300, bpp=8,
@@ -68,12 +74,12 @@ def test_decode_and_encode_all_indexed_images():
         assert len(encoded_image_data) == test_entry.image_data_size  # not expected buffer size after reading data!
 
         decoded_image_data: bytes = image_decoder.decode_indexed_image(
-            encoded_image_data,
-            encoded_palette_data,
-            test_entry.img_width,
-            test_entry.img_height,
-            test_entry.img_format,
-            test_entry.pal_format,
+            image_data=encoded_image_data,
+            palette_data=encoded_palette_data,
+            img_width=test_entry.img_width,
+            img_height=test_entry.img_height,
+            image_format=test_entry.img_format,
+            palette_format=test_entry.pal_format,
             palette_endianess="little"
         )
 
