@@ -3,7 +3,6 @@ Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
-import sys
 from typing import Dict, List, Optional, Tuple
 
 import libimagequant as liq
@@ -493,14 +492,15 @@ class ImageEncoder:
         return texture_data
 
     # set list of indices in texture data (as bytes)
-    def _encode_indexed_with_palette_encode_indices(self, image_bpp: int, indices_list: list[int], palette_endianess: str,
-                                       image_endianess_format: str, image_bytes_per_pixel: int, texture_data: bytes):
+    def _encode_indexed_with_palette_encode_indices(self, image_bpp: int, indices_list: list[int],
+                                                    image_endianess_format: str, image_bytes_per_pixel: int, texture_data_size: int) -> bytes:
+        texture_data: bytearray = bytearray(texture_data_size)
         img_entry_number: int = 0
         if image_bpp == 4:  # PAL4
             for i in range(0, len(indices_list), 2):
                 pal_index_number_1: int = indices_list[i]
                 pal_index_number_2: int = indices_list[i+1]
-                if palette_endianess == "little":
+                if image_endianess_format == "little":
                     pal_index_combined: int = ((pal_index_number_2 << 4) | pal_index_number_1) & 0xFF
                 else:
                     pal_index_combined: int = ((pal_index_number_1 << 4) | pal_index_number_2) & 0xFF
@@ -517,7 +517,8 @@ class ImageEncoder:
         else:
             raise Exception(f"Not supported img_bpp={image_bpp}!")  # TODO - support other formats like PAL16
 
-        return texture_data
+        assert len(texture_data) == texture_data_size
+        return bytes(texture_data)
 
     # get list of pixels from image (list of int values)
     def _encode_indexed_get_pixel_int_values(self, image_bpp: int, encoded_intermediate_image: bytes, bytes_per_pixel: int,
@@ -637,55 +638,11 @@ class ImageEncoder:
 
         return texture_data, palette_data
 
-    def _encode_indexed_calculate_indices(self,
-                                          pixel_int_values: list[int],
-                                          pal_colors_list: List[Tuple[int, int, int, int]],
-                                          number_of_palette_colors: int
-                                          ) -> List[int]:
-        indices_list: List[int] = []
-
-        # define color weights
-        weight_r = 3
-        weight_g = 2
-        weight_b = 2
-        weight_a = 1
-
-        for pixel_index in range(len(pixel_int_values)):
-            # get image channels
-            r = (pixel_int_values[pixel_index] >> 0) & 0xff
-            g = (pixel_int_values[pixel_index] >> 8) & 0xff
-            b = (pixel_int_values[pixel_index] >> 16) & 0xff
-            a = (pixel_int_values[pixel_index] >> 24) & 0xff
-
-            current_diff: float = sys.maxsize
-            current_index: int = -1
-            # loop through all palette colors to find best match
-            for pal_index in range(number_of_palette_colors):
-                # get palette channels for comparison
-                r_pal, g_pal, b_pal, a_pal = pal_colors_list[pal_index]
-
-                delta_r2 = (r_pal - r) * (r_pal - r)
-                delta_g2 = (g_pal - g) * (g_pal - g)
-                delta_b2 = (b_pal - b) * (b_pal - b)
-                delta_a2 = (a_pal - a) * (a_pal - a)
-
-                # search for best result and save it if found
-                delta2_sum = weight_r * delta_r2 + weight_g * delta_g2 + weight_b * delta_b2 + weight_a * delta_a2
-                if delta2_sum < current_diff:
-                    current_diff = delta2_sum
-                    current_index = pal_index
-
-            # add the best palette match to list
-            indices_list.append(current_index)
-
-        # return result list
-        return indices_list
-
     # Input for below function must be:
     # image_data --> RGBA8888 image data
-    # palette_data --> existing palette in any format (can be extracted from game etc.)
+    # palette_data (optional) --> existing palette in any format (can be extracted from game etc.)
     # palette_format --> format of palette_data (can be game specific)
-    def _encode_indexed_v2(self, image_data: bytes, palette_data: bytes, img_width: int,
+    def _encode_indexed_v2(self, image_data: bytes, palette_data: Optional[bytes], img_width: int,
                            img_height: int, image_format: ImageFormats, palette_format: ImageFormats,
                            image_endianess: str, palette_endianess: str, max_colors_count: int,
                            number_of_mipmaps: int) -> Tuple[bytes, bytes]:
@@ -701,13 +658,11 @@ class ImageEncoder:
         palette_bpp: int = get_bpp_for_image_format(palette_format)
         palette_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(palette_bpp)
         image_endianess_format: str = self._get_endianess_format(image_endianess)
+        palette_endianess_format: str = self._get_endianess_format(palette_endianess)
         _, _, read_function, write_function = self.generic_data_formats[palette_format]
         texture_data: bytes = b''
         image_bytes_per_pixel: int = convert_bpp_to_bytes_per_pixel(image_bpp)
-
-        # prepare empty bytearray for output data
-        main_texture_data = bytearray(self._encode_indexed_calculate_output_size(image_bpp, img_width, img_height))
-        main_texture_data_expected_size: int = len(main_texture_data)
+        main_texture_data_expected_size: int = self._encode_indexed_calculate_output_size(image_bpp, img_width, img_height)
 
         # define attributes for libimagequant library
         attr = liq.Attr()
@@ -730,7 +685,7 @@ class ImageEncoder:
         indices_list: List[int] = [value for value in quantized_pixels]
 
         # convert liq palette to color list
-        unique_palette_values: List[int] = [(color.a << 24) | (color.b << 16) | (color.g << 8) | color.r for color in out_palette]
+        unique_palette_values: List[int] = [(color.a << 24) | (color.r << 16) | (color.g << 8) | color.b for color in out_palette]
 
         # get aligned number of colors
         if max_colors_count <= 4:  # PAL2 (4-color)
@@ -740,8 +695,7 @@ class ImageEncoder:
         elif max_colors_count <= 256:  # PAL8 (256-color)
             aligned_colors_count = 256
         else:
-            raise Exception(
-                f"Not supported aligned colors count for max_colors_count={max_colors_count}")  # TODO - support other formats like PAL16
+            raise Exception(f"Not supported aligned colors count for max_colors_count={max_colors_count}")  # TODO - support other formats like PAL16
 
         # set empty bytearray for palette data
         palette_data: bytearray = bytearray(aligned_colors_count * palette_bytes_per_pixel)
@@ -749,9 +703,9 @@ class ImageEncoder:
         # encode palette
         for pal_entry_number in range(aligned_colors_count):
             if pal_entry_number < len(unique_palette_values):
-                pal_entry_bytes: bytes = write_function(unique_palette_values[pal_entry_number], image_endianess_format)
+                pal_entry_bytes: bytes = write_function(unique_palette_values[pal_entry_number], palette_endianess_format)
             else:
-                pal_entry_bytes: bytes = write_function(0, image_endianess_format)
+                pal_entry_bytes: bytes = write_function(0, palette_endianess_format)
             palette_data[pal_entry_number * palette_bytes_per_pixel: (pal_entry_number + 1) * palette_bytes_per_pixel] = pal_entry_bytes
 
         # get expected size
@@ -761,10 +715,9 @@ class ImageEncoder:
         main_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
             image_bpp,
             indices_list,
-            palette_endianess,
             image_endianess_format,
             image_bytes_per_pixel,
-            main_texture_data
+            main_texture_data_expected_size
         )
         texture_data += main_texture_data
 
@@ -782,18 +735,15 @@ class ImageEncoder:
                 img_resized: Image = mipmap_image.resize((mip_width, mip_height), Image.Resampling.NEAREST)
                 indices_resized: List[int] = np.array(img_resized, dtype=np.uint8).flatten().tolist()
 
-                mipmap_texture_data = bytearray(
-                    self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height))
-                mipmap_texture_data_expected_size: int = len(mipmap_texture_data)
+                mipmap_texture_data_expected_size: int = self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height)
 
                 # encode indices for mipmaps
                 mipmap_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
                     image_bpp,
                     indices_resized,
-                    palette_endianess,
                     image_endianess_format,
                     image_bytes_per_pixel,
-                    mipmap_texture_data
+                    mipmap_texture_data_expected_size
                 )
 
                 if len(mipmap_texture_data) != mipmap_texture_data_expected_size:
