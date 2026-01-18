@@ -840,7 +840,7 @@ class ImageDecoder:
         # handle special cases first
         if palette_format in (ImageFormats.IA_X2_ARGB, ImageFormats.IA_X2_GRAB):  # two IA palettes (16 bit + 16 bit)
             palette: List[bytes] = []
-            colours: int = len(palette_data) // 4
+            colours: int = len(palette_data) // 4 if len(palette_data) <= 1024 else 256
             aligned_offset: int = (colours * 2 + 31) & ~31
 
             # build RGBA palette from two IA palettes
