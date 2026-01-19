@@ -1,3 +1,4 @@
+cffi==2.0.0
 crc==7.1.0
 faker==33.1.0
 hashbase==1.1.5

@@ -8,7 +8,7 @@ from typing import Final
 
 import setuptools
 
-VERSION_NUM: Final[str] = "0.83.1"
+VERSION_NUM: Final[str] = "0.83.2"
 
 
 def get_long_description() -> str:
@@ -66,6 +66,7 @@ setuptools.setup(
         "lz4",
         "numpy",
         "libimagequant",
+        "cffi",
     ],
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
     package_data={"": ["libs/*.dll"]},
