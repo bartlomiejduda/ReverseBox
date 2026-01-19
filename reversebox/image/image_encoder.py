@@ -443,18 +443,18 @@ class ImageEncoder:
             raise Exception(f"[1] Image_bits_per_pixel={image_bpp} not supported!")
 
     # set list of indices in texture data (as bytes)
-    def _encode_indexed_with_palette_encode_indices(self, image_bpp: int, indices_list: list[int],
-                                                    image_endianess_format: str, image_bytes_per_pixel: int, texture_data_size: int) -> bytes:
+    def _encode_indexed_encode_indices(self, image_bpp: int, indices_list: list[int],
+                                       image_endianess_format: str, image_bytes_per_pixel: int, texture_data_size: int) -> bytes:
         texture_data: bytearray = bytearray(texture_data_size)
         img_entry_number: int = 0
         if image_bpp == 4:  # PAL4
             for i in range(0, len(indices_list), 2):
                 pal_index_number_1: int = indices_list[i]
                 pal_index_number_2: int = indices_list[i+1]
-                if image_endianess_format == "little":
-                    pal_index_combined: int = ((pal_index_number_1 << 4) | pal_index_number_2) & 0xFF
-                else:
+                if image_endianess_format == "<":  # little endian
                     pal_index_combined: int = ((pal_index_number_2 << 4) | pal_index_number_1) & 0xFF
+                else:  # big endian
+                    pal_index_combined: int = ((pal_index_number_1 << 4) | pal_index_number_2) & 0xFF
                 pal_index_bytes: bytes = set_uint8(pal_index_combined, image_endianess_format)
                 texture_data[img_entry_number * image_bytes_per_pixel: (img_entry_number + 1) * image_bytes_per_pixel] = pal_index_bytes
                 img_entry_number += 1
@@ -484,6 +484,8 @@ class ImageEncoder:
             raise Exception(f"Image format {image_format} not supported!")
         if not max_colors_count or max_colors_count > 256 or max_colors_count == 0:
             raise Exception(f"Max number of colors {max_colors_count} is not allowed!")
+        if len(image_data) % 4 != 0:
+            raise Exception(f"Wrong RGBA data size: {len(image_data)}")
 
         # get initial values
         number_of_palette_colors: int = max_colors_count
@@ -538,7 +540,7 @@ class ImageEncoder:
             for pal_entry_number in range(aligned_colors_count):
                 if pal_entry_number < len(unique_palette_values):
                     pal_entry_bytes: bytes = encode_function(self, unique_palette_values[pal_entry_number])
-                    if palette_endianess != "little":
+                    if image_endianess != "little":
                         pal_entry_bytes = pal_entry_bytes[::-1]  # change endianess to big endian
                 else:
                     pal_entry_bytes: bytes = write_function(0, palette_endianess_format)
@@ -549,7 +551,7 @@ class ImageEncoder:
         palette_data_expected_size: int = len(palette_data)
 
         # encode indices for main texture
-        main_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
+        main_texture_data: bytes = self._encode_indexed_encode_indices(
             image_bpp,
             indices_list,
             image_endianess_format,
@@ -575,7 +577,7 @@ class ImageEncoder:
                 mipmap_texture_data_expected_size: int = self._encode_indexed_calculate_output_size(image_bpp, mip_width, mip_height)
 
                 # encode indices for mipmap
-                mipmap_texture_data: bytes = self._encode_indexed_with_palette_encode_indices(
+                mipmap_texture_data: bytes = self._encode_indexed_encode_indices(
                     image_bpp,
                     indices_resized,
                     image_endianess_format,
