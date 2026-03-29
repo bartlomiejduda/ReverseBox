@@ -1,9 +1,7 @@
 """
-Copyright © 2024-2025  Bartłomiej Duda
+Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
-
-from reversebox.image.byte_swap import swap_byte_order_x360
 
 # Xbox 360 Texture Swizzling
 
@@ -73,12 +71,10 @@ def _convert_x360_image_data(image_data: bytes, image_width: int, image_height: 
 
 
 def unswizzle_x360(image_data: bytes, img_width: int, img_height: int, block_pixel_size: int = 4, texel_byte_pitch: int = 8) -> bytes:
-    swapped_data: bytes = swap_byte_order_x360(image_data)
-    unswizzled_data: bytes = _convert_x360_image_data(swapped_data, img_width, img_height, block_pixel_size, texel_byte_pitch, False)
+    unswizzled_data: bytes = _convert_x360_image_data(image_data, img_width, img_height, block_pixel_size, texel_byte_pitch, False)
     return unswizzled_data
 
 
 def swizzle_x360(image_data: bytes, img_width: int, img_height: int, block_pixel_size: int = 4, texel_byte_pitch: int = 8) -> bytes:
-    swapped_data: bytes = swap_byte_order_x360(image_data)
-    swizzled_data: bytes = _convert_x360_image_data(swapped_data, img_width, img_height, block_pixel_size, texel_byte_pitch, True)
+    swizzled_data: bytes = _convert_x360_image_data(image_data, img_width, img_height, block_pixel_size, texel_byte_pitch, True)
     return swizzled_data

@@ -113,7 +113,7 @@ def get_bpp_for_image_format(image_format: ImageFormats) -> int:
                           ImageFormats.LA44,
                           ImageFormats.GRAY8,
                           ImageFormats.N64_IA4,
-                          ImageFormats.DXT2,
+                          ImageFormats.BC2_DXT2,
                           ImageFormats.BC2_DXT3,
                           ImageFormats.PSP_DXT3,
                           ImageFormats.DXT4,

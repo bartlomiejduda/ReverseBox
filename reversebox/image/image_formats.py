@@ -117,7 +117,7 @@ class ImageFormats(Enum):
     BC1_DXT1 = "bc1_dxt1"
     PSP_DXT1 = "psp_dxt1"
     N64_CMPR = "n64_cmpr"  # COLOR+ALPHA, 4bpp, compressed, similar to DXT1
-    DXT2 = "dxt2"
+    BC2_DXT2 = "bc2_dxt2"
     BC2_DXT3 = "bc2_dxt3"
     PSP_DXT3 = "psp_dxt3"
     DXT4 = "dxt4"

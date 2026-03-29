@@ -1,5 +1,5 @@
 """
-Copyright © 2024-2025  Bartłomiej Duda
+Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -79,6 +79,8 @@ class CompressedImageDecoderEncoder:
 
         if image_format == ImageFormats.BC1_DXT1:
             return 71
+        elif image_format == ImageFormats.BC2_DXT2:  # TODO
+            return 74
         elif image_format == ImageFormats.BC2_DXT3:
             return 74
         elif image_format == ImageFormats.BC3_DXT5:

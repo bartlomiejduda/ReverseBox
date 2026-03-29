@@ -30,7 +30,7 @@ pvrtexlib_format_mapping: dict[ImageFormats, int] = {
         ImageFormats.ETC1: 16,
 
         ImageFormats.BC1_DXT1: 20,
-        ImageFormats.DXT2: 21,
+        ImageFormats.BC2_DXT2: 21,
         ImageFormats.BC2_DXT3: 22,
         ImageFormats.DXT4: 23,
         ImageFormats.BC3_DXT5: 24,

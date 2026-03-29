@@ -1,5 +1,5 @@
 """
-Copyright © 2024-2025  Bartłomiej Duda
+Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
@@ -29,8 +29,10 @@ def test_decode_and_encode_all_compressed_images():
 
     image_test_entries = [
         ImageDecodeEncodeTestEntry(img_file_path="monkey_dxt1.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.BC1_DXT1),
+        # ImageDecodeEncodeTestEntry(img_file_path="monkey_dxt2.bin", debug_flag=True, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.BC2_DXT2),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_dxt3.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.BC2_DXT3),
         ImageDecodeEncodeTestEntry(img_file_path="monkey_dxt5.bin", debug_flag=False, img_width=256, img_height=128, bpp=8, img_format=ImageFormats.BC3_DXT5),
+        # ImageDecodeEncodeTestEntry(img_file_path="hulk_DXT2.bin", debug_flag=True, img_width=1024, img_height=1024, bpp=4, img_format=ImageFormats.BC2_DXT2),
     ]
 
     for test_entry in image_test_entries:
