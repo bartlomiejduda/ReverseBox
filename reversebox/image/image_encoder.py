@@ -621,7 +621,5 @@ class ImageEncoder:
     def encode_n64_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return N64ImageDecoderEncoder().encode_n64_image_main(image_data, img_width, img_height, image_format)
 
-    def encode_gst_image(self, image_data: bytes, img_width: int, img_height: int, gst_format: ImageFormats, image_format: ImageFormats,
-                         palette_format: ImageFormats, max_color_count: int, is_swizzled: bool = True) -> bytes:
-        encoded_image_data, encoded_palette_data = self.encode_indexed_image(image_data, img_width, img_height, image_format, palette_format, max_color_count)
-        return GSTImageDecoderEncoder().encode_gst_image_main(encoded_image_data, encoded_palette_data, img_width, img_height, gst_format, is_swizzled)
+    def encode_gst_image(self, image_data: bytes, img_width: int, img_height: int, gst_format: ImageFormats, is_swizzled: bool = True) -> Tuple[bytes, bytes]:
+        return GSTImageDecoderEncoder().encode_gst_image_main(image_data, img_width, img_height, gst_format, is_swizzled)

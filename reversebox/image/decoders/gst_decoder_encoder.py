@@ -3,6 +3,8 @@ Copyright © 2024-2026  Bartłomiej Duda
 License: GPL-3.0 License
 """
 
+from typing import Tuple
+
 from reversebox.common.logger import get_logger
 from reversebox.compression.compression_gst import decompress_gst_image
 from reversebox.image.image_formats import ImageFormats
@@ -85,11 +87,10 @@ class GSTImageDecoderEncoder:
 
         return decompressed_texture_data
 
-    def encode_gst_image_main(self, encoded_image_data: bytes, encoded_palette_data: bytes, img_width: int, img_height: int,
-                              gst_format: ImageFormats,  is_swizzled: bool) -> bytes:
+    # converts RGBA8888 to GST
+    def encode_gst_image_main(self, image_data: bytes, img_width: int, img_height: int,
+                              gst_format: ImageFormats,  is_swizzled: bool) -> Tuple[bytes, bytes]:
         block_width, block_height, detail_bpp = self.gst_data_formats[gst_format]
-
-        gst_data: bytes = b''
 
         # compress GST
         # TODO
@@ -98,4 +99,4 @@ class GSTImageDecoderEncoder:
         if is_swizzled:
             pass  # TODO
 
-        return gst_data
+        return b'',  b''

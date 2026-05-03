@@ -8,8 +8,7 @@ import os
 import pytest
 
 from reversebox.image.image_decoder import ImageDecoder
-
-# from reversebox.image.image_encoder import ImageEncoder
+from reversebox.image.image_encoder import ImageEncoder
 from reversebox.image.image_formats import ImageFormats
 from reversebox.image.pillow_wrapper import PillowWrapper
 from tests.common import GSTTestEntry
@@ -25,7 +24,7 @@ def _get_test_image_path(file_name: str) -> str:
 def test_decode_and_encode_all_gst_images():
 
     image_decoder = ImageDecoder()
-    # image_encoder = ImageEncoder()
+    image_encoder = ImageEncoder()
     wrapper = PillowWrapper()
 
     image_test_entries = [
@@ -51,6 +50,18 @@ def test_decode_and_encode_all_gst_images():
                                                                    convert_pal_format=test_entry.conv_pal_format,
                                                                    is_swizzled=test_entry.is_swizzled
                                                                    )
+
+        # encoding start
+        re_encoded_image_data, re_encoded_palette_data = image_encoder.encode_gst_image(image_data=decoded_image_data,
+                                                                                        img_width=test_entry.img_width,
+                                                                                        img_height=test_entry.img_height,
+                                                                                        gst_format=test_entry.img_format,
+                                                                                        is_swizzled=test_entry.is_swizzled
+                                                                                        )
+        # TODO - adjust asserts
+        assert re_encoded_image_data is not None
+        assert re_encoded_palette_data is not None
+
 
         # debug start ###############################################################################################
         if test_entry.debug_flag:
