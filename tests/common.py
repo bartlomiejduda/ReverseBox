@@ -134,7 +134,7 @@ class ImagePerformanceTestEntry:
 
 
 @dataclass
-class GSTSwizzleTestEntry:
+class GSTTestEntry:
     img_path: str
     pal_path: str
     debug_flag: bool
@@ -143,6 +143,7 @@ class GSTSwizzleTestEntry:
     img_format: ImageFormats
     conv_format: ImageFormats
     conv_pal_format: ImageFormats
+    is_swizzled: bool = False
 
 
 @dataclass

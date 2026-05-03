@@ -19,7 +19,7 @@ from reversebox.image.swizzling.swizzle_gst import (
     unswizzle_gst_detail1,
     unswizzle_gst_detail2,
 )
-from tests.common import GSTSwizzleTestEntry
+from tests.common import GSTTestEntry
 
 # fmt: off
 
@@ -27,13 +27,13 @@ from tests.common import GSTSwizzleTestEntry
 @pytest.mark.imagetest
 def test_gst_unswizzle_and_swizzle():
     gst_test_entries = [
-        GSTSwizzleTestEntry(img_path="swizzle_GST121.bin", pal_path="swizzle_GST121.pal", debug_flag=False,
-                            img_width=256, img_height=128, img_format=ImageFormats.GST121,
-                            conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888),
+        GSTTestEntry(img_path="swizzle_GST121.bin", pal_path="swizzle_GST121.pal", debug_flag=False,
+                     img_width=256, img_height=128, img_format=ImageFormats.GST121, is_swizzled=True,
+                     conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888),
 
-        GSTSwizzleTestEntry(img_path="swizzle_GST122.bin", pal_path="swizzle_GST122.pal", debug_flag=False,
-                            img_width=256, img_height=128, img_format=ImageFormats.GST122,
-                            conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888)
+        GSTTestEntry(img_path="swizzle_GST122.bin", pal_path="swizzle_GST122.pal", debug_flag=False,
+                     img_width=256, img_height=128, img_format=ImageFormats.GST122, is_swizzled=True,
+                     conv_format=ImageFormats.PAL8, conv_pal_format=ImageFormats.BGRA8888)
         ]
 
     for test_entry in gst_test_entries:
@@ -74,6 +74,7 @@ def test_gst_unswizzle_and_swizzle():
             pil_image.show()
         # debug end #################################################################################################
 
+        assert test_entry.is_swizzled is True
         assert len(base_data) == len(reswizzled_base_data)
         assert len(detail_data) == len(reswizzled_detail_data)
 
