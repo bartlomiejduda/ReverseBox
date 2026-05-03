@@ -160,6 +160,10 @@ class CompressedImageDecoderEncoder:
         else:
             converted_data_size: int = img_height * img_width * 4
         converted_data = bytearray((c_uint8 * converted_data_size).from_address(ctypes.addressof(output_dxgi_image.pixels.contents)))
+
+        # TODO - make it work
+        # if image_format == ImageFormats.BC2_DXT2:
+        #     converted_data = self.unpremultiply_rgba(converted_data)
         return converted_data
 
     def decode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
@@ -167,3 +171,52 @@ class CompressedImageDecoderEncoder:
 
     def encode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return self._convert_directxtex_image(image_data, img_width, img_height, image_format, True)
+
+    # TODO - make it work
+    def unpremultiply_rgba(self, data: bytes) -> bytes:
+        result = bytearray(len(data))
+
+        for i in range(0, len(data), 4):
+            r = data[i]
+            g = data[i + 1]
+            b = data[i + 2]
+            a = data[i + 3]
+
+            if a > 0:
+                r = min(255, (r * 255) // a)
+                g = min(255, (g * 255) // a)
+                b = min(255, (b * 255) // a)
+            else:
+                r = g = b = 0
+
+            result[i] = r
+            result[i + 1] = g
+            result[i + 2] = b
+            result[i + 3] = a
+
+        return bytes(result)
+
+    # TODO - make it work
+    def premultiply_rgba(self, data: bytes) -> bytes:
+        result = bytearray(len(data))
+
+        for i in range(0, len(data), 4):
+            r = data[i]
+            g = data[i + 1]
+            b = data[i + 2]
+            a = data[i + 3]
+
+            # uint32_t alpha = pixel.a * 258;
+            alpha = a * 258
+
+            # (pixel.r * alpha) >> 16
+            r = (r * alpha) >> 16
+            g = (g * alpha) >> 16
+            b = (b * alpha) >> 16
+
+            result[i] = r
+            result[i + 1] = g
+            result[i + 2] = b
+            result[i + 3] = a
+
+        return bytes(result)
