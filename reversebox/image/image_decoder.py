@@ -631,7 +631,7 @@ class ImageDecoder:
         p[3] = pixel_int >> 8
         return p
 
-    def _decode_r_only_pixel(self, pixel_int: int) -> bytes:
+    def _decode_r8_only_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = pixel_int & 0xFF
         p[1] = 0x00
@@ -639,7 +639,23 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_g_only_pixel(self, pixel_int: int) -> bytes:
+    def _decode_r16_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int & 0xFFFF) >> 8
+        p[1] = 0x00
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_r32_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = (pixel_int >> 24) & 0xFF
+        p[1] = 0x00
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_g8_only_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = 0x00
         p[1] = pixel_int & 0xFF
@@ -647,11 +663,43 @@ class ImageDecoder:
         p[3] = 0xFF
         return p
 
-    def _decode_b_only_pixel(self, pixel_int: int) -> bytes:
+    def _decode_g16_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = (pixel_int & 0xFFFF) >> 8
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_g32_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = (pixel_int >> 24) & 0xFF
+        p[2] = 0x00
+        p[3] = 0xFF
+        return p
+
+    def _decode_b8_only_pixel(self, pixel_int: int) -> bytes:
         p = bytearray(4)
         p[0] = 0x00
         p[1] = 0x00
         p[2] = pixel_int & 0xFF
+        p[3] = 0xFF
+        return p
+
+    def _decode_b16_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = 0x00
+        p[2] = (pixel_int & 0xFFFF) >> 8
+        p[3] = 0xFF
+        return p
+
+    def _decode_b32_only_pixel(self, pixel_int: int) -> bytes:
+        p = bytearray(4)
+        p[0] = 0x00
+        p[1] = 0x00
+        p[2] = (pixel_int >> 24) & 0xFF
         p[3] = 0xFF
         return p
 
@@ -684,9 +732,9 @@ class ImageDecoder:
         ImageFormats.BGR332: (_decode_bgr332_pixel, 8, get_uint8),
         ImageFormats.GRAY8: (_decode_gray8_pixel, 8, get_uint8),  # GRAY, 8bpp, same as N64_I8
         ImageFormats.N64_IA4: (_decode_ia4_pixel, 8, get_uint8),  # GRAY+ALPHA, 8bpp
-        ImageFormats.R8: (_decode_r_only_pixel, 8, get_uint8),
-        ImageFormats.G8: (_decode_g_only_pixel, 8, get_uint8),
-        ImageFormats.B8: (_decode_b_only_pixel, 8, get_uint8),
+        ImageFormats.R8: (_decode_r8_only_pixel, 8, get_uint8),
+        ImageFormats.G8: (_decode_g8_only_pixel, 8, get_uint8),
+        ImageFormats.B8: (_decode_b8_only_pixel, 8, get_uint8),
 
         ImageFormats.GRAY8A: (_decode_gray8a_pixel, 16, get_uint16),
         ImageFormats.GRAY16: (_decode_gray16_pixel, 16, get_uint16),
@@ -716,9 +764,9 @@ class ImageDecoder:
         ImageFormats.N64_IA8: (_decode_ia8_pixel, 16, get_uint16),  # GRAY+ALPHA, 16bpp
         ImageFormats.N64_RGB5A3: (_decode_rgb5A3_pixel, 16, get_uint16),
         ImageFormats.N64_BGR5A3: (_decode_bgr5A3_pixel, 16, get_uint16),
-        ImageFormats.R16: (_decode_r_only_pixel, 16, get_uint16),
-        ImageFormats.G16: (_decode_g_only_pixel, 16, get_uint16),
-        ImageFormats.B16: (_decode_b_only_pixel, 16, get_uint16),
+        ImageFormats.R16: (_decode_r16_only_pixel, 16, get_uint16),
+        ImageFormats.G16: (_decode_g16_only_pixel, 16, get_uint16),
+        ImageFormats.B16: (_decode_b16_only_pixel, 16, get_uint16),
 
         ImageFormats.RGBX6666: (_decode_rgbx6666_pixel, 24, get_uint24),
         ImageFormats.RGBA6666: (_decode_rgba6666_pixel, 24, get_uint24),
@@ -735,9 +783,9 @@ class ImageDecoder:
         ImageFormats.BGRX8888: (_decode_bgrx8888_pixel, 32, get_uint32),
         ImageFormats.BGRT8888: (_decode_bgrt8888_pixel, 32, get_uint32),
         ImageFormats.RGBM8888: (_decode_rgbm8888_pixel, 32, get_uint32),
-        ImageFormats.R32: (_decode_r_only_pixel, 32, get_uint32),
-        ImageFormats.G32: (_decode_g_only_pixel, 32, get_uint32),
-        ImageFormats.B32: (_decode_b_only_pixel, 32, get_uint32),
+        ImageFormats.R32: (_decode_r32_only_pixel, 32, get_uint32),
+        ImageFormats.G32: (_decode_g32_only_pixel, 32, get_uint32),
+        ImageFormats.B32: (_decode_b32_only_pixel, 32, get_uint32),
         ImageFormats.IA_X2_ARGB: (_decode_null_pixel, 32, get_uint32),  # two IA palettes (16 bit + 16 bit)
         ImageFormats.IA_X2_GRAB: (_decode_null_pixel, 32, get_uint32),  # two IA palettes (16 bit + 16 bit)
 
