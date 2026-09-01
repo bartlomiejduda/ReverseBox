@@ -19,6 +19,18 @@ def swap_byte_order_x360(image_data: bytes) -> bytes:
     return swapped_data
 
 
+def swap_byte_order_etc1(image_data: bytes) -> bytes:
+    """Swap each ETC1 block between big- and little-endian byte order."""
+    block_size: int = 8
+    if len(image_data) % block_size != 0:
+        raise Exception("ETC1 data size must be a multiple of 8 bytes!")
+
+    swapped_data: bytearray = bytearray(len(image_data))
+    for offset in range(0, len(image_data), block_size):
+        swapped_data[offset:offset + block_size] = image_data[offset:offset + block_size][::-1]
+    return bytes(swapped_data)
+
+
 def swap_byte_order_gamecube(image_data: bytes, img_width: int, img_height: int) -> bytes:
     bw: int = img_width // 4
     bh: int = img_height // 4
