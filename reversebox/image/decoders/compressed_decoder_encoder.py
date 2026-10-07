@@ -18,11 +18,14 @@ from ctypes import (
     create_string_buffer,
 )
 
+import PIL.Image
+
 from reversebox.common.common import get_dll_path
 from reversebox.common.constants import DLL_LOG_FILE_NAME
 from reversebox.common.logger import get_logger
 from reversebox.image.common import get_bc_image_data_size
 from reversebox.image.image_formats import ImageFormats
+from reversebox.image.pillow_wrapper import PillowWrapper
 
 logger = get_logger(__name__)
 
@@ -169,8 +172,37 @@ class CompressedImageDecoderEncoder:
     def decode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return self._convert_directxtex_image(image_data, img_width, img_height, image_format, False)
 
-    def encode_compressed_image_main(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        return self._convert_directxtex_image(image_data, img_width, img_height, image_format, True)
+    def encode_compressed_image_main(self,
+                                     image_data: bytes,
+                                     img_width: int,
+                                     img_height: int,
+                                     image_format: ImageFormats,
+                                     number_of_mipmaps: int,
+                                     mipmaps_resampling_type: PIL.Image.Resampling
+                                     ) -> bytes:
+
+        encoded_image_data: bytes = b''
+
+        # main image logic (mip 0)
+        main_image_data: bytes = self._convert_directxtex_image(image_data, img_width, img_height, image_format, True)
+        encoded_image_data += main_image_data
+
+        # mipmap logic
+        if number_of_mipmaps > 0:
+            base_img: PIL.Image = PillowWrapper().get_pillow_image_from_rgba8888_data(
+                image_data, img_width, img_height
+            )
+            mip_width: int = img_width
+            mip_height: int = img_height
+            for i in range(number_of_mipmaps):
+                mip_width //= 2
+                mip_height //= 2
+                mip_pillow_img: PIL.Image = base_img.resize((mip_width, mip_height), resample=mipmaps_resampling_type)
+                mip_rgba_data: bytes = PillowWrapper().get_image_data_from_pillow_image(mip_pillow_img)
+                encoded_mipmap_data: bytes = self._convert_directxtex_image(mip_rgba_data, mip_width, mip_height, image_format, True)
+                encoded_image_data += encoded_mipmap_data
+
+        return encoded_image_data
 
     # TODO - make it work
     def unpremultiply_rgba(self, data: bytes) -> bytes:

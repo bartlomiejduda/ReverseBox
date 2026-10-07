@@ -251,6 +251,9 @@ def is_compressed_image_format(image_format: ImageFormats) -> bool:
 
 
 def get_block_data_size(img_format: ImageFormats) -> int:
+    """
+    get block size in bytes
+    """
     if img_format in (ImageFormats.BC1_DXT1,
                       ImageFormats.PSP_DXT1,
                       ImageFormats.BC4_UNORM,

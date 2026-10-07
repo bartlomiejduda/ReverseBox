@@ -612,8 +612,19 @@ class ImageEncoder:
         return self._encode_indexed(image_data, None, img_width, img_height, image_format, palette_format,
                                     image_endianess, palette_endianess, max_color_count, number_of_mipmaps)
 
-    def encode_compressed_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
-        return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)
+    def encode_compressed_image(self, image_data: bytes,
+                                img_width: int, img_height: int,
+                                image_format: ImageFormats,
+                                number_of_mipmaps: int = 0,
+                                mipmaps_resampling_type: PIL.Image.Resampling = Image.Resampling.NEAREST
+                                ) -> bytes:
+        return CompressedImageDecoderEncoder().encode_compressed_image_main(image_data=image_data,
+                                                                            img_width=img_width,
+                                                                            img_height=img_height,
+                                                                            image_format=image_format,
+                                                                            number_of_mipmaps=number_of_mipmaps,
+                                                                            mipmaps_resampling_type=mipmaps_resampling_type
+                                                                            )
 
     def encode_pvrtexlib_image(self, image_data: bytes, img_width: int, img_height: int, image_format: ImageFormats) -> bytes:
         return PvrTexlibImageDecoderEncoder().encode_compressed_image_main(image_data, img_width, img_height, image_format)
